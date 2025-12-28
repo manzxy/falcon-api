@@ -2,7 +2,7 @@ const axios = require("axios")
 const cheerio = require("cheerio")
 
 module.exports = function (app) {
-  app.get("/tools/tiktok-user", async (req, res) => {
+  app.get("/stalker/tiktok", async (req, res) => {
     const { username } = req.query
 
     if (!username) {
