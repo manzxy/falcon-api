@@ -1,5 +1,5 @@
 {
-  "name": "Falcon-Api",
+  "name": "Manzxy APIs",
   "version": "v1.2",
   "description": "Simple and easy to use API.",
   "bannerImage": "/src/banner.jpg",
@@ -7,8 +7,8 @@
     "status": "Online!"
   },
   "apiSettings": {
-    "creator": "FlowFalcon", 
-    "apikey": ["falcon-api"]
+    "creator": "Manzxy",
+    "apikey": ["elainachan"]
   },
   "categories": [
     {
