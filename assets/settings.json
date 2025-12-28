@@ -37,11 +37,21 @@
         },
         {
           "name": "WebPilot AI Search",
-          "desc": "AI search & browsing menggunakan WebPilot",
+          "desc": "AI search & browsing menggunakan WebPilot (real-time web).",
           "path": "/ai/webpilot?text=",
           "status": "ready",
           "params": {
             "text": "Pertanyaan atau topik pencarian."
+          }
+        },
+        {
+          "name": "Editimg",
+          "desc": "edit image menggunakan AIEnhancer (image to image).",
+          "path": "/ai/editimg?image=&text=",
+          "status": "ready",
+          "params": {
+            "image": "URL gambar input",
+            "text": "You Prompt"
           }
         }
       ]
