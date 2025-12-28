@@ -68,6 +68,15 @@
           "params": {
             "username": "Username TikTok"
           }
+        },
+         {
+           "name": "Github Stalk",
+           "desc": "View Github User",
+           "path": "/stalker/github?username=",
+           "status": "ready",
+           "params": {
+             "username": "Username Github"
+           }
         }
       ]
     },
