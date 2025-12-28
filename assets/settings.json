@@ -24,6 +24,16 @@
           "params": {
             "text": "Teks atau pertanyaan yang ingin diajukan ke AI."
           }
+        },
+        {
+          "name": "Gemini Web Chat",
+          "desc": "Chat dengan Gemini Web. Mendukung system instruction.",
+          "path": "/ai/gemini-web?text=&system=",
+          "status": "ready",
+          "params": {
+            "text": "Teks atau pertanyaan untuk Gemini.",
+            "system": "System instruction (opsional)."
+          }
         }
       ]
     },
