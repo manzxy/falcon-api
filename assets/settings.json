@@ -27,12 +27,21 @@
         },
         {
           "name": "Gemini Web Chat",
-          "desc": "Chat dengan Gemini Web. Mendukung system instruction.",
+          "desc": "Chat dengan Gemini Web (scrape). Mendukung system instruction.",
           "path": "/ai/gemini-web?text=&system=",
           "status": "ready",
           "params": {
             "text": "Teks atau pertanyaan untuk Gemini.",
             "system": "System instruction (opsional)."
+          }
+        },
+        {
+          "name": "WebPilot AI Search",
+          "desc": "AI search & browsing menggunakan WebPilot",
+          "path": "/ai/webpilot?text=",
+          "status": "ready",
+          "params": {
+            "text": "Pertanyaan atau topik pencarian."
           }
         }
       ]
