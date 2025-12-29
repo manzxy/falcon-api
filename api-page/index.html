@@ -3,14 +3,15 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Manzxy API Documentation">
 <meta name="theme-color" content="#1b1b1b">
-<title>Manzxy API</title>
+<title>Manzxy API | Minecraft UI</title>
 <link rel="icon" href="/assets/icon.png">
 
 <!-- Tailwind -->
 <script src="https://cdn.tailwindcss.com"></script>
 
-<!-- Minecraft Font -->
+<!-- Fonts -->
 <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
 
 <!-- Icons -->
@@ -30,88 +31,80 @@ tailwind.config = {
 </script>
 
 <style>
-::-webkit-scrollbar { display: none }
+::-webkit-scrollbar{display:none}
 
-/* ===== DARK BACKGROUND (DEFAULT) ===== */
-.bg-dark {
-  background:
-    repeating-linear-gradient(
-      45deg,
-      #1b1b1b,
-      #1b1b1b 14px,
-      #161616 14px,
-      #161616 28px
-    );
-  color: #e5e7eb;
+/* ===== BACKGROUND MODES ===== */
+.bg-dark{
+  background:repeating-linear-gradient(
+    45deg,#1b1b1b,#1b1b1b 14px,#161616 14px,#161616 28px);
+  color:#e5e7eb;
 }
-
-/* ===== LIGHT BACKGROUND ===== */
-.bg-light {
-  background:
-    repeating-linear-gradient(
-      45deg,
-      #f5f5f5,
-      #f5f5f5 14px,
-      #ffffff 14px,
-      #ffffff 28px
-    );
-  color: #111111;
+.bg-light{
+  background:repeating-linear-gradient(
+    45deg,#f5f5f5,#f5f5f5 14px,#ffffff 14px,#ffffff 28px);
+  color:#111;
 }
 
-/* Panel */
-.mc-panel {
-  background: #2a2a2a;
-  border: 4px solid #3f3f3f;
-  box-shadow:
-    inset -4px -4px 0 #1a1a1a,
-    inset 4px 4px 0 #4a4a4a;
+/* ===== PANEL ===== */
+.mc-panel{
+  background:#2a2a2a;
+  border:4px solid #3f3f3f;
+  box-shadow:inset -4px -4px 0 #1a1a1a,
+             inset 4px 4px 0 #4a4a4a;
 }
-.bg-light .mc-panel {
-  background: #eeeeee;
-  border-color: #cccccc;
-  box-shadow:
-    inset -4px -4px 0 #cfcfcf,
-    inset 4px 4px 0 #ffffff;
+.bg-light .mc-panel{
+  background:#eee;
+  border-color:#ccc;
+  box-shadow:inset -4px -4px 0 #cfcfcf,
+             inset 4px 4px 0 #fff;
 }
 
-/* Button */
-.mc-btn {
-  background: #3a7d3a;
-  border: 3px solid #2b5d2b;
-  box-shadow:
-    inset -3px -3px 0 #1f3f1f,
-    inset 3px 3px 0 #5fa75f;
-  transition: .1s;
-  color: #000;
+/* ===== BUTTON ===== */
+.mc-btn{
+  background:#3a7d3a;
+  border:3px solid #2b5d2b;
+  box-shadow:inset -3px -3px 0 #1f3f1f,
+             inset 3px 3px 0 #5fa75f;
+  transition:.1s;
+  color:#000;
 }
-.mc-btn:hover {
-  transform: translateY(-2px);
+.mc-btn:hover{transform:translateY(-2px)}
+
+/* ===== INPUT ===== */
+.mc-input{
+  background:#1e1e1e;
+  border:3px solid #3f3f3f;
+}
+.bg-light .mc-input{
+  background:#fff;
+  border-color:#ccc;
 }
 
-/* Input */
-.mc-input {
-  background: #1e1e1e;
-  border: 3px solid #3f3f3f;
-}
-.bg-light .mc-input {
-  background: #ffffff;
-  border-color: #cccccc;
+/* ===== METHOD BADGE ===== */
+.method-get{
+  background:#2563eb;
+  color:#fff;
+  border:2px solid #1e40af;
+  padding:2px 6px;
+  font-size:10px;
+  margin-right:6px;
+  box-shadow:inset -2px -2px 0 #1e3a8a,
+             inset 2px 2px 0 #60a5fa;
 }
 
-/* Status */
-.status-ready { background:#2ecc71;color:#003300 }
-.status-update { background:#f1c40f;color:#332200 }
-.status-error { background:#e74c3c;color:#330000 }
+/* ===== STATUS ===== */
+.status-ready{background:#2ecc71;color:#003300}
+.status-update{background:#f1c40f;color:#332200}
+.status-error{background:#e74c3c;color:#330000}
 
-/* Loader */
-.loader {
-  width: 22px;
-  height: 22px;
-  border: 4px solid #2ecc71;
-  border-top-color: transparent;
-  animation: spin .8s linear infinite;
+/* ===== LOADER ===== */
+.loader{
+  width:22px;height:22px;
+  border:4px solid #2ecc71;
+  border-top-color:transparent;
+  animation:spin .8s linear infinite
 }
-@keyframes spin { to { transform: rotate(360deg) } }
+@keyframes spin{to{transform:rotate(360deg)}}
 </style>
 </head>
 
@@ -125,27 +118,20 @@ tailwind.config = {
     <img src="/assets/icon.png" class="w-10">
     <h1 class="text-lg tracking-widest text-green-500">MANZXY API</h1>
   </div>
-
-  <!-- TOGGLE BACKGROUND -->
-  <button id="bgToggle" class="mc-btn px-3 py-2 text-xs">
-    WHITE
-  </button>
+  <button id="bgToggle" class="mc-btn px-3 py-2 text-xs">WHITE</button>
 </div>
 
 <p class="text-xs mb-6">
-Explore endpoints like opening a Minecraft chest.
+Selamat datang di dokumentasi Manzxy API.
 </p>
 
 <a href="https://t.me/manzxyyx" target="_blank"
-class="text-xs underline block mb-6">
-Contact Manzxy
-</a>
+class="text-xs underline block mb-6">Contact Manzxy</a>
 
 <!-- NOTIFICATIONS -->
 <div class="mb-6">
   <h2 class="text-xs mb-2 flex items-center">
-    <span class="material-icons mr-2">notifications</span>
-    INFORMATION
+    <span class="material-icons mr-2">notifications</span> INFORMASI
   </h2>
   <div id="notifications-list" class="space-y-2">
     <div class="loader"></div>
@@ -157,110 +143,155 @@ Contact Manzxy
 class="w-full px-4 py-3 mc-input text-xs mb-6 focus:outline-none">
 
 <!-- CONTENT -->
-<div id="content" class="space-y-3">
-  <div id="noResults" class="hidden text-center text-xs">
-    No result found
-  </div>
+<div id="content" class="space-y-4">
+  <div id="noResults" class="hidden text-center text-xs">No result found</div>
   <div id="apiList" class="space-y-3"></div>
 </div>
 
-<footer class="mt-10 text-center text-xs">
-© 2025 Manzxy
-</footer>
-
+<footer class="mt-10 text-center text-xs">© 2025 Manzxy</footer>
 </main>
 
 <script>
 /* ===== BACKGROUND TOGGLE ===== */
-const btn = document.getElementById('bgToggle')
-const body = document.body
-
-function setBg(mode){
-  body.classList.remove('bg-dark','bg-light')
-  body.classList.add(mode)
-  btn.textContent = mode === 'bg-dark' ? 'WHITE' : 'BLACK'
-  localStorage.setItem('bgMode', mode)
+const bgBtn=document.getElementById('bgToggle')
+const body=document.body
+function setBg(m){
+ body.classList.remove('bg-dark','bg-light')
+ body.classList.add(m)
+ bgBtn.textContent=m==='bg-dark'?'WHITE':'BLACK'
+ localStorage.setItem('bgMode',m)
 }
+bgBtn.onclick=()=>setBg(body.classList.contains('bg-dark')?'bg-light':'bg-dark')
+setBg(localStorage.getItem('bgMode')||'bg-dark')
 
-btn.onclick = () => {
-  setBg(body.classList.contains('bg-dark') ? 'bg-light' : 'bg-dark')
-}
-
-setBg(localStorage.getItem('bgMode') || 'bg-dark')
-
-/* ===== API + NOTIF ===== */
+/* ===== TOGGLE ===== */
 function toggleCategory(i){
-  document.getElementById('category-'+i)?.classList.toggle('hidden')
+ const el=document.getElementById('category-'+i)
+ el.classList.toggle('hidden')
 }
 function toggleEndpoint(c,e){
-  document.getElementById(`endpoint-${c}-${e}`)?.classList.toggle('hidden')
+ document.getElementById(`endpoint-${c}-${e}`).classList.toggle('hidden')
 }
 
+/* ===== LOAD APIS (ASLI + GET + TRY IT OUT) ===== */
 async function loadApis(){
-  const apiList=document.getElementById('apiList')
-  const res=await fetch('/assets/settings.json')
-  const data=await res.json()
-  let html=''
-  data.categories.forEach((cat,ci)=>{
-    html+=`
-    <div class="mc-panel">
-      <button onclick="toggleCategory(${ci})"
-      class="w-full px-4 py-3 text-left text-xs">
-        📁 ${cat.name} (${cat.items.length})
-      </button>
-      <div id="category-${ci}" class="hidden">`
-    cat.items.forEach((it,ei)=>{
-      html+=`
-      <div class="border-t border-gray-500 api-item"
-        data-path="${it.path}"
-        data-alias="${it.name}"
-        data-description="${it.desc}">
-        <button onclick="toggleEndpoint(${ci},${ei})"
-        class="w-full px-4 py-3 text-left text-xs">
-          ▶ ${it.path}
-        </button>
-        <div id="endpoint-${ci}-${ei}" class="hidden p-4 text-xs">
-          ${it.desc || ''}
-        </div>
-      </div>`
-    })
-    html+='</div></div>'
+ const apiList=document.getElementById('apiList')
+ const res=await fetch('/assets/settings.json')
+ const data=await res.json()
+ let html=''
+ data.categories.forEach((cat,ci)=>{
+  html+=`
+  <div class="mc-panel">
+    <button onclick="toggleCategory(${ci})"
+    class="w-full px-4 py-3 text-left text-xs">
+      📁 ${cat.name} (${cat.items.length})
+    </button>
+    <div id="category-${ci}" class="hidden">`
+  cat.items.forEach((it,ei)=>{
+   const status={
+    ready:'status-ready',
+    update:'status-update',
+    error:'status-error'
+   }[it.status]||'status-ready'
+   html+=`
+   <div class="border-t border-gray-500 api-item"
+    data-path="${it.path}"
+    data-alias="${it.name}"
+    data-description="${it.desc}">
+    <button onclick="toggleEndpoint(${ci},${ei})"
+     class="w-full px-4 py-3 text-left text-xs flex items-center">
+      <span class="method-get">GET</span>
+      <span class="flex-1">${it.path}</span>
+      <span class="ml-2 px-2 py-1 ${status}">${it.status}</span>
+    </button>
+
+    <div id="endpoint-${ci}-${ei}" class="hidden p-4 text-xs">
+      <div class="mb-2">${it.desc||''}</div>
+
+      <form id="form-${ci}-${ei}"
+       onsubmit="executeRequest(event,${ci},${ei},'GET','${it.path}')"
+       class="space-y-2">
+        ${it.params?Object.keys(it.params).map(p=>`
+         <input name="${p}" placeholder="${it.params[p]}"
+          class="w-full px-3 py-2 mc-input text-xs">`).join(''):''}
+        <button class="mc-btn px-4 py-2 text-xs">Execute</button>
+        <button type="button" id="clear-${ci}-${ei}"
+         onclick="clearResponse(${ci},${ei})"
+         class="mc-btn px-4 py-2 text-xs ml-2 hidden">Clear</button>
+      </form>
+
+      <div id="response-${ci}-${ei}" class="hidden mt-3">
+        <pre id="response-content-${ci}-${ei}"
+         class="bg-black text-green-400 p-3 text-xs overflow-auto"></pre>
+      </div>
+    </div>
+   </div>`
   })
-  apiList.innerHTML=html
+  html+='</div></div>'
+ })
+ apiList.innerHTML=html
 }
 
+/* ===== EXECUTE (ASLI) ===== */
+async function executeRequest(e,c,i,m,p){
+ e.preventDefault()
+ const form=document.getElementById(`form-${c}-${i}`)
+ const resp=document.getElementById(`response-${c}-${i}`)
+ const out=document.getElementById(`response-content-${c}-${i}`)
+ const clr=document.getElementById(`clear-${c}-${i}`)
+ const q=new URLSearchParams(new FormData(form)).toString()
+ resp.classList.remove('hidden')
+ out.textContent='Loading...'
+ try{
+  const r=await fetch(q?p+'?'+q:p)
+  const ct=r.headers.get('content-type')
+  if(ct&&ct.includes('json')){
+   out.textContent=JSON.stringify(await r.json(),null,2)
+  }else{
+   out.textContent=await r.text()
+  }
+ }catch(err){out.textContent=err}
+ clr.classList.remove('hidden')
+}
+
+function clearResponse(c,i){
+ document.getElementById(`response-${c}-${i}`).classList.add('hidden')
+ document.getElementById(`clear-${c}-${i}`).classList.add('hidden')
+}
+
+/* ===== NOTIFICATIONS ===== */
 async function loadNotifications(){
-  const box=document.getElementById('notifications-list')
-  const res=await fetch('/notifications.json')
-  const data=await res.json()
-  box.innerHTML=''
-  data.forEach(n=>{
-    box.innerHTML+=`
-    <div class="mc-panel p-3 text-xs">
-      <b>${n.title}</b><br>${n.message}
-    </div>`
-  })
+ const box=document.getElementById('notifications-list')
+ const res=await fetch('/notifications.json')
+ const data=await res.json()
+ box.innerHTML=''
+ data.forEach(n=>{
+  box.innerHTML+=`
+  <div class="mc-panel p-3 text-xs">
+   <b>${n.title}</b><br>${n.message}
+  </div>`
+ })
 }
 
-document.getElementById('searchInput').addEventListener('input',function(){
-  const q=this.value.toLowerCase()
-  let visible=0
-  document.querySelectorAll('.api-item').forEach(i=>{
-    const ok =
-      i.dataset.path.toLowerCase().includes(q) ||
-      i.dataset.alias.toLowerCase().includes(q) ||
-      i.dataset.description.toLowerCase().includes(q)
-    i.style.display = ok ? '' : 'none'
-    if(ok) visible++
-  })
-  document.getElementById('noResults').classList.toggle('hidden',visible!==0)
-})
+/* ===== SEARCH ===== */
+searchInput.oninput=function(){
+ const q=this.value.toLowerCase()
+ let v=0
+ document.querySelectorAll('.api-item').forEach(i=>{
+  const ok=i.dataset.path.toLowerCase().includes(q)||
+           i.dataset.alias.toLowerCase().includes(q)||
+           i.dataset.description.toLowerCase().includes(q)
+  i.style.display=ok?'':'none'
+  if(ok)v++
+ })
+ noResults.classList.toggle('hidden',v!==0)
+}
 
 document.addEventListener('DOMContentLoaded',()=>{
-  loadApis()
-  loadNotifications()
+ loadApis()
+ loadNotifications()
 })
 </script>
 
 </body>
-</html>
+    </html>
