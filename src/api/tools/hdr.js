@@ -2,7 +2,7 @@ const axios = require("axios")
 const FormData = require("form-data")
 
 module.exports = function (app) {
-  app.get("/ai/hdr", async (req, res) => {
+  app.get("/tools/hdr", async (req, res) => {
     const { image } = req.query
 
     if (!image) {
