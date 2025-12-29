@@ -16,91 +16,90 @@ module.exports = function (app) {
     return app._router.stack
       .filter(layer => layer.route)
       .map(layer => ({
-        method: Object.keys(layer.route.methods).join(', ').toUpperCase(),
+        method: Object.keys(layer.route.methods)
+          .join(',')
+          .toUpperCase(),
         path: layer.route.path
       }))
   }
 
   /* ======================
-     API STATUS
+     API STATUS (UMUM)
   ====================== */
-  app.get('/api/status', async (req, res) => {
-    try {
-      res.status(200).json({
-        status: true,
-        result: {
-          api_status: "ONLINE",
-          total_request: global.totalreq?.toString() || "0",
-          total_fitur: listRoutes().length,
-          runtime: runtime(process.uptime()),
-          domain: req.hostname
-        }
-      })
-    } catch (e) {
-      res.status(500).json({
-        status: false,
-        message: e.message
-      })
-    }
+  app.get('/api/status', (req, res) => {
+    res.json({
+      success: true,
+      api: {
+        status: 'ONLINE',
+        uptime: runtime(process.uptime()),
+        totalRequest: global.totalreq || 0,
+        totalEndpoint: listRoutes().length,
+        domain: req.hostname
+      }
+    })
   })
 
   /* ======================
-     API DASHBOARD (DETAIL)
+     API INFO (DETAIL)
   ====================== */
-  app.get('/api/dashboard', async (req, res) => {
-    try {
-      const os = require('os')
-      const memUsed = (os.totalmem() - os.freemem()) / 1024 / 1024
-      const memTotal = os.totalmem() / 1024 / 1024
-
-      res.status(200).json({
-        status: true,
-        result: {
-          api: {
-            status: "ONLINE",
-            total_request: global.totalreq?.toString() || "0",
-            total_fitur: listRoutes().length,
-            runtime: runtime(process.uptime()),
-            domain: req.hostname,
-            timestamp: new Date().toISOString()
-          },
-          server: {
-            platform: os.platform(),
-            arch: os.arch(),
-            cpu: os.cpus()[0]?.model || "-",
-            cores: os.cpus().length,
-            memory: {
-              used_mb: memUsed.toFixed(0),
-              total_mb: memTotal.toFixed(0)
-            },
-            node_version: process.version
-          }
+  app.get('/api/info', (req, res) => {
+    res.json({
+      success: true,
+      api: {
+        name: global.apiName || 'Manzxy API',
+        version: global.apiVersion || 'v1',
+        environment: process.env.NODE_ENV || 'production',
+        baseUrl: `${req.protocol}://${req.get('host')}`,
+        uptime: runtime(process.uptime())
+      },
+      server: {
+        platform: process.platform,
+        node: process.version,
+        memory: {
+          used: `${(process.memoryUsage().rss / 1024 / 1024).toFixed(0)} MB`,
+          total: `${(require('os').totalmem() / 1024 / 1024).toFixed(0)} MB`
         }
-      })
-    } catch (e) {
-      res.status(500).json({
-        status: false,
-        message: e.message
-      })
-    }
+      }
+    })
   })
 
   /* ======================
-     API ROUTE LIST (OPSIONAL)
+     API FEATURES / ROUTES
   ====================== */
-  app.get('/api/routes', async (req, res) => {
-    try {
-      res.status(200).json({
-        status: true,
-        total: listRoutes().length,
-        routes: listRoutes()
-      })
-    } catch (e) {
-      res.status(500).json({
-        status: false,
-        message: e.message
-      })
-    }
+  app.get('/api/features', (req, res) => {
+    const routes = listRoutes()
+
+    res.json({
+      success: true,
+      total: routes.length,
+      result: routes
+    })
   })
 
-}
+  /* ======================
+     API STATS
+  ====================== */
+  app.get('/api/stats', (req, res) => {
+    res.json({
+      success: true,
+      stats: {
+        totalRequest: global.totalreq || 0,
+        uptime: runtime(process.uptime()),
+        avgRequestPerMinute: global.totalreq
+          ? Math.floor(global.totalreq / (process.uptime() / 60))
+          : 0
+      }
+    })
+  })
+
+  /* ======================
+     HEALTH CHECK
+  ====================== */
+  app.get('/api/health', (req, res) => {
+    res.json({
+      success: true,
+      status: 'OK',
+      timestamp: Date.now()
+    })
+  })
+        }
