@@ -1,22 +1,30 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="dark">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#1f1f1f">
 <title>Manzxy API</title>
 <link rel="icon" href="/assets/icon.png">
 
+<!-- Tailwind -->
 <script src="https://cdn.tailwindcss.com"></script>
-<link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+
+<!-- Icons -->
 <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 
+<!-- Fonts -->
+<link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Ubuntu+Mono&display=swap" rel="stylesheet">
+
 <script>
 tailwind.config = {
+  darkMode: 'class',
   theme: {
     extend: {
       fontFamily: {
-        minecraft: ['Press Start 2P', 'monospace']
+        mc: ['Press Start 2P', 'monospace'],
+        mono: ['Ubuntu Mono', 'monospace']
       }
     }
   }
@@ -26,51 +34,41 @@ tailwind.config = {
 <style>
 ::-webkit-scrollbar{display:none}
 
-/* ===== THEME ===== */
-body.bg-dark{
+/* ================= THEME ================= */
+body{
   background:repeating-linear-gradient(
-    45deg,#1b1b1b,#1b1b1b 14px,#161616 14px,#161616 28px);
-  color:#e5e7eb;
-}
-body.bg-light{
-  background:#f2f2f2;
-  color:#111;
+    45deg,#1f1f1f,#1f1f1f 16px,#191919 16px,#191919 32px);
+  color:#d1d5db;
 }
 
-/* ===== PANEL ===== */
+/* ================= PANEL ================= */
 .mc-panel{
-  background:#2a2a2a;
-  border:4px solid #3f3f3f;
-  box-shadow:inset -4px -4px 0 #1a1a1a,
-             inset 4px 4px 0 #4a4a4a;
-}
-body.bg-light .mc-panel{
-  background:#eee;
-  border-color:#ccc;
+  background:#2b2b2b;
+  border:3px solid #3f3f3f;
+  box-shadow:
+    inset -3px -3px 0 #1a1a1a,
+    inset 3px 3px 0 #4a4a4a;
 }
 
-/* ===== BUTTON ===== */
+/* ================= BUTTON ================= */
 .mc-btn{
   background:#3a7d3a;
-  border:3px solid #2b5d2b;
-  box-shadow:inset -3px -3px 0 #1f3f1f,
-             inset 3px 3px 0 #5fa75f;
+  border:2px solid #2b5d2b;
+  box-shadow:
+    inset -2px -2px 0 #1f3f1f,
+    inset 2px 2px 0 #5fa75f;
   font-size:10px;
-  padding:6px 8px;
+  padding:6px 10px;
   cursor:pointer;
 }
 
-/* ===== INPUT ===== */
+/* ================= INPUT ================= */
 .mc-input{
   background:#1e1e1e;
-  border:3px solid #3f3f3f;
-}
-body.bg-light .mc-input{
-  background:#fff;
-  border-color:#ccc;
+  border:2px solid #3f3f3f;
 }
 
-/* ===== GET BADGE ===== */
+/* ================= GET BADGE ================= */
 .method-get{
   background:#2563eb;
   color:#fff;
@@ -80,7 +78,14 @@ body.bg-light .mc-input{
   margin-right:6px;
 }
 
-/* ===== FOOTER BG ===== */
+/* ================= RESPONSE ================= */
+.response-box{
+  background:#000;
+  color:#22c55e;
+  border:2px solid #1f2937;
+}
+
+/* ================= FOOTER BG ================= */
 .footer-bg{
   background:url("https://images.unsplash.com/photo-1500530855697-b586d89ba3ee");
   background-size:cover;
@@ -89,16 +94,16 @@ body.bg-light .mc-input{
 </style>
 </head>
 
-<body class="font-minecraft bg-dark min-h-screen">
+<body class="font-mono min-h-screen">
 
-<!-- MAIN CONTENT -->
-<main class="max-w-3xl mx-auto px-6 py-10 mc-panel">
+<!-- ================= MAIN ================= -->
+<main class="max-w-2xl mx-auto px-6 py-10 mc-panel">
 
 <!-- HEADER -->
-<div class="flex justify-between mb-6">
+<div class="flex items-center justify-between mb-6">
   <div class="flex items-center gap-3">
     <img src="/assets/icon.png" class="w-8">
-    <span class="text-green-400">MANZXY API</span>
+    <span class="font-mc text-green-400 text-xs">MANZXY API</span>
   </div>
   <div class="flex gap-2">
     <button id="btnDark" class="mc-btn">DARK</button>
@@ -106,31 +111,33 @@ body.bg-light .mc-input{
   </div>
 </div>
 
-<!-- INFO -->
+<!-- INFORMASI -->
 <div class="mb-6">
-  <div class="flex gap-2 items-center mb-2">
+  <div class="flex items-center gap-2 text-xs mb-2">
     <span class="material-icons">notifications</span>
-    <span class="text-xs">INFORMASI</span>
+    INFORMASI
   </div>
-  <div id="notifications-list" class="text-xs opacity-80">
-    Loading notifications...
+  <div id="notifications-list" class="space-y-2 text-xs opacity-80">
+    Loading...
   </div>
 </div>
 
+<!-- SEARCH -->
 <input id="searchInput" placeholder="Search API..."
 class="w-full px-4 py-3 mc-input text-xs mb-6">
 
-<!-- API LIST (INI YANG HILANG SEBELUMNYA) -->
+<!-- API LIST -->
 <div id="apiList" class="space-y-3"></div>
 
-<footer class="mt-10 text-center text-[10px] opacity-70">
+<footer class="mt-10 text-center text-xs opacity-70">
 © 2025 Manzxy
 </footer>
+
 </main>
 
-<!-- CONTRIBUTORS -->
-<section class="footer-bg py-10 mt-6">
-  <div class="max-w-3xl mx-auto text-white">
+<!-- ================= CONTRIBUTORS ================= -->
+<section class="footer-bg mt-6 py-10">
+  <div class="max-w-2xl mx-auto text-white">
     <div class="text-center text-xs mb-6 opacity-80">CONTRIBUTORS</div>
 
     <div class="space-y-4">
@@ -140,14 +147,17 @@ class="w-full px-4 py-3 mc-input text-xs mb-6">
           <div class="text-xs">Hazel</div>
           <div class="text-[10px] opacity-70">Developer</div>
         </div>
-        <i class="fab fa-github"></i>
+        <div class="flex gap-3">
+          <i class="fab fa-telegram"></i>
+          <i class="fab fa-github"></i>
+        </div>
       </div>
 
       <div class="mc-panel flex items-center gap-4 p-4">
         <img src="https://i.pravatar.cc/80?img=32" class="w-14 h-14 rounded">
         <div class="flex-1">
           <div class="text-xs">NekoLabs</div>
-          <div class="text-[10px] opacity-70">UI & UX</div>
+          <div class="text-[10px] opacity-70">UI & UX Inspiration</div>
         </div>
         <i class="fas fa-globe"></i>
       </div>
@@ -164,78 +174,108 @@ class="w-full px-4 py-3 mc-input text-xs mb-6">
   </div>
 </section>
 
+<!-- ================= SCRIPT ================= -->
 <script>
-/* ===== THEME TOGGLE FIX ===== */
-const body = document.body
-document.getElementById('btnDark').onclick = () => {
- body.classList.remove('bg-light')
- body.classList.add('bg-dark')
- localStorage.setItem('theme','dark')
-}
-document.getElementById('btnLight').onclick = () => {
- body.classList.remove('bg-dark')
- body.classList.add('bg-light')
- localStorage.setItem('theme','light')
-}
-const savedTheme = localStorage.getItem('theme') || 'dark'
-body.classList.add(savedTheme === 'dark' ? 'bg-dark' : 'bg-light')
+/* ========== THEME ========== */
+const body=document.body
+btnDark.onclick=()=>{body.classList.remove('light');localStorage.theme='dark'}
+btnLight.onclick=()=>{body.classList.add('light');localStorage.theme='light'}
+if(localStorage.theme==='light')body.classList.add('light')
 
-/* ===== LOAD API (FIXED) ===== */
+/* ========== TOGGLE ========== */
+function toggleCategory(i){
+ document.getElementById('cat-'+i).classList.toggle('hidden')
+}
+function toggleEndpoint(c,e){
+ document.getElementById(`ep-${c}-${e}`).classList.toggle('hidden')
+}
+
+/* ========== LOAD APIS (settings.json) ========== */
 async function loadApis(){
- const box = document.getElementById('apiList')
- box.innerHTML = '<div class="text-xs opacity-70">Loading APIs...</div>'
+ const box=document.getElementById('apiList')
+ box.innerHTML='Loading APIs...'
  try{
-  const res = await fetch('/assets/settings.json')
-  if(!res.ok) throw new Error('settings.json not found')
-  const data = await res.json()
-
-  let html = ''
+  const res=await fetch('/assets/settings.json')
+  const data=await res.json()
+  let html=''
   data.categories.forEach((cat,ci)=>{
-    html += `
+    html+=`
     <div class="mc-panel">
-      <button onclick="toggleCat(${ci})"
+      <button onclick="toggleCategory(${ci})"
        class="w-full px-4 py-3 text-left text-xs">
        📁 ${cat.name} (${cat.items.length})
       </button>
       <div id="cat-${ci}" class="hidden">`
     cat.items.forEach((it,ei)=>{
-      html += `
+      html+=`
       <div class="border-t border-gray-600">
-        <button onclick="toggleEp(${ci},${ei})"
+        <button onclick="toggleEndpoint(${ci},${ei})"
          class="w-full px-4 py-3 text-left text-xs flex items-center">
-          <span class="method-get">GET</span>${it.path}
+          <span class="method-get">GET</span>
+          <span>${it.path}</span>
         </button>
-        <div id="ep-${ci}-${ei}" class="hidden px-4 py-3 text-xs">
-          ${it.desc || 'No description'}
+
+        <div id="ep-${ci}-${ei}" class="hidden px-4 py-3 text-xs space-y-3">
+          <div class="opacity-80">${it.desc||''}</div>
+
+          <form onsubmit="execReq(event,'${it.path}')">
+            ${(it.params?Object.keys(it.params).map(p=>`
+              <input name="${p}" placeholder="${it.params[p]}"
+               class="mc-input w-full px-3 py-2 text-xs mb-2">`).join(''):'')}
+            <button class="mc-btn">Execute</button>
+          </form>
+
+          <pre class="response-box p-3 text-xs overflow-auto hidden"></pre>
         </div>
       </div>`
     })
-    html += '</div></div>'
+    html+='</div></div>'
   })
-  box.innerHTML = html
- }catch(err){
-  box.innerHTML = `<div class="text-red-400 text-xs">ERROR: ${err.message}</div>`
+  box.innerHTML=html
+ }catch(e){
+  box.innerHTML='<div class="text-red-400 text-xs">Failed load settings.json</div>'
  }
 }
 
-function toggleCat(i){
- document.getElementById('cat-'+i).classList.toggle('hidden')
-}
-function toggleEp(c,e){
- document.getElementById(`ep-${c}-${e}`).classList.toggle('hidden')
+/* ========== EXECUTE ========== */
+async function execReq(e,path){
+ e.preventDefault()
+ const form=e.target
+ const out=form.nextElementSibling
+ out.classList.remove('hidden')
+ out.textContent='Loading...'
+ const q=new URLSearchParams(new FormData(form)).toString()
+ const res=await fetch(q?`${path}?${q}`:path)
+ const ct=res.headers.get('content-type')
+ if(ct&&ct.includes('json')){
+  out.textContent=JSON.stringify(await res.json(),null,2)
+ }else if(ct&&ct.startsWith('image/')){
+  const blob=await res.blob()
+  out.innerHTML=`<img src="${URL.createObjectURL(blob)}">`
+ }else{
+  out.textContent=await res.text()
+ }
 }
 
-/* ===== NOTIFICATIONS ===== */
+/* ========== NOTIFICATIONS ========== */
 async function loadNotifications(){
  try{
-  const r = await fetch('/notifications.json')
-  const d = await r.json()
-  document.getElementById('notifications-list').innerHTML =
-    d.map(n=>`<div class="mc-panel p-3 mb-2">${n.title}</div>`).join('')
+  const res=await fetch('/notifications.json')
+  const data=await res.json()
+  notifications-list.innerHTML=data.map(n=>`
+    <div class="mc-panel p-3">${n.title}</div>
+  `).join('')
  }catch{
-  document.getElementById('notifications-list').textContent =
-    'No notifications'
+  notifications-list.textContent='No notifications'
  }
+}
+
+/* ========== SEARCH ========== */
+searchInput.oninput=function(){
+ const q=this.value.toLowerCase()
+ document.querySelectorAll('#apiList .mc-panel').forEach(c=>{
+  c.style.display=c.textContent.toLowerCase().includes(q)?'':'none'
+ })
 }
 
 document.addEventListener('DOMContentLoaded',()=>{
