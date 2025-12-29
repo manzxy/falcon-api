@@ -18,7 +18,7 @@
       "items": [
         {
           "name": "OpenAI Llama3",
-          "desc": "Chat dengan model Llama3-8B-8192 Cepat dan cerdas.",
+          "desc": "Chat dengan model Llama3-8B-8192 cepat dan cerdas.",
           "path": "/ai/openai?text=",
           "status": "ready",
           "params": {
@@ -45,18 +45,17 @@
           }
         },
         {
-          "name": "Editimg",
-          "desc": "edit image menggunakan AIEnhancer (image to image).",
+          "name": "Edit Image AI",
+          "desc": "Edit dan enhance gambar menggunakan AIEnhancer (image to image).",
           "path": "/ai/editimg?image=&text=",
           "status": "ready",
           "params": {
             "image": "URL gambar input",
-            "text": "You Prompt"
+            "text": "Prompt edit gambar"
           }
         }
       ]
     },
-
     {
       "name": "Stalker",
       "items": [
@@ -66,21 +65,20 @@
           "path": "/stalker/tiktok?username=",
           "status": "ready",
           "params": {
-            "username": "Username TikTok"
+            "username": "Username TikTok (tanpa @)"
           }
         },
-         {
-           "name": "Github Stalk",
-           "desc": "View Github User",
-           "path": "/stalker/github?username=",
-           "status": "ready",
-           "params": {
-             "username": "Username Github"
-           }
+        {
+          "name": "GitHub User Stalker",
+          "desc": "Melihat informasi profil GitHub berdasarkan username.",
+          "path": "/stalker/github?username=",
+          "status": "ready",
+          "params": {
+            "username": "Username GitHub"
+          }
         }
       ]
     },
-
     {
       "name": "Anime",
       "items": [
@@ -89,52 +87,51 @@
           "desc": "Menarik daftar berita anime terbaru dari MyAnimeList.",
           "path": "/anime/beritaanime?id=",
           "params": {
-            "id": "ID berita yang didapat dari endpoint 'Berita Anime'."
+            "id": "ID berita anime."
           },
           "status": "ready"
         },
         {
           "name": "Detail Berita Anime",
-          "desc": "Mengambil konten lengkap dari sebuah berita anime berdasarkan ID-nya.",
+          "desc": "Mengambil konten lengkap berita anime.",
           "path": "/anime/berita",
           "status": "ready"
         },
         {
           "name": "Jadwal Rilis Anime",
-          "desc": "Menampilkan jadwal rilis anime mingguan dari LiveChart.me.",
+          "desc": "Menampilkan jadwal rilis anime mingguan.",
           "path": "/anime/jadwalrilis",
           "status": "ready"
         },
         {
           "name": "Update Anime Terbaru",
-          "desc": "Menampilkan daftar anime dengan episode yang baru saja di-update di AnimeDao.",
+          "desc": "Daftar anime yang baru update.",
           "path": "/anime/latest",
           "status": "ready"
         },
         {
           "name": "Anime Populer",
-          "desc": "Menampilkan daftar anime yang sedang populer (hot) di AnimeDao.",
+          "desc": "Daftar anime yang sedang populer.",
           "path": "/anime/hot",
           "status": "ready"
         },
         {
           "name": "Cari Anime",
-          "desc": "Melakukan pencarian anime berdasarkan judul di database AnimeDao.",
+          "desc": "Mencari anime berdasarkan judul.",
           "path": "/anime/search?q=",
           "status": "ready",
           "params": {
-            "q": "Judul anime yang ingin Anda cari."
+            "q": "Judul anime."
           }
         }
       ]
     },
-
     {
       "name": "Downloader",
       "items": [
         {
-          "name": "Tiktok Downloader",
-          "desc": "Mengunduh video dari TikTok tanpa watermark.",
+          "name": "TikTok Downloader",
+          "desc": "Mengunduh video TikTok tanpa watermark.",
           "path": "/download/tiktok?url=",
           "status": "ready",
           "params": {
@@ -143,59 +140,65 @@
         }
       ]
     },
-
     {
       "name": "Random",
       "items": [
         {
           "name": "Blue Archive Image",
-          "desc": "Menampilkan gambar acak dari karakter game Blue Archive.",
+          "desc": "Gambar acak karakter Blue Archive.",
           "path": "/random/ba",
           "status": "ready"
         }
       ]
     },
-
     {
       "name": "Tools",
       "items": [
         {
           "name": "Text-to-Speech",
-          "desc": "Mengubah teks menjadi suara (TTS).",
+          "desc": "Mengubah teks menjadi suara.",
           "path": "/tools/text-to-speech?text=",
           "status": "ready",
           "params": {
-            "text": "Teks yang ingin diubah menjadi suara."
+            "text": "Teks untuk TTS."
           }
         }
       ]
     },
-
     {
       "name": "Search",
       "items": [
         {
-          "name": "Youtube",
-          "desc": "Melakukan pencarian video di YouTube.",
+          "name": "YouTube Search",
+          "desc": "Mencari video di YouTube.",
           "path": "/search/youtube?q=",
           "status": "ready",
           "params": {
             "q": "Kata kunci pencarian."
           }
+        },
+        {
+          "name": "TikTok Search",
+          "desc": "Mencari video TikTok berdasarkan kata kunci.",
+          "path": "/search/tiktok?q=&limit=",
+          "status": "ready",
+          "params": {
+            "q": "Kata kunci pencarian",
+            "limit": "Jumlah hasil (opsional)"
+          }
         }
       ]
     },
-
     {
       "name": "API",
       "items": [
         {
           "name": "API Status",
-          "desc": "Memeriksa status layanan API.",
+          "desc": "Menampilkan status layanan API.",
           "path": "/api/status",
           "status": "ready"
         }
       ]
     }
   ]
-}
+        }
