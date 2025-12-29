@@ -25,7 +25,7 @@ tailwind.config = {
 <style>
 ::-webkit-scrollbar{display:none}
 
-/* ===== BODY BACKGROUND ===== */
+/* ===== BODY ===== */
 .bg-dark{
   background:repeating-linear-gradient(
     45deg,#1b1b1b,#1b1b1b 14px,#161616 14px,#161616 28px);
@@ -78,7 +78,7 @@ tailwind.config = {
   margin-right:6px;
 }
 
-/* ===== IMAGE BACKGROUND AREA ===== */
+/* ===== FOOTER BG ===== */
 .footer-bg{
   background-image:url("https://images.unsplash.com/photo-1500530855697-b586d89ba3ee");
   background-size:cover;
@@ -112,7 +112,7 @@ tailwind.config = {
     <span class="text-xs">INFORMASI</span>
   </div>
   <div id="notifications-list" class="space-y-2">
-    <div class="text-xs mc-panel p-3">Loading...</div>
+    <div class="mc-panel p-3 text-xs">Loading...</div>
   </div>
 </div>
 
@@ -123,20 +123,42 @@ class="w-full px-4 py-3 mc-input text-xs mb-6">
 <!-- API LIST -->
 <div id="apiList" class="space-y-3"></div>
 
-<!-- TQTO (DI ATAS FOOTER) -->
-<div class="mt-10 text-center text-[10px] opacity-70">
-  TQTO: Manzxy • Contributors • Open Source Community
-</div>
-
-<!-- FOOTER -->
-<footer class="mt-4 text-center text-[10px]">
-  © 2025 Manzxy
+<!-- FOOTER TEXT -->
+<footer class="mt-10 text-center text-[10px]">
+© 2025 Manzxy
 </footer>
 
 </main>
 
-<!-- BACKGROUND GAMBAR (BAWAH FOOTER) -->
-<div class="footer-bg h-40 w-full mt-4"></div>
+<!-- ===== CONTRIBUTOR SECTION (TQTO FIX) ===== -->
+<section class="footer-bg py-10 mt-6">
+  <div class="max-w-3xl mx-auto text-center text-white">
+    <div class="text-xs mb-4 opacity-80">CONTRIBUTORS</div>
+
+    <div class="flex justify-center gap-6">
+      <!-- Contributor 1 -->
+      <div class="text-center">
+        <img src="https://i.pravatar.cc/80?img=12"
+         class="w-16 h-16 rounded-full mx-auto border-2 border-white">
+        <div class="text-[10px] mt-2">Manzxy</div>
+      </div>
+
+      <!-- Contributor 2 -->
+      <div class="text-center">
+        <img src="https://i.pravatar.cc/80?img=32"
+         class="w-16 h-16 rounded-full mx-auto border-2 border-white">
+        <div class="text-[10px] mt-2">Contributor A</div>
+      </div>
+
+      <!-- Contributor 3 -->
+      <div class="text-center">
+        <img src="https://i.pravatar.cc/80?img=45"
+         class="w-16 h-16 rounded-full mx-auto border-2 border-white">
+        <div class="text-[10px] mt-2">Contributor B</div>
+      </div>
+    </div>
+  </div>
+</section>
 
 <script>
 function setTheme(mode){
@@ -149,24 +171,35 @@ setTheme(localStorage.getItem('theme')||'dark')
 function toggleCategory(i){
  document.getElementById('cat-'+i).classList.toggle('hidden')
 }
+function toggleEndpoint(c,e){
+ document.getElementById(`endpoint-${c}-${e}`).classList.toggle('hidden')
+}
 
+/* LOAD API */
 async function loadApis(){
  const res=await fetch('/assets/settings.json')
  const data=await res.json()
  let html=''
- data.categories.forEach((cat,i)=>{
+ data.categories.forEach((cat,ci)=>{
   html+=`
   <div class="mc-panel">
-    <button onclick="toggleCategory(${i})"
+    <button onclick="toggleCategory(${ci})"
      class="w-full px-4 py-3 text-left text-xs">
      📁 ${cat.name} (${cat.items.length})
     </button>
-    <div id="cat-${i}" class="hidden">`
-  cat.items.forEach(it=>{
+    <div id="cat-${ci}" class="hidden">`
+  cat.items.forEach((it,ei)=>{
     html+=`
-    <div class="border-t border-gray-600 px-4 py-3 text-xs flex items-center">
-      <span class="method-get">GET</span>
-      <span>${it.path}</span>
+    <div class="border-t border-gray-600">
+      <button onclick="toggleEndpoint(${ci},${ei})"
+       class="w-full px-4 py-3 text-left text-xs flex items-center">
+        <span class="method-get">GET</span>
+        <span>${it.path}</span>
+      </button>
+
+      <div id="endpoint-${ci}-${ei}" class="hidden px-4 py-3 text-xs opacity-80">
+        ${it.desc || 'No description'}
+      </div>
     </div>`
   })
   html+='</div></div>'
@@ -190,7 +223,7 @@ async function loadNotifications(){
 searchInput.oninput=function(){
  const q=this.value.toLowerCase()
  document.querySelectorAll('#apiList span:last-child').forEach(e=>{
-  e.parentElement.style.display=
+  e.parentElement.parentElement.style.display=
    e.textContent.toLowerCase().includes(q)?'':'none'
  })
 }
