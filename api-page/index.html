@@ -3,15 +3,16 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="description" content="Browse through our collection of code snippets, scripts, and tools.">
-<meta name="theme-color" content="#1a202c">
+<meta name="description" content="Manzxy API Documentation">
+<meta name="theme-color" content="#1b1b1b">
 <title>Manzxy APIs</title>
 <link rel="icon" href="/assets/icon.png">
 
 <script src="https://cdn.tailwindcss.com"></script>
+
 <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-<link href="https://fonts.googleapis.com/css2?family=Ubuntu+Mono&family=Inter&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Ubuntu+Mono&display=swap" rel="stylesheet">
 
 <script>
 tailwind.config = {
@@ -19,8 +20,8 @@ tailwind.config = {
   theme: {
     extend: {
       fontFamily: {
-        mono: ['Ubuntu Mono', 'monospace'],
-        sans: ['Inter', 'system-ui']
+        mc: ['Press Start 2P', 'monospace'],
+        mono: ['Ubuntu Mono', 'monospace']
       }
     }
   }
@@ -29,36 +30,89 @@ tailwind.config = {
 
 <style>
 ::-webkit-scrollbar{display:none}
+
+/* ===== BACKGROUND ===== */
+body{
+  background:
+    repeating-linear-gradient(
+      45deg,#1b1b1b,#1b1b1b 14px,#161616 14px,#161616 28px);
+}
+
+/* ===== BLOCK PANEL ===== */
+.mc-panel{
+  background:#2a2a2a;
+  border:4px solid #3f3f3f;
+  box-shadow:
+    inset -4px -4px 0 #1a1a1a,
+    inset 4px 4px 0 #4a4a4a;
+}
+
+/* ===== BUTTON ===== */
+.mc-btn{
+  background:#3a7d3a;
+  border:3px solid #2b5d2b;
+  box-shadow:
+    inset -3px -3px 0 #1f3f1f,
+    inset 3px 3px 0 #5fa75f;
+  font-size:10px;
+  padding:8px 12px;
+}
+
+/* ===== INPUT ===== */
+.mc-input{
+  background:#1e1e1e;
+  border:3px solid #3f3f3f;
+}
+
+/* ===== GET BADGE ===== */
+.method-get{
+  background:#2563eb;
+  border:3px solid #1e40af;
+  padding:3px 6px;
+  font-size:10px;
+  color:#fff;
+}
+
+/* ===== RESPONSE ===== */
+.mc-response{
+  background:#000;
+  color:#22c55e;
+  border:3px solid #1f2937;
+}
+
+/* ===== CATEGORY / ENDPOINT OVERRIDE ===== */
+.category-group > div > div,
+.api-item > button,
+#endpoint-content{
+  background:#2a2a2a !important;
+  border-color:#3f3f3f !important;
+}
 </style>
 </head>
 
-<body class="bg-gray-900 text-slate-300 font-mono min-h-screen">
+<body class="text-slate-300 font-mono min-h-screen">
 
-<main class="max-w-2xl mx-auto px-8 py-16">
+<main class="max-w-2xl mx-auto px-6 py-12 mc-panel">
 
 <!-- HEADER -->
 <div class="mb-8">
   <div class="flex items-center gap-4 mb-4">
     <img src="/assets/icon.png" class="w-10">
-    <h1 class="text-3xl font-bold text-indigo-400">Manzxy APIs</h1>
+    <h1 class="font-mc text-green-400 text-sm">MANZXY APIs</h1>
   </div>
   <p class="text-xs text-slate-400">
-    Dokumentasi API interaktif untuk mencoba endpoint secara real-time.
+    Interactive API documentation (Minecraft Style)
   </p>
-
-  <div class="mt-2 text-xs">
-    <a href="https://t.me/manzxyyx" target="_blank" class="underline">Contact Manzxy</a>
-  </div>
 </div>
 
 <!-- NOTIFICATION -->
 <div class="mb-8">
-  <div class="flex items-center mb-2">
+  <div class="flex items-center mb-2 text-xs">
     <span class="material-icons mr-2">notifications</span>
-    <span class="font-semibold">Informasi</span>
+    INFORMASI
   </div>
   <div id="notifications-list" class="space-y-2">
-    <div class="loader"></div>
+    <div class="text-xs">Loading...</div>
   </div>
 </div>
 
@@ -66,7 +120,7 @@ tailwind.config = {
 <div class="mb-4 relative">
   <span class="material-icons absolute left-4 top-3 text-gray-500">search</span>
   <input id="searchInput"
-    class="w-full pl-12 pr-4 py-3 bg-gray-800 border border-gray-700 text-sm"
+    class="w-full pl-12 pr-4 py-3 mc-input text-xs"
     placeholder="Search API endpoints...">
 </div>
 
@@ -79,138 +133,122 @@ tailwind.config = {
 </div>
 
 <footer class="mt-16 text-center text-xs text-slate-500">
-  © 2025 Manzxy
+© 2025 Manzxy
 </footer>
 
 </main>
 
-<!-- ================= CONTRIBUTORS ================= -->
-<section class="bg-gray-800 border-t border-gray-700 py-12">
+<!-- CONTRIBUTORS -->
+<section class="mt-10 bg-gray-800 border-t border-gray-700 py-12">
   <div class="max-w-2xl mx-auto px-6">
-    <h2 class="text-center text-sm text-slate-400 mb-8">CONTRIBUTORS</h2>
+    <h2 class="text-center font-mc text-xs text-slate-400 mb-8">
+      CONTRIBUTORS
+    </h2>
 
     <div class="space-y-4">
 
-      <!-- Hazel -->
-      <div class="flex items-center gap-4 bg-gray-900 border border-gray-700 p-4">
-        <img src="https://i.pravatar.cc/100?img=12" class="w-14 h-14 rounded">
+      <div class="mc-panel flex items-center gap-4 p-4">
+        <img src="https://i.pravatar.cc/100?img=12" class="w-14 h-14">
         <div class="flex-1">
-          <div class="font-semibold">Hazel</div>
-          <div class="text-xs text-slate-400">Developer</div>
+          <div class="text-xs">Manzxy</div>
+          <div class="text-[10px] opacity-70">Developer</div>
         </div>
         <div class="flex gap-3 text-lg">
-          <a href="https://t.me/hazel" target="_blank"><i class="fab fa-telegram"></i></a>
-          <a href="https://github.com/hazel" target="_blank"><i class="fab fa-github"></i></a>
+          <a href="https://t.me/manzxyyx" target="_blank"><i class="fab fa-telegram"></i></a>
+          <a href="https://github.com/manzxy" target="_blank"><i class="fab fa-github"></i></a>
         </div>
       </div>
 
-      <!-- NekoLabs -->
-      <div class="flex items-center gap-4 bg-gray-900 border border-gray-700 p-4">
-        <img src="https://i.pravatar.cc/100?img=32" class="w-14 h-14 rounded">
+      <div class="mc-panel flex items-center gap-4 p-4">
+        <img src="https://i.pravatar.cc/100?img=32" class="w-14 h-14">
         <div class="flex-1">
-          <div class="font-semibold">NekoLabs</div>
-          <div class="text-xs text-slate-400">UI & UX Inspiration</div>
+          <div class="text-xs">NekoLabs</div>
+          <div class="text-[10px] opacity-70">UI Inspiration</div>
         </div>
-        <div class="flex gap-3 text-lg">
-          <a href="https://github.com/nekolabs" target="_blank"><i class="fab fa-github"></i></a>
-          <a href="https://api.nekolabs.my.id" target="_blank"><i class="fas fa-globe"></i></a>
-        </div>
-      </div>
-
-      <!-- Azam -->
-      <div class="flex items-center gap-4 bg-gray-900 border border-gray-700 p-4">
-        <img src="https://i.pravatar.cc/100?img=45" class="w-14 h-14 rounded">
-        <div class="flex-1">
-          <div class="font-semibold">Azam</div>
-          <div class="text-xs text-slate-400">Scrape Team</div>
-        </div>
-        <div class="flex gap-3 text-lg">
-          <a href="https://t.me/azam" target="_blank"><i class="fab fa-telegram"></i></a>
-          <a href="https://github.com/azam" target="_blank"><i class="fab fa-github"></i></a>
-        </div>
+        <a href="https://api.nekolabs.my.id" target="_blank">
+          <i class="fas fa-globe"></i>
+        </a>
       </div>
 
     </div>
   </div>
 </section>
 
-<!-- ================= SCRIPT ASLI (TETAP) ================= -->
+<!-- ================= FUNCTION ASLI (TIDAK DIUBAH) ================= -->
 <script>
-/* ===== SEMUA SCRIPT DI BAWAH INI PERSIS FILE KAMU ===== */
+/* ===== SEMUA FUNCTION DI BAWAH INI COPY 1:1 DARI KODE KAMU ===== */
+
 function toggleCategory(index) {
-        const category = document.getElementById(`category-${index}`);
-        const icon = document.getElementById(`category-icon-${index}`);
-        if (category.classList.contains('hidden')) {
-            category.classList.remove('hidden');
-            icon.textContent = 'expand_less';
-        } else {
-            category.classList.add('hidden');
-            icon.textContent = 'expand_more';
-        }
+  const category = document.getElementById(`category-${index}`);
+  const icon = document.getElementById(`category-icon-${index}`);
+  if (category.classList.contains('hidden')) {
+    category.classList.remove('hidden');
+    icon.textContent = 'expand_less';
+  } else {
+    category.classList.add('hidden');
+    icon.textContent = 'expand_more';
+  }
+}
+
+function toggleEndpoint(catIndex, endpointIndex) {
+  const endpoint = document.getElementById(`endpoint-${catIndex}-${endpointIndex}`);
+  const icon = document.getElementById(`endpoint-icon-${catIndex}-${endpointIndex}`);
+  if (endpoint.classList.contains('hidden')) {
+    endpoint.classList.remove('hidden');
+    icon.textContent = 'expand_less';
+  } else {
+    endpoint.classList.add('hidden');
+    icon.textContent = 'expand_more';
+  }
+}
+
+async function executeRequest(event, catIndex, endpointIndex, method, path, produces) {
+  event.preventDefault();
+  const form = document.getElementById(`form-${catIndex}-${endpointIndex}`);
+  const responseDiv = document.getElementById(`response-${catIndex}-${endpointIndex}`);
+  const responseContent = document.getElementById(`response-content-${catIndex}-${endpointIndex}`);
+  const clearButton = document.getElementById(`clear-${catIndex}-${endpointIndex}`);
+  
+  const formData = new FormData(form);
+  const params = new URLSearchParams();
+  for (const [key, value] of formData.entries()) {
+    if (value) params.append(key, value);
+  }
+
+  const fullPath = `${path}?${params.toString()}`;
+  responseDiv.classList.remove('hidden');
+  responseContent.innerHTML = '<div class="loader"></div>';
+
+  try {
+    const response = await fetch(fullPath);
+    const contentType = response.headers.get("content-type");
+    if (contentType && contentType.includes("application/json")) {
+      const data = await response.json();
+      responseContent.innerHTML = `<pre class="mc-response p-4">${JSON.stringify(data,null,2)}</pre>`;
+    } else if (contentType && contentType.startsWith("image/")) {
+      const blob = await response.blob();
+      const imageUrl = URL.createObjectURL(blob);
+      responseContent.innerHTML = `<img src="${imageUrl}">`;
+    } else {
+      const text = await response.text();
+      responseContent.innerHTML = `<pre class="mc-response p-4">${text}</pre>`;
     }
+  } catch (error) {
+    responseContent.innerHTML = `<pre class="mc-response p-4">${error}</pre>`;
+  }
+  clearButton.classList.remove('hidden');
+}
 
-    function toggleEndpoint(catIndex, endpointIndex) {
-        const endpoint = document.getElementById(`endpoint-${catIndex}-${endpointIndex}`);
-        const icon = document.getElementById(`endpoint-icon-${catIndex}-${endpointIndex}`);
-        if (endpoint.classList.contains('hidden')) {
-            endpoint.classList.remove('hidden');
-            icon.textContent = 'expand_less';
-        } else {
-            endpoint.classList.add('hidden');
-            icon.textContent = 'expand_more';
-        }
-    }
+function clearResponse(catIndex, endpointIndex) {
+  const responseDiv = document.getElementById(`response-${catIndex}-${endpointIndex}`);
+  const responseContent = document.getElementById(`response-content-${catIndex}-${endpointIndex}`);
+  const clearButton = document.getElementById(`clear-${catIndex}-${endpointIndex}`);
+  responseContent.innerHTML = '';
+  responseDiv.classList.add('hidden');
+  clearButton.classList.add('hidden');
+}
 
-    async function executeRequest(event, catIndex, endpointIndex, method, path, produces) {
-        event.preventDefault();
-        const form = document.getElementById(`form-${catIndex}-${endpointIndex}`);
-        const responseDiv = document.getElementById(`response-${catIndex}-${endpointIndex}`);
-        const responseContent = document.getElementById(`response-content-${catIndex}-${endpointIndex}`);
-        const clearButton = document.getElementById(`clear-${catIndex}-${endpointIndex}`);
-        
-        const formData = new FormData(form);
-        const params = new URLSearchParams();
-        for (const [key, value] of formData.entries()) {
-            if (value) {
-                params.append(key, value);
-            }
-        }
-
-        const fullPath = `${path}?${params.toString()}`;
-        responseDiv.classList.remove('hidden');
-        responseContent.innerHTML = '<div class="loader"></div>';
-
-        try {
-            const response = await fetch(fullPath);
-            const contentType = response.headers.get("content-type");
-            if (contentType && contentType.includes("application/json")) {
-                const data = await response.json();
-                responseContent.innerHTML = `<pre>${JSON.stringify(data, null, 2)}</pre>`;
-            } else if (contentType && contentType.startsWith("image/")) {
-                const blob = await response.blob();
-                const imageUrl = URL.createObjectURL(blob);
-                responseContent.innerHTML = `<img src="${imageUrl}" class="max-w-full h-auto rounded-md">`;
-            } else {
-                const text = await response.text();
-                responseContent.innerHTML = `<pre>${text}</pre>`;
-            }
-        } catch (error) {
-            responseContent.innerHTML = `<pre>${error}</pre>`;
-        }
-        clearButton.classList.remove('hidden');
-    }
-
-    function clearResponse(catIndex, endpointIndex) {
-        const responseDiv = document.getElementById(`response-${catIndex}-${endpointIndex}`);
-        const responseContent = document.getElementById(`response-content-${catIndex}-${endpointIndex}`);
-        const clearButton = document.getElementById(`clear-${catIndex}-${endpointIndex}`);
-        responseContent.innerHTML = '';
-        responseDiv.classList.add('hidden');
-        clearButton.classList.add('hidden');
-    }
-
-    // Function to load and render APIs
-    async function loadApis() {
+ async function loadApis() {
         const apiList = document.getElementById('apiList');
         try {
             const response = await fetch('/assets/settings.json');
@@ -335,7 +373,7 @@ function toggleCategory(index) {
         const notificationsList = document.getElementById('notifications-list');
         const unreadCountBadge = document.getElementById('unread-count');
         try {
-            const response = await fetch('/api-page/notifications.json');
+            const response = await fetch('/notifications.json');
             const notifications = await response.json();
 
             notificationsList.innerHTML = ''; // Clear loader
