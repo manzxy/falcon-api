@@ -9,6 +9,7 @@
 <script src="https://cdn.tailwindcss.com"></script>
 <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 
 <script>
 tailwind.config = {
@@ -25,16 +26,13 @@ tailwind.config = {
 <style>
 ::-webkit-scrollbar{display:none}
 
-/* ===== BODY ===== */
+/* ===== THEME ===== */
 .bg-dark{
   background:repeating-linear-gradient(
     45deg,#1b1b1b,#1b1b1b 14px,#161616 14px,#161616 28px);
   color:#e5e7eb;
 }
-.bg-light{
-  background:#f2f2f2;
-  color:#111;
-}
+.bg-light{background:#f2f2f2;color:#111}
 
 /* ===== PANEL ===== */
 .mc-panel{
@@ -43,10 +41,7 @@ tailwind.config = {
   box-shadow:inset -4px -4px 0 #1a1a1a,
              inset 4px 4px 0 #4a4a4a;
 }
-.bg-light .mc-panel{
-  background:#eee;
-  border-color:#ccc;
-}
+.bg-light .mc-panel{background:#eee;border-color:#ccc}
 
 /* ===== BUTTON ===== */
 .mc-btn{
@@ -63,10 +58,7 @@ tailwind.config = {
   background:#1e1e1e;
   border:3px solid #3f3f3f;
 }
-.bg-light .mc-input{
-  background:#fff;
-  border-color:#ccc;
-}
+.bg-light .mc-input{background:#fff;border-color:#ccc}
 
 /* ===== GET BADGE ===== */
 .method-get{
@@ -80,102 +72,106 @@ tailwind.config = {
 
 /* ===== FOOTER BG ===== */
 .footer-bg{
-  background-image:url("https://images.unsplash.com/photo-1500530855697-b586d89ba3ee");
+  background:url("https://images.unsplash.com/photo-1500530855697-b586d89ba3ee");
   background-size:cover;
   background-position:center;
 }
 </style>
 </head>
 
-<body class="font-minecraft bg-dark min-h-screen flex flex-col">
+<body class="font-minecraft bg-dark min-h-screen">
 
-<!-- MAIN -->
-<main class="max-w-3xl mx-auto px-6 py-10 mc-panel w-full">
+<main class="max-w-3xl mx-auto px-6 py-10 mc-panel">
 
 <!-- HEADER -->
-<div class="flex items-center justify-between mb-6">
+<div class="flex justify-between mb-6">
   <div class="flex items-center gap-3">
     <img src="/assets/icon.png" class="w-8">
     <span class="text-green-400">MANZXY API</span>
   </div>
-
   <div class="flex gap-2">
     <button onclick="setTheme('dark')" class="mc-btn">DARK</button>
     <button onclick="setTheme('light')" class="mc-btn">LIGHT</button>
   </div>
 </div>
 
-<!-- INFORMASI -->
+<!-- INFO -->
 <div class="mb-6">
-  <div class="flex items-center gap-2 mb-2">
+  <div class="flex gap-2 items-center mb-2">
     <span class="material-icons">notifications</span>
     <span class="text-xs">INFORMASI</span>
   </div>
-  <div id="notifications-list" class="space-y-2">
-    <div class="mc-panel p-3 text-xs">Loading...</div>
-  </div>
+  <div id="notifications-list"></div>
 </div>
 
-<!-- SEARCH -->
 <input id="searchInput" placeholder="Search API..."
 class="w-full px-4 py-3 mc-input text-xs mb-6">
 
-<!-- API LIST -->
 <div id="apiList" class="space-y-3"></div>
 
-<!-- FOOTER TEXT -->
-<footer class="mt-10 text-center text-[10px]">
-© 2025 Manzxy
-</footer>
-
+<footer class="mt-10 text-center text-[10px]">© 2025 Manzxy</footer>
 </main>
 
-<!-- ===== CONTRIBUTOR SECTION (TQTO FIX) ===== -->
+<!-- CONTRIBUTORS -->
 <section class="footer-bg py-10 mt-6">
-  <div class="max-w-3xl mx-auto text-center text-white">
-    <div class="text-xs mb-4 opacity-80">CONTRIBUTORS</div>
+  <div class="max-w-3xl mx-auto text-white">
+    <div class="text-center text-xs mb-6 opacity-80">CONTRIBUTORS</div>
 
-    <div class="flex justify-center gap-6">
-      <!-- Contributor 1 -->
-      <div class="text-center">
-        <img src="https://i.pravatar.cc/80?img=12"
-         class="w-16 h-16 rounded-full mx-auto border-2 border-white">
-        <div class="text-[10px] mt-2">Manzxy</div>
+    <div class="space-y-4">
+      <!-- Contributor -->
+      <div class="mc-panel flex items-center gap-4 p-4">
+        <img src="https://i.pravatar.cc/80?img=12" class="w-14 h-14 rounded">
+        <div class="flex-1">
+          <div class="text-xs">Hazel</div>
+          <div class="text-[10px] opacity-70">Developer</div>
+        </div>
+        <div class="flex gap-3 text-lg">
+          <i class="fab fa-telegram"></i>
+          <i class="fab fa-whatsapp"></i>
+          <i class="fab fa-github"></i>
+          <i class="fas fa-globe"></i>
+        </div>
       </div>
 
-      <!-- Contributor 2 -->
-      <div class="text-center">
-        <img src="https://i.pravatar.cc/80?img=32"
-         class="w-16 h-16 rounded-full mx-auto border-2 border-white">
-        <div class="text-[10px] mt-2">Contributor A</div>
+      <div class="mc-panel flex items-center gap-4 p-4">
+        <img src="https://i.pravatar.cc/80?img=32" class="w-14 h-14 rounded">
+        <div class="flex-1">
+          <div class="text-xs">NekoLabs</div>
+          <div class="text-[10px] opacity-70">UI & UX Inspiration</div>
+        </div>
+        <div class="flex gap-3 text-lg">
+          <i class="fab fa-telegram"></i>
+          <i class="fas fa-globe"></i>
+        </div>
       </div>
 
-      <!-- Contributor 3 -->
-      <div class="text-center">
-        <img src="https://i.pravatar.cc/80?img=45"
-         class="w-16 h-16 rounded-full mx-auto border-2 border-white">
-        <div class="text-[10px] mt-2">Contributor B</div>
+      <div class="mc-panel flex items-center gap-4 p-4">
+        <img src="https://i.pravatar.cc/80?img=45" class="w-14 h-14 rounded">
+        <div class="flex-1">
+          <div class="text-xs">Azam</div>
+          <div class="text-[10px] opacity-70">Scrape Team</div>
+        </div>
+        <div class="flex gap-3 text-lg">
+          <i class="fab fa-whatsapp"></i>
+          <i class="fas fa-globe"></i>
+        </div>
       </div>
     </div>
   </div>
 </section>
 
 <script>
-function setTheme(mode){
+function setTheme(m){
  document.body.classList.remove('bg-dark','bg-light')
- document.body.classList.add(mode==='dark'?'bg-dark':'bg-light')
- localStorage.setItem('theme',mode)
+ document.body.classList.add(m==='dark'?'bg-dark':'bg-light')
+ localStorage.setItem('theme',m)
 }
 setTheme(localStorage.getItem('theme')||'dark')
 
-function toggleCategory(i){
- document.getElementById('cat-'+i).classList.toggle('hidden')
-}
-function toggleEndpoint(c,e){
- document.getElementById(`endpoint-${c}-${e}`).classList.toggle('hidden')
-}
+function toggleCat(i){document.getElementById('cat-'+i).classList.toggle('hidden')}
+function toggleEp(c,e){document.getElementById(`ep-${c}-${e}`).classList.toggle('hidden')}
 
-/* LOAD API */
+/* LOAD API + EXECUTE */
 async function loadApis(){
  const res=await fetch('/assets/settings.json')
  const data=await res.json()
@@ -183,48 +179,66 @@ async function loadApis(){
  data.categories.forEach((cat,ci)=>{
   html+=`
   <div class="mc-panel">
-    <button onclick="toggleCategory(${ci})"
+    <button onclick="toggleCat(${ci})"
      class="w-full px-4 py-3 text-left text-xs">
      📁 ${cat.name} (${cat.items.length})
     </button>
     <div id="cat-${ci}" class="hidden">`
   cat.items.forEach((it,ei)=>{
-    html+=`
-    <div class="border-t border-gray-600">
-      <button onclick="toggleEndpoint(${ci},${ei})"
-       class="w-full px-4 py-3 text-left text-xs flex items-center">
-        <span class="method-get">GET</span>
-        <span>${it.path}</span>
-      </button>
+   html+=`
+   <div class="border-t border-gray-600">
+     <button onclick="toggleEp(${ci},${ei})"
+      class="w-full px-4 py-3 text-left text-xs flex items-center">
+      <span class="method-get">GET</span>${it.path}
+     </button>
 
-      <div id="endpoint-${ci}-${ei}" class="hidden px-4 py-3 text-xs opacity-80">
-        ${it.desc || 'No description'}
-      </div>
-    </div>`
+     <div id="ep-${ci}-${ei}" class="hidden p-4 text-xs space-y-3">
+       <div>${it.desc||''}</div>
+
+       <form onsubmit="execReq(event,'${it.path}')">
+         ${(it.params?Object.keys(it.params).map(p=>`
+           <input name="${p}" placeholder="${it.params[p]}"
+            class="mc-input w-full px-3 py-2 text-xs mb-2">`).join(''):'')}
+         <button class="mc-btn">Execute</button>
+       </form>
+
+       <pre class="bg-black text-green-400 p-3 text-xs overflow-auto hidden"></pre>
+     </div>
+   </div>`
   })
   html+='</div></div>'
  })
  apiList.innerHTML=html
 }
 
+async function execReq(e,path){
+ e.preventDefault()
+ const form=e.target
+ const out=form.nextElementSibling
+ out.classList.remove('hidden')
+ out.textContent='Loading...'
+ const q=new URLSearchParams(new FormData(form)).toString()
+ const r=await fetch(q?`${path}?${q}`:path)
+ const ct=r.headers.get('content-type')
+ out.textContent=ct&&ct.includes('json')
+  ?JSON.stringify(await r.json(),null,2)
+  :await r.text()
+}
+
 async function loadNotifications(){
- const res=await fetch('/notifications.json')
- const data=await res.json()
- const box=document.getElementById('notifications-list')
- box.innerHTML=''
- data.forEach(n=>{
-  box.innerHTML+=`
-   <div class="mc-panel p-3 text-xs">
-    <b>${n.title}</b><br>${n.message}
-   </div>`
- })
+ const r=await fetch('/notifications.json')
+ const d=await r.json()
+ notifications-list.innerHTML=d.map(n=>`
+  <div class="mc-panel p-3 text-xs">
+   <b>${n.title}</b><br>${n.message}
+  </div>`).join('')
 }
 
 searchInput.oninput=function(){
  const q=this.value.toLowerCase()
- document.querySelectorAll('#apiList span:last-child').forEach(e=>{
-  e.parentElement.parentElement.style.display=
-   e.textContent.toLowerCase().includes(q)?'':'none'
+ document.querySelectorAll('#apiList button').forEach(b=>{
+  b.parentElement.style.display=
+   b.textContent.toLowerCase().includes(q)?'':'none'
  })
 }
 
@@ -235,4 +249,4 @@ document.addEventListener('DOMContentLoaded',()=>{
 </script>
 
 </body>
-</html>
+        </html>
