@@ -1,69 +1,92 @@
-const axios = require('axios');
-const FormData = require('form-data');
+const axios = require("axios")
+const FormData = require("form-data")
 
 module.exports = function (app) {
-  app.get('/tools/hdr', async (req, res) => {
-    const { url, resolution = '1080p', enhance = 'true' } = req.query;
+  app.get("/ai/hdr", async (req, res) => {
+    const { image } = req.query
 
-    if (!url) {
-      return res.status(400).json({ status: false, message: 'Parameter url wajib diisi.' });
-    }
-
-    if (!/^https?:\/\/.+\.(jpe?g|png|webp|gif)$/i.test(url)) {
-      return res.status(400).json({ status: false, message: 'URL gambar tidak valid.' });
-    }
-
-    const validRes = ['480p', '720p', '1080p', '2k', '4k', '8k', '12k'];
-    if (!validRes.includes(resolution.toLowerCase())) {
-      return res.status(400).json({ status: false, message: `Resolusi tidak valid. Pilih salah satu: ${validRes.join(', ')}` });
+    if (!image) {
+      return res.status(400).json({
+        success: false,
+        creator: "manzxy",
+        message: "Parameter 'image' wajib diisi (URL gambar)."
+      })
     }
 
     try {
-      // Ambil image buffer
-      const { data: imageBuffer } = await axios.get(url, { responseType: 'arraybuffer' });
+      /* =========================
+         UPLOAD IMAGE (via URL)
+      ========================= */
+      const form = new FormData()
+      form.append("url", image)
+      form.append("type", 13)
+      form.append("scaleRadio", 2)
 
-      // Buat form
-      const form = new FormData();
-      form.append('image', imageBuffer, { filename: 'image.jpg' });
-      form.append('resolution', resolution.toLowerCase());
-      form.append('enhance', enhance.toString());
-
-      // Kirim ke server
-      const { data } = await axios.post('https://upscale.cloudkuimages.guru/hd.php', form, {
-        headers: {
-          ...form.getHeaders(),
-          origin: 'https://upscale.cloudkuimages.guru',
-          referer: 'https://upscale.cloudkuimages.guru/'
-        },
-        maxBodyLength: Infinity
-      });
-
-      if (data?.status !== 'success') {
-        return res.status(500).json({ status: false, message: 'Upscale gagal', result: data });
+      const uploadHeaders = {
+        ...form.getHeaders(),
+        accept: "application/json, text/plain, */*",
+        origin: "https://imglarger.com",
+        referer: "https://imglarger.com/",
+        "user-agent":
+          "Mozilla/5.0 (Linux; Android 10) AppleWebKit/537.36 Chrome/120 Mobile"
       }
 
-      const result = data.data;
-      res.json({
-        status: true,
-        creator: 'FlowFalcon',
-        result: {
-          url: result.url,
-          filename: result.filename,
-          original: result.original,
-          resolution_from: result.original_resolution,
-          resolution_to: result.resolution_now,
-          enhanced: result.enhanced,
-          size_before: result.original_size,
-          size_after: result.new_size
-        }
-      });
+      const uploadRes = await axios.post(
+        "https://photoai.imglarger.com/api/PhoAi/Upload",
+        form,
+        { headers: uploadHeaders }
+      )
 
-    } catch (err) {
-      res.status(500).json({
-        status: false,
-        message: 'Terjadi error saat memproses',
-        error: err.message
-      });
+      const code = uploadRes.data?.data?.code
+      if (!code) throw new Error("Gagal upload gambar.")
+
+      /* =========================
+         CHECK STATUS (POLLING)
+      ========================= */
+      const checkHeaders = {
+        accept: "application/json, text/plain, */*",
+        "content-type": "application/json",
+        origin: "https://imglarger.com",
+        referer: "https://imglarger.com/",
+        "user-agent":
+          "Mozilla/5.0 (Linux; Android 10) AppleWebKit/537.36 Chrome/120 Mobile"
+      }
+
+      let result
+      for (let i = 0; i < 10; i++) {
+        await new Promise(r => setTimeout(r, 6000))
+
+        const { data } = await axios.post(
+          "https://photoai.imglarger.com/api/PhoAi/CheckStatus",
+          { code, type: 13 },
+          { headers: checkHeaders }
+        )
+
+        result = data.data
+        if (result.status !== "waiting") break
+      }
+
+      if (!result || result.status !== "success") {
+        return res.json({
+          success: false,
+          creator: "manzxy",
+          message: "Proses upscale gagal atau timeout."
+        })
+      }
+
+      return res.json({
+        success: true,
+        creator: "manzxy",
+        input: image,
+        result
+      })
+    } catch (e) {
+      return res.status(500).json({
+        success: false,
+        creator: "manzxy",
+        message: "Gagal melakukan image upscale.",
+        error: e.message
+      })
     }
-  });
-};
+  })
+        }
