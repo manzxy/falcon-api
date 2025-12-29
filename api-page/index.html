@@ -27,12 +27,15 @@ tailwind.config = {
 ::-webkit-scrollbar{display:none}
 
 /* ===== THEME ===== */
-.bg-dark{
+body.bg-dark{
   background:repeating-linear-gradient(
     45deg,#1b1b1b,#1b1b1b 14px,#161616 14px,#161616 28px);
   color:#e5e7eb;
 }
-.bg-light{background:#f2f2f2;color:#111}
+body.bg-light{
+  background:#f2f2f2;
+  color:#111;
+}
 
 /* ===== PANEL ===== */
 .mc-panel{
@@ -41,7 +44,10 @@ tailwind.config = {
   box-shadow:inset -4px -4px 0 #1a1a1a,
              inset 4px 4px 0 #4a4a4a;
 }
-.bg-light .mc-panel{background:#eee;border-color:#ccc}
+body.bg-light .mc-panel{
+  background:#eee;
+  border-color:#ccc;
+}
 
 /* ===== BUTTON ===== */
 .mc-btn{
@@ -51,6 +57,7 @@ tailwind.config = {
              inset 3px 3px 0 #5fa75f;
   font-size:10px;
   padding:6px 8px;
+  cursor:pointer;
 }
 
 /* ===== INPUT ===== */
@@ -58,7 +65,10 @@ tailwind.config = {
   background:#1e1e1e;
   border:3px solid #3f3f3f;
 }
-.bg-light .mc-input{background:#fff;border-color:#ccc}
+body.bg-light .mc-input{
+  background:#fff;
+  border-color:#ccc;
+}
 
 /* ===== GET BADGE ===== */
 .method-get{
@@ -81,6 +91,7 @@ tailwind.config = {
 
 <body class="font-minecraft bg-dark min-h-screen">
 
+<!-- MAIN CONTENT -->
 <main class="max-w-3xl mx-auto px-6 py-10 mc-panel">
 
 <!-- HEADER -->
@@ -90,8 +101,8 @@ tailwind.config = {
     <span class="text-green-400">MANZXY API</span>
   </div>
   <div class="flex gap-2">
-    <button onclick="setTheme('dark')" class="mc-btn">DARK</button>
-    <button onclick="setTheme('light')" class="mc-btn">LIGHT</button>
+    <button id="btnDark" class="mc-btn">DARK</button>
+    <button id="btnLight" class="mc-btn">LIGHT</button>
   </div>
 </div>
 
@@ -101,15 +112,20 @@ tailwind.config = {
     <span class="material-icons">notifications</span>
     <span class="text-xs">INFORMASI</span>
   </div>
-  <div id="notifications-list"></div>
+  <div id="notifications-list" class="text-xs opacity-80">
+    Loading notifications...
+  </div>
 </div>
 
 <input id="searchInput" placeholder="Search API..."
 class="w-full px-4 py-3 mc-input text-xs mb-6">
 
+<!-- API LIST (INI YANG HILANG SEBELUMNYA) -->
 <div id="apiList" class="space-y-3"></div>
 
-<footer class="mt-10 text-center text-[10px]">© 2025 Manzxy</footer>
+<footer class="mt-10 text-center text-[10px] opacity-70">
+© 2025 Manzxy
+</footer>
 </main>
 
 <!-- CONTRIBUTORS -->
@@ -118,31 +134,22 @@ class="w-full px-4 py-3 mc-input text-xs mb-6">
     <div class="text-center text-xs mb-6 opacity-80">CONTRIBUTORS</div>
 
     <div class="space-y-4">
-      <!-- Contributor -->
       <div class="mc-panel flex items-center gap-4 p-4">
         <img src="https://i.pravatar.cc/80?img=12" class="w-14 h-14 rounded">
         <div class="flex-1">
           <div class="text-xs">Hazel</div>
           <div class="text-[10px] opacity-70">Developer</div>
         </div>
-        <div class="flex gap-3 text-lg">
-          <i class="fab fa-telegram"></i>
-          <i class="fab fa-whatsapp"></i>
-          <i class="fab fa-github"></i>
-          <i class="fas fa-globe"></i>
-        </div>
+        <i class="fab fa-github"></i>
       </div>
 
       <div class="mc-panel flex items-center gap-4 p-4">
         <img src="https://i.pravatar.cc/80?img=32" class="w-14 h-14 rounded">
         <div class="flex-1">
           <div class="text-xs">NekoLabs</div>
-          <div class="text-[10px] opacity-70">UI & UX Inspiration</div>
+          <div class="text-[10px] opacity-70">UI & UX</div>
         </div>
-        <div class="flex gap-3 text-lg">
-          <i class="fab fa-telegram"></i>
-          <i class="fas fa-globe"></i>
-        </div>
+        <i class="fas fa-globe"></i>
       </div>
 
       <div class="mc-panel flex items-center gap-4 p-4">
@@ -151,95 +158,84 @@ class="w-full px-4 py-3 mc-input text-xs mb-6">
           <div class="text-xs">Azam</div>
           <div class="text-[10px] opacity-70">Scrape Team</div>
         </div>
-        <div class="flex gap-3 text-lg">
-          <i class="fab fa-whatsapp"></i>
-          <i class="fas fa-globe"></i>
-        </div>
+        <i class="fab fa-whatsapp"></i>
       </div>
     </div>
   </div>
 </section>
 
 <script>
-function setTheme(m){
- document.body.classList.remove('bg-dark','bg-light')
- document.body.classList.add(m==='dark'?'bg-dark':'bg-light')
- localStorage.setItem('theme',m)
+/* ===== THEME TOGGLE FIX ===== */
+const body = document.body
+document.getElementById('btnDark').onclick = () => {
+ body.classList.remove('bg-light')
+ body.classList.add('bg-dark')
+ localStorage.setItem('theme','dark')
 }
-setTheme(localStorage.getItem('theme')||'dark')
+document.getElementById('btnLight').onclick = () => {
+ body.classList.remove('bg-dark')
+ body.classList.add('bg-light')
+ localStorage.setItem('theme','light')
+}
+const savedTheme = localStorage.getItem('theme') || 'dark'
+body.classList.add(savedTheme === 'dark' ? 'bg-dark' : 'bg-light')
 
-function toggleCat(i){document.getElementById('cat-'+i).classList.toggle('hidden')}
-function toggleEp(c,e){document.getElementById(`ep-${c}-${e}`).classList.toggle('hidden')}
-
-/* LOAD API + EXECUTE */
+/* ===== LOAD API (FIXED) ===== */
 async function loadApis(){
- const res=await fetch('/assets/settings.json')
- const data=await res.json()
- let html=''
- data.categories.forEach((cat,ci)=>{
-  html+=`
-  <div class="mc-panel">
-    <button onclick="toggleCat(${ci})"
-     class="w-full px-4 py-3 text-left text-xs">
-     📁 ${cat.name} (${cat.items.length})
-    </button>
-    <div id="cat-${ci}" class="hidden">`
-  cat.items.forEach((it,ei)=>{
-   html+=`
-   <div class="border-t border-gray-600">
-     <button onclick="toggleEp(${ci},${ei})"
-      class="w-full px-4 py-3 text-left text-xs flex items-center">
-      <span class="method-get">GET</span>${it.path}
-     </button>
+ const box = document.getElementById('apiList')
+ box.innerHTML = '<div class="text-xs opacity-70">Loading APIs...</div>'
+ try{
+  const res = await fetch('/assets/settings.json')
+  if(!res.ok) throw new Error('settings.json not found')
+  const data = await res.json()
 
-     <div id="ep-${ci}-${ei}" class="hidden p-4 text-xs space-y-3">
-       <div>${it.desc||''}</div>
-
-       <form onsubmit="execReq(event,'${it.path}')">
-         ${(it.params?Object.keys(it.params).map(p=>`
-           <input name="${p}" placeholder="${it.params[p]}"
-            class="mc-input w-full px-3 py-2 text-xs mb-2">`).join(''):'')}
-         <button class="mc-btn">Execute</button>
-       </form>
-
-       <pre class="bg-black text-green-400 p-3 text-xs overflow-auto hidden"></pre>
-     </div>
-   </div>`
+  let html = ''
+  data.categories.forEach((cat,ci)=>{
+    html += `
+    <div class="mc-panel">
+      <button onclick="toggleCat(${ci})"
+       class="w-full px-4 py-3 text-left text-xs">
+       📁 ${cat.name} (${cat.items.length})
+      </button>
+      <div id="cat-${ci}" class="hidden">`
+    cat.items.forEach((it,ei)=>{
+      html += `
+      <div class="border-t border-gray-600">
+        <button onclick="toggleEp(${ci},${ei})"
+         class="w-full px-4 py-3 text-left text-xs flex items-center">
+          <span class="method-get">GET</span>${it.path}
+        </button>
+        <div id="ep-${ci}-${ei}" class="hidden px-4 py-3 text-xs">
+          ${it.desc || 'No description'}
+        </div>
+      </div>`
+    })
+    html += '</div></div>'
   })
-  html+='</div></div>'
- })
- apiList.innerHTML=html
+  box.innerHTML = html
+ }catch(err){
+  box.innerHTML = `<div class="text-red-400 text-xs">ERROR: ${err.message}</div>`
+ }
 }
 
-async function execReq(e,path){
- e.preventDefault()
- const form=e.target
- const out=form.nextElementSibling
- out.classList.remove('hidden')
- out.textContent='Loading...'
- const q=new URLSearchParams(new FormData(form)).toString()
- const r=await fetch(q?`${path}?${q}`:path)
- const ct=r.headers.get('content-type')
- out.textContent=ct&&ct.includes('json')
-  ?JSON.stringify(await r.json(),null,2)
-  :await r.text()
+function toggleCat(i){
+ document.getElementById('cat-'+i).classList.toggle('hidden')
+}
+function toggleEp(c,e){
+ document.getElementById(`ep-${c}-${e}`).classList.toggle('hidden')
 }
 
+/* ===== NOTIFICATIONS ===== */
 async function loadNotifications(){
- const r=await fetch('/notifications.json')
- const d=await r.json()
- notifications-list.innerHTML=d.map(n=>`
-  <div class="mc-panel p-3 text-xs">
-   <b>${n.title}</b><br>${n.message}
-  </div>`).join('')
-}
-
-searchInput.oninput=function(){
- const q=this.value.toLowerCase()
- document.querySelectorAll('#apiList button').forEach(b=>{
-  b.parentElement.style.display=
-   b.textContent.toLowerCase().includes(q)?'':'none'
- })
+ try{
+  const r = await fetch('/notifications.json')
+  const d = await r.json()
+  document.getElementById('notifications-list').innerHTML =
+    d.map(n=>`<div class="mc-panel p-3 mb-2">${n.title}</div>`).join('')
+ }catch{
+  document.getElementById('notifications-list').textContent =
+    'No notifications'
+ }
 }
 
 document.addEventListener('DOMContentLoaded',()=>{
@@ -249,4 +245,4 @@ document.addEventListener('DOMContentLoaded',()=>{
 </script>
 
 </body>
-        </html>
+  </html>
