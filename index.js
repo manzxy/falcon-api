@@ -10,97 +10,91 @@ require("./function.js");
 const app = express();
 const PORT = process.env.PORT || 8080;
 
-// Ganti webhook Discord lu disini:
+// =========================
+// DISCORD WEBHOOK
+// =========================
 const WEBHOOK_URL = 'https://discord.com/api/webhooks/1396122030163628112/-vEj4HjREjbaOVXDu5932YjeHpTkjNSKyUKugBFF9yVCBeQSrdgK8qM3HNxVYTOD5BYP';
 
-// Buffer untuk batch log
+// =========================
+// TELEGRAM NOTIFICATION
+// =========================
+const TELEGRAM_BOT_TOKEN = '8364129852:AAEjCrqQBI7f1OpVkhnxOBhcww9yegoJ-EU';
+const TELEGRAM_CHAT_ID = '7019305587';
+
+// =========================
+// LOG BUFFER
+// =========================
 let logBuffer = [];
 
-
-// Kirim batch tiap detik
+// =========================
+// SEND DISCORD LOG (BATCH)
+// =========================
 setInterval(() => {
     if (logBuffer.length === 0) return;
-
-   
 
     const combinedLogs = logBuffer.join('\n');
     logBuffer = [];
 
-    const payload =
-` \`\`\`ansi
-${combinedLogs}
-\`\`\`
-`;
-
-    axios.post(WEBHOOK_URL, { content: payload }).catch(console.error);
+    const payload = `\`\`\`ansi\n${combinedLogs}\n\`\`\``;
+    axios.post(WEBHOOK_URL, { content: payload }).catch(() => {});
 }, 2000);
 
-// Function log queue
+// =========================
+// LOG QUEUE
+// =========================
 function queueLog({ method, status, url, duration, error = null }) {
-    let colorCode;
-    if (status >= 500) colorCode = '[2;31m';
-    else if (status >= 400) colorCode = '[2;31m';
-    else if (status === 304) colorCode = '[2;34m';
-    else colorCode = '[2;32m';
+    let colorCode =
+        status >= 500 ? '[2;31m' :
+        status >= 400 ? '[2;31m' :
+        status === 304 ? '[2;34m' :
+        '[2;32m';
 
     let line = `${colorCode}[${method}] ${status} ${url} - ${duration}ms[0m`;
-
-    if (error) {
-        line += `\n[2;31m[ERROR] ${error.message || error}[0m`;
-    }
+    if (error) line += `\n[2;31m[ERROR] ${error}[0m`;
 
     logBuffer.push(line);
 }
 
-// Cooldown vars
+// =========================
+// TELEGRAM NOTIFY (RINGKAS)
+// =========================
+async function notifyTelegram(req, status, duration) {
+    if (!TELEGRAM_BOT_TOKEN || !TELEGRAM_CHAT_ID) return;
+    const msg =
+`📡 *API Request*
+• Method : ${req.method}
+• Path   : ${req.originalUrl}
+• Status : ${status}
+• Time   : ${duration}ms
+• IP     : ${req.ip}`;
+
+    axios.post(`https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage`, {
+        chat_id: TELEGRAM_CHAT_ID,
+        text: msg,
+        parse_mode: "Markdown"
+    }).catch(() => {});
+}
+
+// =========================
+// COOLDOWN SYSTEM
+// =========================
 let requestCount = 0;
 let isCooldown = false;
 
-setInterval(() => {
-    requestCount = 0;
-}, 1000);
+setInterval(() => requestCount = 0, 1000);
 
 app.use((req, res, next) => {
     if (isCooldown) {
-        queueLog({
-            method: req.method,
-            status: 503,
-            url: req.originalUrl,
-            duration: 0,
-            error: 'Server is in cooldown'
-        });
-        return res.status(503).json({ error: 'Server is in cooldown, try again later.' });
+        queueLog({ method: req.method, status: 503, url: req.originalUrl, duration: 0 });
+        return res.status(503).json({ error: 'Server cooldown' });
     }
 
     requestCount++;
-
     if (requestCount > 10) {
         isCooldown = true;
-        const cooldownTime = (Math.random() * (120000 - 60000) + 60000).toFixed(3);
-
-        console.log(`⚠️ SPAM DETECT: Cooldown ${cooldownTime / 1000} detik`);
-const userTag = '<@1162931657276395600>';
-        const spamMsg =
-`${userTag}
-\`\`\`ansi
-⚠️ [ SPAM DETECT ] ⚠️
-
-[ ! ] Too many requests, server cooldown for ${cooldownTime / 1000} sec!
-
-[2;31m[${req.method}] 503 ${req.originalUrl} - 0ms[0m
-\`\`\`
-`;
-
-        axios.post(WEBHOOK_URL, { content: spamMsg }).catch(console.error);
-
-        setTimeout(() => {
-            isCooldown = false;
-            console.log('✅ Cooldown selesai, server aktif lagi');
-        }, cooldownTime);
-
-        return res.status(503).json({ error: 'Too many requests, server cooldown!' });
+        setTimeout(() => isCooldown = false, 60000);
+        return res.status(503).json({ error: 'Too many requests' });
     }
-
     next();
 });
 
@@ -110,107 +104,117 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cors());
 
-// Load Settings
+// =========================
+// LOAD SETTINGS
+// =========================
 const settingsPath = path.join(__dirname, './assets/settings.json');
-const settings = JSON.parse(fs.readFileSync(settingsPath, 'utf-8'));
+const settings = JSON.parse(fs.readFileSync(settingsPath));
 global.apikey = settings.apiSettings.apikey;
+global.totalreq = 0;
 
-// Custom Log + Wrap res.json + Batch log semua response
+// =========================
+// LOGGER MIDDLEWARE
+// =========================
 app.use((req, res, next) => {
-    console.log(chalk.bgHex('#FFFF99').hex('#333').bold(` Request Route: ${req.path} `));
-    global.totalreq += 1;
+    console.log(chalk.bgHex('#FFFF99').hex('#333')(` Request: ${req.path} `));
+    global.totalreq++;
 
     const start = Date.now();
-    const originalJson = res.json;
+    const oldJson = res.json;
 
     res.json = function (data) {
-        if (data && typeof data === 'object') {
-            const responseData = {
-                status: data.status,
-                creator: settings.apiSettings.creator || "FlowFalcon",
-                ...data
-            };
-            return originalJson.call(this, responseData);
-        }
-        return originalJson.call(this, data);
+        return oldJson.call(this, {
+            creator: settings.apiSettings.creator,
+            ...data
+        });
     };
 
     res.on('finish', () => {
         const duration = Date.now() - start;
-
-        queueLog({
-            method: req.method,
-            status: res.statusCode,
-            url: req.originalUrl,
-            duration
-        });
+        queueLog({ method: req.method, status: res.statusCode, url: req.originalUrl, duration });
+        notifyTelegram(req, res.statusCode, duration);
     });
 
     next();
 });
 
-// Static & Src Protect
+// =========================
+// STATIC
+// =========================
 app.use('/', express.static(path.join(__dirname, 'api-page')));
 app.use('/assets', express.static(path.join(__dirname, 'assets')));
 
-app.use('/src', (req, res) => {
-    res.status(403).json({ error: 'Forbidden access' });
-});
-
-// Load API routes dinamis dari src/api/
+// =========================
+// LOAD ROUTES
+// =========================
 let totalRoutes = 0;
 const apiFolder = path.join(__dirname, './src/api');
-fs.readdirSync(apiFolder).forEach((subfolder) => {
-    const subfolderPath = path.join(apiFolder, subfolder);
-    if (fs.statSync(subfolderPath).isDirectory()) {
-        fs.readdirSync(subfolderPath).forEach((file) => {
-            const filePath = path.join(subfolderPath, file);
-            if (path.extname(file) === '.js') {
-                require(filePath)(app);
+fs.readdirSync(apiFolder).forEach(dir => {
+    const dirPath = path.join(apiFolder, dir);
+    if (fs.statSync(dirPath).isDirectory()) {
+        fs.readdirSync(dirPath).forEach(file => {
+            if (file.endsWith('.js')) {
+                require(path.join(dirPath, file))(app);
                 totalRoutes++;
-                console.log(chalk.bgHex('#FFFF99').hex('#333').bold(` Loaded Route: ${path.basename(file)} `));
             }
         });
     }
 });
 
-console.log(chalk.bgHex('#90EE90').hex('#333').bold(' Load Complete! ✓ '));
-console.log(chalk.bgHex('#90EE90').hex('#333').bold(` Total Routes Loaded: ${totalRoutes} `));
-
-// Index route
-app.get('/', (req, res) => {
-    res.sendFile(path.join(__dirname, 'api-page', 'index.html'));
-});
-
-// Error handler 404 & 500 + batch log
-app.use((req, res, next) => {
-    queueLog({
-        method: req.method,
-        status: 404,
-        url: req.originalUrl,
-        duration: 0,
-        error: 'Not Found'
+// =========================
+// API DASHBOARD
+// =========================
+app.get('/api/status', (req, res) => {
+    res.json({
+        success: true,
+        result: {
+            status: "ONLINE",
+            totalRequest: global.totalreq,
+            totalRoutes,
+            uptime: runtime(process.uptime()),
+            domain: req.hostname
+        }
     });
-
-    res.status(404).sendFile(process.cwd() + "/api-page/404.html");
 });
 
+app.get('/api/info', (req, res) => {
+    res.json({
+        success: true,
+        result: {
+            name: settings.apiSettings.creator,
+            version: settings.version || "1.0.0",
+            totalRoutes,
+            serverTime: new Date().toISOString(),
+            node: process.version,
+            platform: process.platform
+        }
+    });
+});
+
+// =========================
+// ERROR HANDLER
+// =========================
+app.use((req, res) => res.status(404).sendFile(process.cwd() + "/api-page/404.html"));
 app.use((err, req, res, next) => {
-    console.error(err.stack);
-
-    queueLog({
-        method: req.method,
-        status: 500,
-        url: req.originalUrl,
-        duration: 0,
-        error: err
-    });
-
+    queueLog({ method: req.method, status: 500, url: req.originalUrl, duration: 0, error: err.message });
     res.status(500).sendFile(process.cwd() + "/api-page/500.html");
 });
 
+// =========================
+// RUN SERVER
+// =========================
 app.listen(PORT, () => {
-    console.log(chalk.bgHex('#90EE90').hex('#333').bold(` Server is running on port ${PORT} `));
+    console.log(chalk.green(`🚀 Server running on port ${PORT}`));
 });
 
 module.exports = app;
+
+// =========================
+// UTIL
+// =========================
+function runtime(sec) {
+    const h = Math.floor(sec / 3600);
+    const m = Math.floor((sec % 3600) / 60);
+    const s = Math.floor(sec % 60);
+    return `${h}h ${m}m ${s}s`;
+        }
