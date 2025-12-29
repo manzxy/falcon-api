@@ -1,27 +1,23 @@
 <!DOCTYPE html>
-<html lang="en" class="dark">
+<html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="description" content="Manzxy API Documentation">
-<meta name="theme-color" content="#1b1b1b">
 <title>Manzxy APIs</title>
 <link rel="icon" href="/assets/icon.png">
 
 <script src="https://cdn.tailwindcss.com"></script>
-
 <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Ubuntu+Mono&display=swap" rel="stylesheet">
 
 <script>
 tailwind.config = {
-  darkMode: 'class',
   theme: {
     extend: {
       fontFamily: {
-        mc: ['Press Start 2P', 'monospace'],
-        mono: ['Ubuntu Mono', 'monospace']
+        mc: ['Press Start 2P','monospace'],
+        mono: ['Ubuntu Mono','monospace']
       }
     }
   }
@@ -31,20 +27,48 @@ tailwind.config = {
 <style>
 ::-webkit-scrollbar{display:none}
 
-/* ===== BACKGROUND ===== */
-body{
-  background:
-    repeating-linear-gradient(
-      45deg,#1b1b1b,#1b1b1b 14px,#161616 14px,#161616 28px);
+/* ===== THEME VAR ===== */
+:root{
+  --bg:#1b1b1b;
+  --panel:#2a2a2a;
+  --border:#3f3f3f;
+  --text:#e5e7eb;
+  --input:#1e1e1e;
+}
+body.light{
+  --bg:#e5e7eb;
+  --panel:#f3f4f6;
+  --border:#cbd5e1;
+  --text:#111827;
+  --input:#ffffff;
 }
 
-/* ===== BLOCK PANEL ===== */
+/* ===== GLOBAL ===== */
+html,body{
+  margin:0;
+  padding:0;
+  background:
+    repeating-linear-gradient(
+      45deg,var(--bg),var(--bg) 14px,
+      color-mix(in srgb,var(--bg) 90%,#000) 14px,
+      color-mix(in srgb,var(--bg) 90%,#000) 28px);
+  color:var(--text);
+}
+
+/* ===== BLOCK ===== */
 .mc-panel{
-  background:#2a2a2a;
-  border:4px solid #3f3f3f;
+  background:var(--panel);
+  border:4px solid var(--border);
   box-shadow:
-    inset -4px -4px 0 #1a1a1a,
-    inset 4px 4px 0 #4a4a4a;
+    inset -4px -4px 0 rgba(0,0,0,.4),
+    inset 4px 4px 0 rgba(255,255,255,.05);
+}
+
+/* ===== INPUT ===== */
+.mc-input{
+  background:var(--input);
+  border:3px solid var(--border);
+  color:var(--text);
 }
 
 /* ===== BUTTON ===== */
@@ -55,16 +79,16 @@ body{
     inset -3px -3px 0 #1f3f1f,
     inset 3px 3px 0 #5fa75f;
   font-size:10px;
-  padding:8px 12px;
+  padding:8px 14px;
+  color:#fff;
+}
+.mc-btn:active{
+  box-shadow:
+    inset 3px 3px 0 #1f3f1f,
+    inset -3px -3px 0 #5fa75f;
 }
 
-/* ===== INPUT ===== */
-.mc-input{
-  background:#1e1e1e;
-  border:3px solid #3f3f3f;
-}
-
-/* ===== GET BADGE ===== */
+/* ===== GET ===== */
 .method-get{
   background:#2563eb;
   border:3px solid #1e40af;
@@ -75,108 +99,75 @@ body{
 
 /* ===== RESPONSE ===== */
 .mc-response{
-  background:#000;
-  color:#22c55e;
+  background:#0b0b0b;
   border:3px solid #1f2937;
+  color:#22c55e;
 }
-
-/* ===== CATEGORY / ENDPOINT OVERRIDE ===== */
-.category-group > div > div,
-.api-item > button,
-#endpoint-content{
-  background:#2a2a2a !important;
-  border-color:#3f3f3f !important;
+body.light .mc-response{
+  background:#f9fafb;
+  color:#065f46;
 }
 </style>
 </head>
 
-<body class="text-slate-300 font-mono min-h-screen">
+<body class="font-mono">
 
-<main class="max-w-2xl mx-auto px-6 py-12 mc-panel">
+<!-- ================= MAIN ================= -->
+<div class="max-w-2xl mx-auto px-6 py-10 mc-panel">
 
 <!-- HEADER -->
-<div class="mb-8">
-  <div class="flex items-center gap-4 mb-4">
-    <img src="/assets/icon.png" class="w-10">
-    <h1 class="font-mc text-green-400 text-sm">MANZXY APIs</h1>
-  </div>
-  <p class="text-xs text-slate-400">
-    Interactive API documentation (Minecraft Style)
-  </p>
-</div>
-
-<!-- NOTIFICATION -->
-<div class="mb-8">
-  <div class="flex items-center mb-2 text-xs">
-    <span class="material-icons mr-2">notifications</span>
-    INFORMASI
-  </div>
-  <div id="notifications-list" class="space-y-2">
-    <div class="text-xs">Loading...</div>
+<div class="flex justify-between items-center mb-6">
+  <span class="font-mc text-xs">MANZXY API</span>
+  <div class="flex gap-2">
+    <button onclick="setTheme('dark')" class="mc-btn">DARK</button>
+    <button onclick="setTheme('light')" class="mc-btn">LIGHT</button>
   </div>
 </div>
 
 <!-- SEARCH -->
-<div class="mb-4 relative">
-  <span class="material-icons absolute left-4 top-3 text-gray-500">search</span>
-  <input id="searchInput"
-    class="w-full pl-12 pr-4 py-3 mc-input text-xs"
-    placeholder="Search API endpoints...">
-</div>
+<input id="searchInput"
+ class="w-full mc-input text-xs mb-6 px-4 py-3"
+ placeholder="Search API endpoints...">
 
 <!-- API LIST -->
-<div id="content">
-  <div id="noResults" class="hidden text-center text-xs text-slate-400 py-10">
-    No result found.
-  </div>
-  <div id="apiList" class="space-y-3"></div>
-</div>
+<div id="apiList" class="space-y-3"></div>
 
-<footer class="mt-16 text-center text-xs text-slate-500">
+<footer class="mt-10 text-center text-xs opacity-60">
 © 2025 Manzxy
 </footer>
 
-</main>
+</div>
 
-<!-- CONTRIBUTORS -->
-<section class="mt-10 bg-gray-800 border-t border-gray-700 py-12">
-  <div class="max-w-2xl mx-auto px-6">
-    <h2 class="text-center font-mc text-xs text-slate-400 mb-8">
-      CONTRIBUTORS
-    </h2>
+<!-- ================= CONTRIBUTORS ================= -->
+<div class="max-w-2xl mx-auto px-6 pb-12 mc-panel">
 
-    <div class="space-y-4">
+<h2 class="font-mc text-xs text-center opacity-70 mb-6">
+CONTRIBUTORS
+</h2>
 
-      <div class="mc-panel flex items-center gap-4 p-4">
-        <img src="https://i.pravatar.cc/100?img=12" class="w-14 h-14">
-        <div class="flex-1">
-          <div class="text-xs">Manzxy</div>
-          <div class="text-[10px] opacity-70">Developer</div>
-        </div>
-        <div class="flex gap-3 text-lg">
-          <a href="https://t.me/manzxyyx" target="_blank"><i class="fab fa-telegram"></i></a>
-          <a href="https://github.com/manzxy" target="_blank"><i class="fab fa-github"></i></a>
-        </div>
-      </div>
+<div class="space-y-4">
 
-      <div class="mc-panel flex items-center gap-4 p-4">
-        <img src="https://i.pravatar.cc/100?img=32" class="w-14 h-14">
-        <div class="flex-1">
-          <div class="text-xs">NekoLabs</div>
-          <div class="text-[10px] opacity-70">UI Inspiration</div>
-        </div>
-        <a href="https://api.nekolabs.my.id" target="_blank">
-          <i class="fas fa-globe"></i>
-        </a>
-      </div>
-
-    </div>
+<div class="mc-panel flex items-center gap-4 p-4">
+  <img src="https://c.termai.cc/i151/YU4EKRg.jpg" class="w-14 h-14">
+  <div class="flex-1">
+    <div class="text-xs">Manzxy</div>
+    <div class="text-[10px] opacity-70">Developer</div>
   </div>
-</section>
+  <a href="https://t.me/manzxyyx"><i class="fab fa-telegram"></i></a>
+  <a href="https://github.com/manzxy"><i class="fab fa-github"></i></a>
+</div>
 
-<!-- ================= FUNCTION ASLI (TIDAK DIUBAH) ================= -->
+</div>
+</div>
+
+<!-- ================= FUNCTION ASLI (TETAP) ================= -->
 <script>
-/* ===== SEMUA FUNCTION DI BAWAH INI COPY 1:1 DARI KODE KAMU ===== */
+/* === THEME === */
+function setTheme(mode){
+  document.body.classList.toggle('light', mode === 'light')
+  localStorage.setItem('theme', mode)
+}
+setTheme(localStorage.getItem('theme') || 'dark')
 
 function toggleCategory(index) {
   const category = document.getElementById(`category-${index}`);
@@ -461,4 +452,4 @@ function clearResponse(catIndex, endpointIndex) {
 </script>
 
 </body>
-</html>
+  </html>
