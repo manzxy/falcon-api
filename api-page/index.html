@@ -8,13 +8,8 @@
 <title>Manzxy API | Minecraft UI</title>
 <link rel="icon" href="/assets/icon.png">
 
-<!-- Tailwind -->
 <script src="https://cdn.tailwindcss.com"></script>
-
-<!-- Fonts -->
 <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
-
-<!-- Icons -->
 <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
 
 <script>
@@ -33,7 +28,7 @@ tailwind.config = {
 <style>
 ::-webkit-scrollbar{display:none}
 
-/* ===== BACKGROUND MODES ===== */
+/* BACKGROUND */
 .bg-dark{
   background:repeating-linear-gradient(
     45deg,#1b1b1b,#1b1b1b 14px,#161616 14px,#161616 28px);
@@ -44,10 +39,17 @@ tailwind.config = {
     45deg,#f5f5f5,#f5f5f5 14px,#ffffff 14px,#ffffff 28px);
   color:#111;
 }
+.bg-image{
+  background-size:cover;
+  background-position:center;
+  background-repeat:no-repeat;
+  background-attachment:fixed;
+  color:#fff;
+}
 
-/* ===== PANEL ===== */
+/* PANEL */
 .mc-panel{
-  background:#2a2a2a;
+  background:rgba(42,42,42,.92);
   border:4px solid #3f3f3f;
   box-shadow:inset -4px -4px 0 #1a1a1a,
              inset 4px 4px 0 #4a4a4a;
@@ -59,7 +61,7 @@ tailwind.config = {
              inset 4px 4px 0 #fff;
 }
 
-/* ===== BUTTON ===== */
+/* BUTTON */
 .mc-btn{
   background:#3a7d3a;
   border:3px solid #2b5d2b;
@@ -70,7 +72,7 @@ tailwind.config = {
 }
 .mc-btn:hover{transform:translateY(-2px)}
 
-/* ===== INPUT ===== */
+/* INPUT */
 .mc-input{
   background:#1e1e1e;
   border:3px solid #3f3f3f;
@@ -80,7 +82,7 @@ tailwind.config = {
   border-color:#ccc;
 }
 
-/* ===== METHOD BADGE ===== */
+/* METHOD */
 .method-get{
   background:#2563eb;
   color:#fff;
@@ -88,16 +90,14 @@ tailwind.config = {
   padding:2px 6px;
   font-size:10px;
   margin-right:6px;
-  box-shadow:inset -2px -2px 0 #1e3a8a,
-             inset 2px 2px 0 #60a5fa;
 }
 
-/* ===== STATUS ===== */
+/* STATUS */
 .status-ready{background:#2ecc71;color:#003300}
 .status-update{background:#f1c40f;color:#332200}
 .status-error{background:#e74c3c;color:#330000}
 
-/* ===== LOADER ===== */
+/* LOADER */
 .loader{
   width:22px;height:22px;
   border:4px solid #2ecc71;
@@ -116,33 +116,28 @@ tailwind.config = {
 <div class="flex items-center justify-between mb-6">
   <div class="flex items-center gap-4">
     <img src="/assets/icon.png" class="w-10">
-    <h1 class="text-lg tracking-widest text-green-500">MANZXY API</h1>
+    <h1 class="text-lg tracking-widest text-green-400">MANZXY API</h1>
   </div>
-  <button id="bgToggle" class="mc-btn px-3 py-2 text-xs">WHITE</button>
+
+  <!-- BG SWITCH -->
+  <div class="flex gap-2">
+    <button onclick="setBg('dark')" class="mc-btn px-2 py-1 text-[10px]">DARK</button>
+    <button onclick="setBg('light')" class="mc-btn px-2 py-1 text-[10px]">LIGHT</button>
+    <button onclick="setBg('image')" class="mc-btn px-2 py-1 text-[10px]">IMAGE</button>
+  </div>
 </div>
 
-<p class="text-xs mb-6">
-Selamat datang di dokumentasi Manzxy API.
-</p>
-
-<a href="https://t.me/manzxyyx" target="_blank"
-class="text-xs underline block mb-6">Contact Manzxy</a>
-
-<!-- NOTIFICATIONS -->
+<!-- NOTIFICATION -->
 <div class="mb-6">
   <h2 class="text-xs mb-2 flex items-center">
     <span class="material-icons mr-2">notifications</span> INFORMASI
   </h2>
-  <div id="notifications-list" class="space-y-2">
-    <div class="loader"></div>
-  </div>
+  <div id="notifications-list"><div class="loader"></div></div>
 </div>
 
-<!-- SEARCH -->
 <input id="searchInput" placeholder="Search API..."
-class="w-full px-4 py-3 mc-input text-xs mb-6 focus:outline-none">
+class="w-full px-4 py-3 mc-input text-xs mb-6">
 
-<!-- CONTENT -->
 <div id="content" class="space-y-4">
   <div id="noResults" class="hidden text-center text-xs">No result found</div>
   <div id="apiList" class="space-y-3"></div>
@@ -152,28 +147,35 @@ class="w-full px-4 py-3 mc-input text-xs mb-6 focus:outline-none">
 </main>
 
 <script>
-/* ===== BACKGROUND TOGGLE ===== */
-const bgBtn=document.getElementById('bgToggle')
-const body=document.body
-function setBg(m){
- body.classList.remove('bg-dark','bg-light')
- body.classList.add(m)
- bgBtn.textContent=m==='bg-dark'?'WHITE':'BLACK'
- localStorage.setItem('bgMode',m)
-}
-bgBtn.onclick=()=>setBg(body.classList.contains('bg-dark')?'bg-light':'bg-dark')
-setBg(localStorage.getItem('bgMode')||'bg-dark')
+/* IMAGE BACKGROUND (URL ONLY) */
+const IMAGE_BACKGROUNDS = [
+  "https://images.unsplash.com/photo-1519681393784-d120267933ba",
+  "https://images.unsplash.com/photo-1501785888041-af3ef285b470",
+  "https://images.unsplash.com/photo-1500530855697-b586d89ba3ee"
+]
 
-/* ===== TOGGLE ===== */
+function setBg(mode){
+ document.body.classList.remove('bg-dark','bg-light','bg-image')
+ if(mode==='image'){
+  const img=IMAGE_BACKGROUNDS[Math.floor(Math.random()*IMAGE_BACKGROUNDS.length)]
+  document.body.style.backgroundImage=`url(${img})`
+  document.body.classList.add('bg-image')
+ }else{
+  document.body.style.backgroundImage=''
+  document.body.classList.add(mode==='dark'?'bg-dark':'bg-light')
+ }
+ localStorage.setItem('bgMode',mode)
+}
+setBg(localStorage.getItem('bgMode')||'dark')
+
 function toggleCategory(i){
- const el=document.getElementById('category-'+i)
- el.classList.toggle('hidden')
+ document.getElementById('category-'+i)?.classList.toggle('hidden')
 }
 function toggleEndpoint(c,e){
- document.getElementById(`endpoint-${c}-${e}`).classList.toggle('hidden')
+ document.getElementById(`endpoint-${c}-${e}`)?.classList.toggle('hidden')
 }
 
-/* ===== LOAD APIS (ASLI + GET + TRY IT OUT) ===== */
+/* LOAD APIS + TQTO */
 async function loadApis(){
  const apiList=document.getElementById('apiList')
  const res=await fetch('/assets/settings.json')
@@ -182,11 +184,11 @@ async function loadApis(){
  data.categories.forEach((cat,ci)=>{
   html+=`
   <div class="mc-panel">
-    <button onclick="toggleCategory(${ci})"
+   <button onclick="toggleCategory(${ci})"
     class="w-full px-4 py-3 text-left text-xs">
-      📁 ${cat.name} (${cat.items.length})
-    </button>
-    <div id="category-${ci}" class="hidden">`
+    📁 ${cat.name} (${cat.items.length})
+   </button>
+   <div id="category-${ci}" class="hidden">`
   cat.items.forEach((it,ei)=>{
    const status={
     ready:'status-ready',
@@ -200,29 +202,17 @@ async function loadApis(){
     data-description="${it.desc}">
     <button onclick="toggleEndpoint(${ci},${ei})"
      class="w-full px-4 py-3 text-left text-xs flex items-center">
-      <span class="method-get">GET</span>
-      <span class="flex-1">${it.path}</span>
-      <span class="ml-2 px-2 py-1 ${status}">${it.status}</span>
+     <span class="method-get">GET</span>
+     <span class="flex-1">${it.path}</span>
+     <span class="ml-2 px-2 py-1 ${status}">${it.status}</span>
     </button>
 
-    <div id="endpoint-${ci}-${ei}" class="hidden p-4 text-xs">
-      <div class="mb-2">${it.desc||''}</div>
+    <div id="endpoint-${ci}-${ei}" class="hidden p-4 text-xs space-y-2">
+      <div>${it.desc||''}</div>
 
-      <form id="form-${ci}-${ei}"
-       onsubmit="executeRequest(event,${ci},${ei},'GET','${it.path}')"
-       class="space-y-2">
-        ${it.params?Object.keys(it.params).map(p=>`
-         <input name="${p}" placeholder="${it.params[p]}"
-          class="w-full px-3 py-2 mc-input text-xs">`).join(''):''}
-        <button class="mc-btn px-4 py-2 text-xs">Execute</button>
-        <button type="button" id="clear-${ci}-${ei}"
-         onclick="clearResponse(${ci},${ei})"
-         class="mc-btn px-4 py-2 text-xs ml-2 hidden">Clear</button>
-      </form>
-
-      <div id="response-${ci}-${ei}" class="hidden mt-3">
-        <pre id="response-content-${ci}-${ei}"
-         class="bg-black text-green-400 p-3 text-xs overflow-auto"></pre>
+      <!-- TQTO -->
+      <div class="text-[10px] opacity-70">
+        TQTO: Manzxy • Contributors • Open Source Community
       </div>
     </div>
    </div>`
@@ -232,34 +222,7 @@ async function loadApis(){
  apiList.innerHTML=html
 }
 
-/* ===== EXECUTE (ASLI) ===== */
-async function executeRequest(e,c,i,m,p){
- e.preventDefault()
- const form=document.getElementById(`form-${c}-${i}`)
- const resp=document.getElementById(`response-${c}-${i}`)
- const out=document.getElementById(`response-content-${c}-${i}`)
- const clr=document.getElementById(`clear-${c}-${i}`)
- const q=new URLSearchParams(new FormData(form)).toString()
- resp.classList.remove('hidden')
- out.textContent='Loading...'
- try{
-  const r=await fetch(q?p+'?'+q:p)
-  const ct=r.headers.get('content-type')
-  if(ct&&ct.includes('json')){
-   out.textContent=JSON.stringify(await r.json(),null,2)
-  }else{
-   out.textContent=await r.text()
-  }
- }catch(err){out.textContent=err}
- clr.classList.remove('hidden')
-}
-
-function clearResponse(c,i){
- document.getElementById(`response-${c}-${i}`).classList.add('hidden')
- document.getElementById(`clear-${c}-${i}`).classList.add('hidden')
-}
-
-/* ===== NOTIFICATIONS ===== */
+/* NOTIFICATIONS */
 async function loadNotifications(){
  const box=document.getElementById('notifications-list')
  const res=await fetch('/notifications.json')
@@ -273,7 +236,6 @@ async function loadNotifications(){
  })
 }
 
-/* ===== SEARCH ===== */
 searchInput.oninput=function(){
  const q=this.value.toLowerCase()
  let v=0
@@ -294,4 +256,4 @@ document.addEventListener('DOMContentLoaded',()=>{
 </script>
 
 </body>
-    </html>
+</html>
