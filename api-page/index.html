@@ -335,7 +335,7 @@ function toggleCategory(index) {
         const notificationsList = document.getElementById('notifications-list');
         const unreadCountBadge = document.getElementById('unread-count');
         try {
-            const response = await fetch('/notifications.json');
+            const response = await fetch('/api-page/notifications.json');
             const notifications = await response.json();
 
             notificationsList.innerHTML = ''; // Clear loader
