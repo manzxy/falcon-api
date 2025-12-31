@@ -8,9 +8,7 @@
   },
   "apiSettings": {
     "creator": "Manzxy",
-    "apikey": [
-      "elainachan"
-    ]
+    "apikey": ["elainachan"]
   },
   "categories": [
     {
@@ -86,10 +84,10 @@
           "name": "Berita Anime",
           "desc": "Menarik daftar berita anime terbaru dari MyAnimeList.",
           "path": "/anime/beritaanime?id=",
+          "status": "ready",
           "params": {
             "id": "ID berita anime."
-          },
-          "status": "ready"
+          }
         },
         {
           "name": "Detail Berita Anime",
@@ -147,6 +145,12 @@
           "name": "Blue Archive Image",
           "desc": "Gambar acak karakter Blue Archive.",
           "path": "/random/ba",
+          "status": "ready"
+        },
+        {
+          "name": "Random Anime Character",
+          "desc": "Menampilkan gambar karakter anime secara acak.",
+          "path": "/random/anime-character",
           "status": "ready"
         }
       ]
