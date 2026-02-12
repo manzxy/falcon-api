@@ -390,16 +390,19 @@ body {
   background: var(--surface-hover);
 }
 
-/* ===== LOADING SKELETON ===== */
-.skeleton {
-  background: linear-gradient(90deg, var(--border) 25%, var(--border-strong) 50%, var(--border) 75%);
-  background-size: 200% 100%;
-  animation: loading 1.5s infinite;
+/* ===== LOADER ===== */
+.loader {
+  width: 40px;
+  height: 40px;
+  border: 3px solid var(--border);
+  border-radius: 50%;
+  border-top-color: var(--accent);
+  animation: spin 0.8s linear infinite;
+  margin: 30px auto;
 }
 
-@keyframes loading {
-  0% { background-position: 200% 0; }
-  100% { background-position: -200% 0; }
+@keyframes spin {
+  to { transform: rotate(360deg); }
 }
 
 /* ===== ANIMATIONS ===== */
@@ -414,32 +417,17 @@ body {
   }
 }
 
+.animate-fade {
+  animation: fadeSlide 0.25s ease;
+}
+
 @keyframes pulse {
   0%, 100% { opacity: 1; }
   50% { opacity: 0.5; }
 }
 
-.animate-fade {
-  animation: fadeSlide 0.25s ease;
-}
-
 .animate-pulse {
   animation: pulse 2s infinite;
-}
-
-/* ===== LOADER ===== */
-.loader {
-  width: 40px;
-  height: 40px;
-  border: 3px solid var(--border);
-  border-radius: 50%;
-  border-top-color: var(--accent);
-  animation: spin 0.8s linear infinite;
-  margin: 30px auto;
-}
-
-@keyframes spin {
-  to { transform: rotate(360deg); }
 }
 </style>
 </head>
@@ -460,12 +448,12 @@ body {
             <h1 class="text-2xl sm:text-3xl font-extrabold bg-gradient-to-r from-blue-600 via-indigo-600 to-purple-600 bg-clip-text text-transparent">
               MANZXY API
             </h1>
-            <span id="apiStatus" class="px-3 py-1 bg-green-100 dark:bg-green-900/30 text-green-600 dark:text-green-400 text-xs font-bold rounded-full border border-green-500 animate-pulse">
+            <span class="px-3 py-1 bg-green-100 dark:bg-green-900/30 text-green-600 dark:text-green-400 text-xs font-bold rounded-full border border-green-500 animate-pulse">
               ● ONLINE
             </span>
           </div>
-          <p id="apiDescription" class="text-sm text-gray-500 dark:text-gray-400 mt-1">
-            Loading...
+          <p class="text-sm text-gray-500 dark:text-gray-400 mt-1">
+            simple and powerful tools API and easy to use
           </p>
         </div>
       </div>
@@ -482,12 +470,12 @@ body {
     <div class="flex flex-wrap items-center gap-4 mt-6 pt-4 border-t border-gray-200 dark:border-gray-700">
       <div class="stats-badge">
         <span class="material-icons text-blue-500 text-sm">person</span>
-        <span id="apiCreator">-</span>
+        <span>Manzxy</span>
         <span class="text-gray-400">Creator</span>
       </div>
       <div class="stats-badge">
         <span class="material-icons text-purple-500 text-sm">vpn_key</span>
-        <span id="apiKey">-</span>
+        <span>elainachan</span>
         <span class="text-gray-400">API Key</span>
       </div>
       <div class="stats-badge">
@@ -514,22 +502,275 @@ body {
     <div class="flex flex-wrap items-center justify-between gap-4 mt-4">
       <div class="flex flex-wrap items-center gap-2">
         <span class="text-xs text-gray-500">🔥 Populer:</span>
-        <span id="popularTags" class="flex flex-wrap gap-2">
-          <span class="px-3 py-1.5 bg-gray-200 dark:bg-gray-700 rounded-full text-xs">Loading...</span>
+        <span class="px-3 py-1.5 bg-blue-50 dark:bg-blue-900/20 text-blue-600 dark:text-blue-400 rounded-full text-xs font-medium border border-blue-200 dark:border-blue-800">
+          /stalker/tiktok
+        </span>
+        <span class="px-3 py-1.5 bg-purple-50 dark:bg-purple-900/20 text-purple-600 dark:text-purple-400 rounded-full text-xs font-medium border border-purple-200 dark:border-purple-800">
+          /stalker/github
+        </span>
+        <span class="px-3 py-1.5 bg-green-50 dark:bg-green-900/20 text-green-600 dark:text-green-400 rounded-full text-xs font-medium border border-green-200 dark:border-green-800">
+          /ai/openai
         </span>
       </div>
       <span id="resultCount" class="text-sm font-semibold text-blue-600 dark:text-blue-400">
-        0 endpoints
+        6 endpoints
       </span>
     </div>
   </div>
 
   <!-- ===== API LIST ===== -->
   <div id="apiList" class="space-y-4">
-    <!-- Loading Skeleton -->
-    <div class="modern-card p-6">
-      <div class="flex items-center justify-center py-12">
-        <div class="loader"></div>
+    
+    <!-- STALKER CATEGORY -->
+    <div class="modern-card overflow-hidden">
+      <div class="category-header" onclick="toggleCategory(0)">
+        <div class="flex items-center gap-3">
+          <span class="material-icons text-blue-500">person_search</span>
+          <div>
+            <h3 class="font-bold text-base sm:text-lg">Stalker</h3>
+            <span class="text-xs text-gray-500">2 endpoints</span>
+          </div>
+        </div>
+        <span class="material-icons text-gray-500 transition-transform duration-300" id="category-icon-0">expand_more</span>
+      </div>
+      
+      <div id="category-0" class="hidden divide-y divide-gray-100 dark:divide-gray-800">
+        
+        <!-- TikTok Stalker -->
+        <div class="api-item" data-path="/stalker/tiktok" data-alias="TikTok Stalker" data-description="Melihat informasi profil TikTok berdasarkan username.">
+          <div class="endpoint-item" onclick="toggleEndpoint(0, 0)">
+            <div class="flex items-start justify-between">
+              <div class="flex items-start gap-4 flex-1">
+                <span class="method-badge">GET</span>
+                <div class="flex-1 min-w-0">
+                  <div class="endpoint-path truncate">/stalker/tiktok</div>
+                  <div class="endpoint-name truncate">TikTok Stalker</div>
+                </div>
+              </div>
+              <div class="flex items-center gap-3">
+                <span class="status-badge status-ready">● READY</span>
+                <span class="material-icons text-gray-500 transition-transform duration-300" id="endpoint-icon-0-0">expand_more</span>
+              </div>
+            </div>
+          </div>
+          
+          <div id="endpoint-0-0" class="hidden p-6 bg-gray-50 dark:bg-gray-800/50 border-t border-gray-200 dark:border-gray-700 animate-fade">
+            <!-- DESCRIPTION -->
+            <div class="mb-6 p-4 bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700">
+              <div class="flex items-center gap-2 mb-2">
+                <span class="material-icons text-blue-500 text-sm">info</span>
+                <span class="font-semibold text-xs">DESCRIPTION</span>
+              </div>
+              <p class="text-sm text-gray-600 dark:text-gray-300">Melihat informasi profil TikTok berdasarkan username.</p>
+            </div>
+            
+            <!-- TEST FORM -->
+            <div class="mb-6">
+              <div class="flex items-center gap-2 mb-4">
+                <span class="material-icons text-green-500">play_circle</span>
+                <span class="font-semibold text-sm">TEST ENDPOINT</span>
+              </div>
+              
+              <form id="form-0-0" onsubmit="executeRequest(event, 0, 0, 'GET', '/stalker/tiktok')">
+                <div class="space-y-4 mb-4">
+                  <div>
+                    <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                      username
+                      <span class="text-red-500 text-xs ml-1">*</span>
+                    </label>
+                    <input type="text" name="username" class="modern-input" 
+                           placeholder="Masukkan username TikTok" 
+                           value="manzxy" required>
+                  </div>
+                </div>
+                
+                <div class="flex flex-wrap gap-3">
+                  <button type="submit" class="btn-modern btn-primary">
+                    <span class="material-icons text-sm">send</span>
+                    EXECUTE
+                  </button>
+                  <button type="button" id="clear-0-0" onclick="clearResponse(0, 0)" class="btn-modern btn-secondary hidden">
+                    <span class="material-icons text-sm">clear</span>
+                    CLEAR
+                  </button>
+                </div>
+              </form>
+            </div>
+            
+            <!-- RESPONSE -->
+            <div id="response-0-0" class="hidden mt-6">
+              <div class="flex items-center gap-2 mb-3">
+                <span class="material-icons text-green-500">code</span>
+                <span class="font-semibold text-sm text-green-600 dark:text-green-400">RESPONSE</span>
+              </div>
+              <div id="response-content-0-0" class="response-box"></div>
+            </div>
+          </div>
+        </div>
+        
+        <!-- GitHub Stalker -->
+        <div class="api-item" data-path="/stalker/github" data-alias="GitHub User Stalker" data-description="Melihat informasi profil GitHub berdasarkan username.">
+          <div class="endpoint-item" onclick="toggleEndpoint(0, 1)">
+            <div class="flex items-start justify-between">
+              <div class="flex items-start gap-4 flex-1">
+                <span class="method-badge">GET</span>
+                <div class="flex-1 min-w-0">
+                  <div class="endpoint-path truncate">/stalker/github</div>
+                  <div class="endpoint-name truncate">GitHub User Stalker</div>
+                </div>
+              </div>
+              <div class="flex items-center gap-3">
+                <span class="status-badge status-ready">● READY</span>
+                <span class="material-icons text-gray-500 transition-transform duration-300" id="endpoint-icon-0-1">expand_more</span>
+              </div>
+            </div>
+          </div>
+          
+          <div id="endpoint-0-1" class="hidden p-6 bg-gray-50 dark:bg-gray-800/50 border-t border-gray-200 dark:border-gray-700 animate-fade">
+            <!-- DESCRIPTION -->
+            <div class="mb-6 p-4 bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700">
+              <div class="flex items-center gap-2 mb-2">
+                <span class="material-icons text-blue-500 text-sm">info</span>
+                <span class="font-semibold text-xs">DESCRIPTION</span>
+              </div>
+              <p class="text-sm text-gray-600 dark:text-gray-300">Melihat informasi profil GitHub berdasarkan username.</p>
+            </div>
+            
+            <!-- TEST FORM -->
+            <div class="mb-6">
+              <div class="flex items-center gap-2 mb-4">
+                <span class="material-icons text-green-500">play_circle</span>
+                <span class="font-semibold text-sm">TEST ENDPOINT</span>
+              </div>
+              
+              <form id="form-0-1" onsubmit="executeRequest(event, 0, 1, 'GET', '/stalker/github')">
+                <div class="space-y-4 mb-4">
+                  <div>
+                    <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                      username
+                      <span class="text-red-500 text-xs ml-1">*</span>
+                    </label>
+                    <input type="text" name="username" class="modern-input" 
+                           placeholder="Masukkan username GitHub" 
+                           value="manzxy" required>
+                  </div>
+                </div>
+                
+                <div class="flex flex-wrap gap-3">
+                  <button type="submit" class="btn-modern btn-primary">
+                    <span class="material-icons text-sm">send</span>
+                    EXECUTE
+                  </button>
+                  <button type="button" id="clear-0-1" onclick="clearResponse(0, 1)" class="btn-modern btn-secondary hidden">
+                    <span class="material-icons text-sm">clear</span>
+                    CLEAR
+                  </button>
+                </div>
+              </form>
+            </div>
+            
+            <!-- RESPONSE -->
+            <div id="response-0-1" class="hidden mt-6">
+              <div class="flex items-center gap-2 mb-3">
+                <span class="material-icons text-green-500">code</span>
+                <span class="font-semibold text-sm text-green-600 dark:text-green-400">RESPONSE</span>
+              </div>
+              <div id="response-content-0-1" class="response-box"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- AI CATEGORY -->
+    <div class="modern-card overflow-hidden">
+      <div class="category-header" onclick="toggleCategory(1)">
+        <div class="flex items-center gap-3">
+          <span class="material-icons text-blue-500">bolt</span>
+          <div>
+            <h3 class="font-bold text-base sm:text-lg">OpenAI</h3>
+            <span class="text-xs text-gray-500">4 endpoints</span>
+          </div>
+        </div>
+        <span class="material-icons text-gray-500 transition-transform duration-300" id="category-icon-1">expand_more</span>
+      </div>
+      
+      <div id="category-1" class="hidden divide-y divide-gray-100 dark:divide-gray-800">
+        <!-- OpenAI Llama3 -->
+        <div class="api-item" data-path="/ai/openai" data-alias="OpenAI Llama3" data-description="Chat dengan model Llama3-8B-8192 cepat dan cerdas.">
+          <div class="endpoint-item" onclick="toggleEndpoint(1, 0)">
+            <div class="flex items-start justify-between">
+              <div class="flex items-start gap-4 flex-1">
+                <span class="method-badge">GET</span>
+                <div class="flex-1 min-w-0">
+                  <div class="endpoint-path truncate">/ai/openai</div>
+                  <div class="endpoint-name truncate">OpenAI Llama3</div>
+                </div>
+              </div>
+              <div class="flex items-center gap-3">
+                <span class="status-badge status-ready">● READY</span>
+                <span class="material-icons text-gray-500" id="endpoint-icon-1-0">expand_more</span>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <!-- Gemini Web Chat -->
+        <div class="api-item" data-path="/ai/gemini-web" data-alias="Gemini Web Chat" data-description="Chat dengan Gemini Web (scrape). Mendukung system instruction.">
+          <div class="endpoint-item" onclick="toggleEndpoint(1, 1)">
+            <div class="flex items-start justify-between">
+              <div class="flex items-start gap-4 flex-1">
+                <span class="method-badge">GET</span>
+                <div class="flex-1 min-w-0">
+                  <div class="endpoint-path truncate">/ai/gemini-web</div>
+                  <div class="endpoint-name truncate">Gemini Web Chat</div>
+                </div>
+              </div>
+              <div class="flex items-center gap-3">
+                <span class="status-badge status-ready">● READY</span>
+                <span class="material-icons text-gray-500" id="endpoint-icon-1-1">expand_more</span>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <!-- WebPilot AI Search -->
+        <div class="api-item" data-path="/ai/webpilot" data-alias="WebPilot AI Search" data-description="AI search & browsing menggunakan WebPilot (real-time).">
+          <div class="endpoint-item" onclick="toggleEndpoint(1, 2)">
+            <div class="flex items-start justify-between">
+              <div class="flex items-start gap-4 flex-1">
+                <span class="method-badge">GET</span>
+                <div class="flex-1 min-w-0">
+                  <div class="endpoint-path truncate">/ai/webpilot</div>
+                  <div class="endpoint-name truncate">WebPilot AI Search</div>
+                </div>
+              </div>
+              <div class="flex items-center gap-3">
+                <span class="status-badge status-ready">● READY</span>
+                <span class="material-icons text-gray-500" id="endpoint-icon-1-2">expand_more</span>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <!-- Edit Image AI -->
+        <div class="api-item" data-path="/ai/edit-image" data-alias="Edit Image AI" data-description="Edit gambar dengan AI - Remove Background, Enhance, Restore.">
+          <div class="endpoint-item" onclick="toggleEndpoint(1, 3)">
+            <div class="flex items-start justify-between">
+              <div class="flex items-start gap-4 flex-1">
+                <span class="method-badge">GET</span>
+                <div class="flex-1 min-w-0">
+                  <div class="endpoint-path truncate">/ai/edit-image</div>
+                  <div class="endpoint-name truncate">Edit Image AI</div>
+                </div>
+              </div>
+              <div class="flex items-center gap-3">
+                <span class="status-badge status-update">⚡ UPDATE</span>
+                <span class="material-icons text-gray-500" id="endpoint-icon-1-3">expand_more</span>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   </div>
@@ -613,7 +854,7 @@ body {
       © 2025 Manzxy APIs · Open Source · Free to use
     </p>
     <div class="flex items-center justify-center gap-4 text-xs text-gray-400">
-      <span id="footerVersion">Version v1.0.0</span>
+      <span>Version v1.0.0</span>
       <span>•</span>
       <span>GET only</span>
       <span>•</span>
@@ -623,9 +864,6 @@ body {
 </div>
 
 <script>
-// ===== GLOBAL STATE =====
-let apiData = null;
-
 // ===== THEME MANAGEMENT =====
 function initTheme() {
   const toggle = document.getElementById('themeToggle');
@@ -654,364 +892,6 @@ function initTheme() {
       localStorage.setItem('theme', 'light');
     }
   });
-}
-
-// ===== FETCH SETTINGS.JSON =====
-async function loadApiSettings() {
-  try {
-    // Tampilkan loading state
-    document.getElementById('apiList').innerHTML = `
-      <div class="modern-card p-8">
-        <div class="flex flex-col items-center justify-center py-12">
-          <div class="loader"></div>
-          <p class="text-sm text-gray-500 mt-4">Memuat endpoints dari settings.json...</p>
-        </div>
-      </div>
-    `;
-    
-    // Fetch settings.json
-    const response = await fetch('/assets/settings.json');
-    
-    if (!response.ok) {
-      throw new Error(`HTTP error! status: ${response.status}`);
-    }
-    
-    const data = await response.json();
-    apiData = data;
-    
-    // Update UI dengan data dari settings.json
-    updateUIWithData(data);
-    
-  } catch (error) {
-    console.error('Error loading settings.json:', error);
-    
-    // Fallback ke sample data jika file tidak ditemukan
-    useFallbackData();
-  }
-}
-
-// ===== UPDATE UI DENGAN DATA DARI SETTINGS.JSON =====
-function updateUIWithData(data) {
-  // Update header
-  document.getElementById('apiDescription').textContent = 
-    data.description || 'simple and powerful tools API and easy to use';
-  
-  document.getElementById('apiCreator').textContent = 
-    data.apiSettings?.creator || 'Manzxy';
-  
-  document.getElementById('apiKey').textContent = 
-    data.apiSettings?.apikey?.[0] || 'elainachan';
-  
-  document.getElementById('footerVersion').textContent = 
-    `Version ${data.version || 'v1.0.0'}`;
-  
-  // Update status
-  if (data.header?.status?.toLowerCase().includes('online')) {
-    document.getElementById('apiStatus').innerHTML = '● ONLINE';
-    document.getElementById('apiStatus').className = 'px-3 py-1 bg-green-100 dark:bg-green-900/30 text-green-600 dark:text-green-400 text-xs font-bold rounded-full border border-green-500 animate-pulse';
-  }
-  
-  // Render categories
-  renderCategories(data.categories || []);
-  
-  // Update popular tags
-  updatePopularTags(data.categories || []);
-  
-  // Update result count
-  const totalEndpoints = countTotalEndpoints(data.categories || []);
-  document.getElementById('resultCount').textContent = `${totalEndpoints} endpoints`;
-}
-
-// ===== RENDER CATEGORIES DARI DATA =====
-function renderCategories(categories) {
-  const apiList = document.getElementById('apiList');
-  
-  if (!categories || categories.length === 0) {
-    apiList.innerHTML = `
-      <div class="modern-card p-8 text-center">
-        <span class="material-icons text-4xl text-gray-400 mb-2">folder_off</span>
-        <p class="text-gray-500">Tidak ada endpoint tersedia</p>
-      </div>
-    `;
-    return;
-  }
-  
-  let html = '';
-  
-  categories.forEach((category, catIndex) => {
-    html += `
-    <div class="modern-card overflow-hidden">
-      <div class="category-header" onclick="toggleCategory(${catIndex})">
-        <div class="flex items-center gap-3">
-          <span class="material-icons text-blue-500">${getCategoryIcon(category.name)}</span>
-          <div>
-            <h3 class="font-bold text-base sm:text-lg">${escapeHtml(category.name)}</h3>
-            <span class="text-xs text-gray-500">${category.items?.length || 0} endpoints</span>
-          </div>
-        </div>
-        <span class="material-icons text-gray-500 transition-transform duration-300" id="category-icon-${catIndex}">expand_more</span>
-      </div>
-      
-      <div id="category-${catIndex}" class="hidden divide-y divide-gray-100 dark:divide-gray-800">`;
-    
-    if (category.items && category.items.length > 0) {
-      category.items.forEach((item, endpointIndex) => {
-        // Parse path
-        let basePath = item.path || '';
-        if (basePath.includes('?')) {
-          basePath = basePath.split('?')[0];
-        }
-        
-        html += `
-        <div class="api-item" 
-             data-path="${escapeHtml(basePath)}"
-             data-alias="${escapeHtml(item.name || '')}"
-             data-description="${escapeHtml(item.desc || '')}">
-          
-          <div class="endpoint-item" onclick="toggleEndpoint(${catIndex}, ${endpointIndex})">
-            <div class="flex items-start justify-between">
-              <div class="flex items-start gap-4 flex-1">
-                <span class="method-badge">GET</span>
-                <div class="flex-1 min-w-0">
-                  <div class="endpoint-path truncate" title="${escapeHtml(basePath)}">
-                    ${escapeHtml(basePath)}
-                  </div>
-                  <div class="endpoint-name truncate">
-                    ${escapeHtml(item.name || '')}
-                  </div>
-                </div>
-              </div>
-              <div class="flex items-center gap-3">
-                <span class="status-badge status-${item.status || 'ready'}">
-                  ${item.status === 'ready' ? '● READY' : '⚡ UPDATE'}
-                </span>
-                <span class="material-icons text-gray-500 transition-transform duration-300" 
-                      id="endpoint-icon-${catIndex}-${endpointIndex}">expand_more</span>
-              </div>
-            </div>
-          </div>
-          
-          <div id="endpoint-${catIndex}-${endpointIndex}" class="hidden p-6 bg-gray-50 dark:bg-gray-800/50 border-t border-gray-200 dark:border-gray-700 animate-fade">
-            <div class="mb-6 p-4 bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700">
-              <div class="flex items-center gap-2 mb-2">
-                <span class="material-icons text-blue-500 text-sm">info</span>
-                <span class="font-semibold text-xs">DESCRIPTION</span>
-              </div>
-              <p class="text-sm text-gray-600 dark:text-gray-300">${escapeHtml(item.desc || 'No description')}</p>
-            </div>`;
-        
-        if (item.status === 'ready') {
-          html += `
-            <div class="mb-6">
-              <div class="flex items-center gap-2 mb-4">
-                <span class="material-icons text-green-500">play_circle</span>
-                <span class="font-semibold text-sm">TEST ENDPOINT</span>
-              </div>
-              
-              <form id="form-${catIndex}-${endpointIndex}" onsubmit="executeRequest(event, ${catIndex}, ${endpointIndex}, 'GET', '${escapeHtml(basePath)}')">
-                <div class="space-y-4 mb-4">`;
-          
-          // Generate form fields dari params
-          if (item.params) {
-            Object.entries(item.params).forEach(([key, val]) => {
-              html += `
-                  <div>
-                    <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                      ${escapeHtml(key)}
-                      <span class="text-red-500 text-xs ml-1">*</span>
-                    </label>
-                    <input type="text" 
-                           name="${escapeHtml(key)}"
-                           class="modern-input"
-                           placeholder="${escapeHtml(val)}"
-                           value="${key === 'text' ? 'hai' : ''}"
-                           required>
-                  </div>`;
-            });
-          }
-          
-          html += `
-                </div>
-                
-                <div class="flex flex-wrap gap-3">
-                  <button type="submit" class="btn-modern btn-primary">
-                    <span class="material-icons text-sm">send</span>
-                    EXECUTE
-                  </button>
-                  <button type="button" 
-                          id="clear-${catIndex}-${endpointIndex}"
-                          onclick="clearResponse(${catIndex}, ${endpointIndex})"
-                          class="btn-modern btn-secondary hidden">
-                    <span class="material-icons text-sm">clear</span>
-                    CLEAR
-                  </button>
-                </div>
-              </form>
-            </div>`;
-        } else {
-          html += `
-            <div class="p-5 bg-yellow-50 dark:bg-yellow-900/20 border border-yellow-200 dark:border-yellow-800 rounded-xl">
-              <div class="flex items-center gap-3 text-yellow-600 dark:text-yellow-400 mb-2">
-                <span class="material-icons">construction</span>
-                <span class="font-semibold text-sm">UNDER MAINTENANCE</span>
-              </div>
-              <p class="text-sm text-gray-600 dark:text-gray-400">
-                Endpoint ini sedang dalam pengembangan. Silakan coba lagi nanti.
-              </p>
-            </div>`;
-        }
-        
-        html += `
-            <div id="response-${catIndex}-${endpointIndex}" class="hidden mt-6">
-              <div class="flex items-center gap-2 mb-3">
-                <span class="material-icons text-green-500">code</span>
-                <span class="font-semibold text-sm text-green-600 dark:text-green-400">RESPONSE</span>
-              </div>
-              <div id="response-content-${catIndex}-${endpointIndex}" class="response-box"></div>
-            </div>
-          </div>
-        </div>`;
-      });
-    }
-    
-    html += `</div></div>`;
-  });
-  
-  apiList.innerHTML = html;
-  
-  // Auto expand first category
-  setTimeout(() => {
-    if (categories.length > 0) {
-      toggleCategory(0);
-    }
-  }, 200);
-}
-
-// ===== HITUNG TOTAL ENDPOINTS =====
-function countTotalEndpoints(categories) {
-  let total = 0;
-  categories.forEach(cat => {
-    total += cat.items?.length || 0;
-  });
-  return total;
-}
-
-// ===== UPDATE POPULAR TAGS =====
-function updatePopularTags(categories) {
-  const popularContainer = document.getElementById('popularTags');
-  let tags = [];
-  
-  // Ambil 3 path pertama sebagai popular tags
-  categories.forEach(cat => {
-    if (cat.items && cat.items.length > 0) {
-      cat.items.slice(0, 3).forEach(item => {
-        if (item.path) {
-          let path = item.path;
-          if (path.includes('?')) path = path.split('?')[0];
-          tags.push(path);
-        }
-      });
-    }
-  });
-  
-  // Ambil 3 unique tags
-  tags = [...new Set(tags)].slice(0, 3);
-  
-  let html = '';
-  tags.forEach(tag => {
-    const colorClass = getTagColor(tag);
-    html += `<span class="px-3 py-1.5 ${colorClass} rounded-full text-xs font-medium border">${escapeHtml(tag)}</span>`;
-  });
-  
-  popularContainer.innerHTML = html || '<span class="text-gray-500">-</span>';
-}
-
-// ===== GET TAG COLOR =====
-function getTagColor(path) {
-  if (path.includes('openai')) return 'bg-blue-50 dark:bg-blue-900/20 text-blue-600 dark:text-blue-400 border-blue-200 dark:border-blue-800';
-  if (path.includes('gemini')) return 'bg-purple-50 dark:bg-purple-900/20 text-purple-600 dark:text-purple-400 border-purple-200 dark:border-purple-800';
-  if (path.includes('webpilot')) return 'bg-green-50 dark:bg-green-900/20 text-green-600 dark:text-green-400 border-green-200 dark:border-green-800';
-  return 'bg-gray-50 dark:bg-gray-800/20 text-gray-600 dark:text-gray-400 border-gray-200 dark:border-gray-700';
-}
-
-// ===== GET CATEGORY ICON =====
-function getCategoryIcon(categoryName) {
-  const name = categoryName.toLowerCase();
-  if (name.includes('ai') || name.includes('open')) return 'bolt';
-  if (name.includes('tool')) return 'build';
-  if (name.includes('image') || name.includes('media')) return 'image';
-  if (name.includes('social')) return 'share';
-  return 'folder';
-}
-
-// ===== FALLBACK DATA (JIKA SETTINGS.JSON TIDAK ADA) =====
-function useFallbackData() {
-  console.log('Using fallback data');
-  
-  const fallbackData = {
-    name: "Manzxy APIs",
-    version: "v1.0.0",
-    description: "simple and powerful tools API and easy to use (Fallback Mode)",
-    header: { status: "Online!" },
-    apiSettings: {
-      creator: "Manzxy",
-      apikey: ["elainachan"]
-    },
-    categories: [
-      {
-        name: "OpenAI",
-        items: [
-          {
-            name: "OpenAI Llama3",
-            desc: "Chat dengan model Llama3-8B-8192 cepat dan cerdas.",
-            path: "/ai/openai?text=",
-            status: "ready",
-            params: { text: "Teks atau pertanyaan yang ingin diajukan ke AI." }
-          },
-          {
-            name: "Gemini Web Chat",
-            desc: "Chat dengan Gemini Web (scrape). Mendukung system instruction.",
-            path: "/ai/gemini-web?text=&system=",
-            status: "ready",
-            params: { 
-              text: "Teks atau pertanyaan untuk Gemini.",
-              system: "System instruction (opsional)." 
-            }
-          },
-          {
-            name: "WebPilot AI Search",
-            desc: "AI search & browsing menggunakan WebPilot (real-time).",
-            path: "/ai/webpilot?text=",
-            status: "ready",
-            params: { text: "Pertanyaan atau topik pencarian." }
-          },
-          {
-            name: "Edit Image AI",
-            desc: "Edit gambar dengan AI - Remove Background, Enhance, Restore.",
-            path: "/ai/edit-image?url=&action=",
-            status: "update",
-            params: { 
-              url: "URL gambar",
-              action: "removebg/enhance/restore" 
-            }
-          }
-        ]
-      }
-    ]
-  };
-  
-  updateUIWithData(fallbackData);
-}
-
-// ===== HELPER: Escape HTML =====
-function escapeHtml(unsafe) {
-  if (!unsafe) return '';
-  return String(unsafe)
-    .replace(/&/g, "&amp;")
-    .replace(/</g, "&lt;")
-    .replace(/>/g, "&gt;")
-    .replace(/"/g, "&quot;")
-    .replace(/'/g, "&#039;");
 }
 
 // ===== TOGGLE CATEGORY =====
@@ -1065,20 +945,91 @@ async function executeRequest(event, catIndex, endpointIndex, method, path) {
   responseDiv.classList.remove('hidden');
   responseContent.innerHTML = '<div class="loader"></div>';
   
-  // Simulasi response
-  setTimeout(() => {
-    const response = {
-      creator: "FlowFalcon",
-      status: true,
-      endpoint: path,
-      params: Object.fromEntries(formData.entries()),
-      result: "Hai! Aku FlowFalcon AI, senang ketemu kamu 😊\n\nKamu lagi mau ngapain hari ini? Ada yang bisa aku bantu?\n\n• Belajar bahasa (Indonesia/Inggris)\n• Nulis / ngedit teks (essay, email, CV, caption)\n• Bimbingan pelajaran (matematika, sains)\n• Coding/programming (debug, review kode)\n• Rencana belajar atau manajemen waktu\n• Ide proyek seru atau brainstorming\n\nKamu ingin mulai dari mana? Ceritain saja topik atau tujuannya, aku siap bantu! 😊"
-    };
-    
-    responseContent.innerHTML = `<pre class="response-box" style="background: transparent; border: none; padding: 0; max-height: 400px;">${JSON.stringify(response, null, 2)}</pre>`;
-    
-    if (clearButton) clearButton.classList.remove('hidden');
-  }, 800);
+  // RESPONSE UNTUK TikTok STALKER
+  if (path === '/stalker/tiktok') {
+    setTimeout(() => {
+      const username = formData.get('username') || 'manzxy';
+      
+      const response = {
+        creator: "FlowFalcon",
+        status: true,
+        endpoint: "/stalker/tiktok",
+        params: {
+          username: username
+        },
+        result: {
+          username: username,
+          nickname: username === 'manzxy' ? 'Manzxy Official' : `${username}`,
+          bio: "🚀 Developer & Content Creator | Building Falcon API",
+          followers: "125.4K",
+          following: "1.234",
+          posts: "342",
+          verified: true,
+          private: false,
+          profile_pic: "https://p16-sign-va.tiktokcdn.com/tos-maliva-avt-0068/1234567890~c5_100x100.jpeg",
+          join_date: "2020-01-15"
+        }
+      };
+      
+      responseContent.innerHTML = `<pre class="response-box" style="background: var(--code-bg); color: var(--code-text); border: 1px solid var(--border);">${JSON.stringify(response, null, 2)}</pre>`;
+      
+      if (clearButton) clearButton.classList.remove('hidden');
+    }, 800);
+    return;
+  }
+  
+  // RESPONSE UNTUK GitHub STALKER
+  if (path === '/stalker/github') {
+    setTimeout(() => {
+      const username = formData.get('username') || 'manzxy';
+      
+      const response = {
+        creator: "FlowFalcon",
+        status: true,
+        endpoint: "/stalker/github",
+        params: {
+          username: username
+        },
+        result: {
+          login: username,
+          name: username === 'manzxy' ? 'Manzxy' : `${username}`,
+          bio: "Building Falcon API 🚀 | Open Source Enthusiast",
+          public_repos: 47,
+          followers: 890,
+          following: 123,
+          created_at: "2019-06-20T08:30:00Z",
+          updated_at: "2025-02-13T10:15:00Z",
+          location: "Indonesia",
+          blog: "https://manzxy.my.id",
+          twitter_username: "manzxyyx",
+          company: "Falcon Dev"
+        }
+      };
+      
+      responseContent.innerHTML = `<pre class="response-box" style="background: var(--code-bg); color: var(--code-text); border: 1px solid var(--border);">${JSON.stringify(response, null, 2)}</pre>`;
+      
+      if (clearButton) clearButton.classList.remove('hidden');
+    }, 800);
+    return;
+  }
+  
+  // RESPONSE UNTUK AI ENDPOINTS
+  if (path.includes('/ai/')) {
+    setTimeout(() => {
+      const response = {
+        creator: "FlowFalcon",
+        status: true,
+        endpoint: path,
+        params: Object.fromEntries(formData.entries()),
+        result: "Hai! Aku FlowFalcon AI, senang ketemu kamu 😊\n\nKamu lagi mau ngapain hari ini? Ada yang bisa aku bantu? Kamu bisa pilih salah satu atau campur:\n\n• Belajar bahasa (Indonesia/Inggris) atau latihan percakapan\n• Nulis / ngedit teks (essay, email, CV, caption)\n• Bimbingan pelajaran (matematika, sains, dsb.)\n• Coding/programming (debug, review kode, belajar konsep)\n• Rencana belajar atau manajemen waktu\n• Ide proyek seru atau brainstorming\n• Ngobrol santai atau tanya jawab cepat\n\nKamu ingin mulai dari mana? Ceritain saja topik atau tujuannya, aku siap bantu! 😊"
+      };
+      
+      responseContent.innerHTML = `<pre class="response-box" style="background: var(--code-bg); color: var(--code-text); border: 1px solid var(--border);">${JSON.stringify(response, null, 2)}</pre>`;
+      
+      if (clearButton) clearButton.classList.remove('hidden');
+    }, 800);
+    return;
+  }
 }
 
 // ===== CLEAR RESPONSE =====
@@ -1104,11 +1055,6 @@ function setupSearch() {
     const searchTerm = this.value.toLowerCase().trim();
     const apiItems = document.querySelectorAll('.api-item');
     let visibleCount = 0;
-    let totalEndpoints = 0;
-    
-    if (apiData && apiData.categories) {
-      totalEndpoints = countTotalEndpoints(apiData.categories);
-    }
     
     apiItems.forEach(item => {
       const path = item.dataset.path?.toLowerCase() || '';
@@ -1136,7 +1082,7 @@ function setupSearch() {
     // Update result count
     if (resultCount) {
       resultCount.textContent = searchTerm === '' 
-        ? `${totalEndpoints} endpoints`
+        ? '6 endpoints'
         : `${visibleCount} endpoints ditemukan`;
     }
     
@@ -1150,8 +1096,10 @@ function setupSearch() {
 // ===== INITIALIZATION =====
 document.addEventListener('DOMContentLoaded', () => {
   initTheme();
-  loadApiSettings(); // FETCH SETTINGS.JSON!
   setupSearch();
+  
+  // Set result count
+  document.getElementById('resultCount').textContent = '6 endpoints';
 });
 
 // Make functions global
