@@ -16,8 +16,8 @@ tailwind.config = {
   theme: {
     extend: {
       fontFamily: {
-        mc: ['Press Start 2P','monospace'],
-        mono: ['Ubuntu Mono','monospace']
+        mc: ['Press Start 2P', 'monospace'],
+        mono: ['Ubuntu Mono', 'monospace']
       }
     }
   }
@@ -25,462 +25,768 @@ tailwind.config = {
 </script>
 
 <style>
-::-webkit-scrollbar{display:none}
-
-/* ===== THEME VAR ===== */
-:root{
-  --bg:#1b1b1b;
-  --panel:#2a2a2a;
-  --border:#3f3f3f;
-  --text:#e5e7eb;
-  --input:#1e1e1e;
-}
-body.light{
-  --bg:#e5e7eb;
-  --panel:#f3f4f6;
-  --border:#cbd5e1;
-  --text:#111827;
-  --input:#ffffff;
+/* ===== SMOOTH SCROLLING ===== */
+html {
+  scroll-behavior: smooth;
 }
 
-/* ===== GLOBAL ===== */
-html,body{
-  margin:0;
-  padding:0;
-  background:var(--bg);
-  color:var(--text);
+/* ===== HIDE SCROLLBAR ===== */
+::-webkit-scrollbar {
+  display: none;
 }
 
-/* ===== BLOCK ===== */
-.mc-panel{
-  background:var(--panel);
-  border:4px solid var(--border);
-  box-shadow:
-    inset -4px -4px 0 rgba(0,0,0,.4),
-    inset 4px 4px 0 rgba(255,255,255,.05);
+/* ===== THEME VARIABLES ===== */
+:root {
+  --bg: #0f0f0f;
+  --panel: #1a1a1a;
+  --panel-hover: #252525;
+  --border: #2a2a2a;
+  --border-light: #3a3a3a;
+  --text: #f0f0f0;
+  --text-muted: #a0a0a0;
+  --input: #0a0a0a;
+  --success: #22c55e;
+  --success-bg: rgba(34, 197, 94, 0.1);
+  --warning: #eab308;
+  --warning-bg: rgba(234, 179, 8, 0.1);
+  --error: #ef4444;
+  --error-bg: rgba(239, 68, 68, 0.1);
+  --info: #3b82f6;
+  --info-bg: rgba(59, 130, 246, 0.1);
 }
 
-/* ===== FORCE PANEL COLOR (FIX BIRU) ===== */
-.category-group,
-.category-group > div,
-.category-group button,
-.api-item,
-.api-item button,
-#endpoint-content,
-#endpoint-content > div{
-  background:var(--panel) !important;
-  border-color:var(--border) !important;
-  color:var(--text) !important;
-}
-.category-group button:hover,
-.api-item button:hover{
-  background:rgba(0,0,0,.15) !important;
+body.light {
+  --bg: #f3f4f6;
+  --panel: #ffffff;
+  --panel-hover: #f9fafb;
+  --border: #e5e7eb;
+  --border-light: #d1d5db;
+  --text: #111827;
+  --text-muted: #6b7280;
+  --input: #ffffff;
 }
 
-/* ===== INPUT ===== */
-.mc-input{
-  background:var(--input);
-  border:3px solid var(--border);
-  color:var(--text);
+/* ===== GLOBAL STYLES ===== */
+html, body {
+  margin: 0;
+  padding: 0;
+  background: var(--bg);
+  color: var(--text);
+  font-family: 'Ubuntu Mono', monospace;
+  transition: background-color 0.3s ease, color 0.2s ease;
+  min-height: 100vh;
 }
 
-/* ===== BUTTON ===== */
-.mc-btn{
-  background:#3a7d3a;
-  border:3px solid #2b5d2b;
-  box-shadow:
-    inset -3px -3px 0 #1f3f1f,
-    inset 3px 3px 0 #5fa75f;
-  font-size:10px;
-  padding:8px 14px;
-  color:#fff;
+body {
+  padding: 20px 0;
 }
-.mc-btn:active{
-  box-shadow:
-    inset 3px 3px 0 #1f3f1f,
-    inset -3px -3px 0 #5fa75f;
+
+/* ===== MINECRAFT STYLE PANEL ===== */
+.mc-panel {
+  background: var(--panel);
+  border: 4px solid var(--border);
+  box-shadow: 
+    inset -4px -4px 0 rgba(0, 0, 0, 0.3),
+    inset 4px 4px 0 rgba(255, 255, 255, 0.05);
+  transition: all 0.2s ease;
+}
+
+/* ===== INPUT STYLES ===== */
+.mc-input {
+  background: var(--input);
+  border: 3px solid var(--border);
+  color: var(--text);
+  transition: all 0.2s ease;
+}
+
+.mc-input:focus {
+  border-color: var(--info);
+  outline: none;
+  box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.2);
+}
+
+/* ===== BUTTON STYLES ===== */
+.mc-btn {
+  background: #2d5a2d;
+  border: 3px solid #1f3f1f;
+  box-shadow: 
+    inset -3px -3px 0 #0f1f0f,
+    inset 3px 3px 0 #4f7f4f;
+  font-size: 10px;
+  padding: 8px 14px;
+  color: #fff;
+  transition: all 0.1s ease;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.mc-btn:hover {
+  background: #3a7d3a;
+  transform: translateY(-1px);
+}
+
+.mc-btn:active {
+  box-shadow: 
+    inset 3px 3px 0 #0f1f0f,
+    inset -3px -3px 0 #4f7f4f;
+  transform: translateY(1px);
 }
 
 /* ===== CLEAR BUTTON ===== */
-.mc-btn-clear{
-  background:#555;
-  border:3px solid #333;
-  color:#fff;
-  font-size:10px;
-  padding:8px 14px;
+.mc-btn-clear {
+  background: #4a4a4a;
+  border: 3px solid #2a2a2a;
+  color: #fff;
+  font-size: 10px;
+  padding: 8px 14px;
+  transition: all 0.2s ease;
 }
 
-/* ===== GET ===== */
-.method-get{
-  background:#2563eb;
-  border:3px solid #1e40af;
-  padding:3px 6px;
-  font-size:10px;
-  color:#fff;
+.mc-btn-clear:hover {
+  background: #5a5a5a;
+  border-color: #3a3a3a;
 }
 
-/* ===== RESPONSE ===== */
-.mc-response{
-  background:#0b0b0b;
-  border:3px solid #1f2937;
-  color:#22c55e;
+/* ===== METHOD BADGE ===== */
+.method-get {
+  background: var(--info);
+  border: 2px solid #1e40af;
+  padding: 4px 8px;
+  font-size: 10px;
+  color: #fff;
+  font-weight: bold;
+  text-transform: uppercase;
+  letter-spacing: 1px;
 }
 
-/* ===== CONTRIBUTORS BACKGROUND IMAGE ===== */
-.bg-bottom{
-  background-image:url("https://c.termai.cc/i199/f6HGr.jpg");
-  background-size:cover;
-  background-position:center;
-  background-repeat:no-repeat;
+/* ===== RESPONSE BOX ===== */
+.mc-response {
+  background: #0a0a0a;
+  border: 3px solid #1a1a1a;
+  color: var(--success);
+  font-family: 'Ubuntu Mono', monospace;
+  font-size: 12px;
+  line-height: 1.6;
+  overflow-x: auto;
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+
+body.light .mc-response {
+  background: #f8fafc;
+  border-color: #e2e8f0;
+  color: #0f172a;
+}
+
+/* ===== CONTRIBUTORS BACKGROUND ===== */
+.bg-contributors {
+  background-image: url("https://c.termai.cc/i199/f6HGr.jpg");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  position: relative;
+}
+
+.bg-contributors::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.7);
+  pointer-events: none;
+}
+
+body.light .bg-contributors::before {
+  background: rgba(255, 255, 255, 0.8);
+}
+
+/* ===== LOADER ANIMATION ===== */
+.loader {
+  border: 3px solid var(--border);
+  border-radius: 50%;
+  border-top: 3px solid var(--info);
+  width: 40px;
+  height: 40px;
+  animation: spin 1s linear infinite;
+  margin: 20px auto;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+/* ===== STATUS BADGES ===== */
+.status-ready {
+  background: var(--success-bg);
+  color: var(--success);
+  border: 1px solid var(--success);
+}
+
+.status-update {
+  background: var(--warning-bg);
+  color: var(--warning);
+  border: 1px solid var(--warning);
+}
+
+.status-error {
+  background: var(--error-bg);
+  color: var(--error);
+  border: 1px solid var(--error);
+}
+
+/* ===== CATEGORY ITEMS ===== */
+.category-item {
+  transition: all 0.2s ease;
+}
+
+.category-item:hover {
+  background: var(--panel-hover);
+}
+
+/* ===== ENDPOINT CONTENT ===== */
+.endpoint-content {
+  background: var(--panel);
+  border-top: 1px solid var(--border);
+}
+
+/* ===== RESPONSE CONTAINER ===== */
+.response-container {
+  transition: all 0.3s ease;
+}
+
+/* ===== NO RESULTS MESSAGE ===== */
+.no-results {
+  text-align: center;
+  padding: 40px 20px;
+  color: var(--text-muted);
+  border: 2px dashed var(--border);
+  margin-top: 20px;
+}
+
+/* ===== CONTRIBUTOR CARD ===== */
+.contributor-card {
+  background: var(--panel);
+  border: 3px solid var(--border);
+  transition: all 0.2s ease;
+  position: relative;
+  z-index: 1;
+}
+
+.contributor-card:hover {
+  transform: translateY(-2px);
+  border-color: var(--info);
+}
+
+/* ===== ANIMATIONS ===== */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(-10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.fade-in {
+  animation: fadeIn 0.3s ease;
 }
 </style>
 </head>
 
 <body class="font-mono">
 
-<!-- ================= MAIN ================= -->
-<div class="max-w-2xl mx-auto px-6 py-10 mc-panel">
+<!-- ===== MAIN CONTAINER ===== -->
+<div class="max-w-2xl mx-auto px-4 sm:px-6 py-8 mc-panel fade-in">
 
-<!-- HEADER -->
-<div class="flex justify-between items-center mb-6">
-  <span class="font-mc text-xs">MANZXY API</span>
-  <div class="flex gap-2">
-    <button onclick="setTheme('dark')" class="mc-btn">DARK</button>
-    <button onclick="setTheme('light')" class="mc-btn">LIGHT</button>
+  <!-- ===== HEADER ===== -->
+  <div class="flex flex-col sm:flex-row justify-between items-center mb-8 gap-4">
+    <div class="flex items-center gap-3">
+      <span class="font-mc text-xs sm:text-sm tracking-wider">MANZXY API</span>
+      <span class="text-[10px] bg-gray-700 px-2 py-1 rounded">v1.0.0</span>
+    </div>
+    <div class="flex gap-2">
+      <button onclick="setTheme('dark')" class="mc-btn px-4 py-2 text-xs flex items-center gap-1">
+        <span class="material-icons text-sm">dark_mode</span>
+        DARK
+      </button>
+      <button onclick="setTheme('light')" class="mc-btn px-4 py-2 text-xs flex items-center gap-1">
+        <span class="material-icons text-sm">light_mode</span>
+        LIGHT
+      </button>
+    </div>
+  </div>
+
+  <!-- ===== SEARCH SECTION ===== -->
+  <div class="mb-8">
+    <label class="block text-xs text-gray-400 mb-2 flex items-center gap-2">
+      <span class="material-icons text-sm">search</span>
+      SEARCH ENDPOINTS
+    </label>
+    <div class="relative">
+      <input id="searchInput"
+        class="w-full mc-input text-xs sm:text-sm px-4 py-3 pl-10"
+        placeholder="Search by path, name, or description..."
+        autocomplete="off">
+      <span class="material-icons absolute left-3 top-1/2 -translate-y-1/2 text-gray-500 text-sm">search</span>
+    </div>
+    <div class="text-[10px] text-gray-500 mt-1 flex justify-between">
+      <span>🔍 Try searching: /api, image, user</span>
+      <span id="resultCount" class="font-bold">0 endpoints</span>
+    </div>
+  </div>
+
+  <!-- ===== API LIST ===== -->
+  <div id="apiList" class="space-y-4"></div>
+  
+  <!-- ===== NO RESULTS MESSAGE ===== -->
+  <div id="noResults" class="no-results hidden">
+    <span class="material-icons text-4xl mb-2">search_off</span>
+    <p class="text-sm">No endpoints found</p>
+    <p class="text-xs mt-1 opacity-70">Try different keywords</p>
+  </div>
+
+  <!-- ===== FOOTER ===== -->
+  <footer class="mt-12 pt-6 border-t border-gray-700 text-center">
+    <p class="text-xs opacity-60">© 2025 Manzxy APIs · All endpoints are GET requests</p>
+    <p class="text-[10px] opacity-40 mt-1">Made with 💚 for developers</p>
+  </footer>
+</div>
+
+<!-- ===== CONTRIBUTORS SECTION ===== -->
+<div class="max-w-2xl mx-auto px-4 sm:px-6 pb-12 mt-6">
+  <div class="mc-panel bg-contributors overflow-hidden">
+    <div class="relative z-10 p-6">
+      <h2 class="font-mc text-xs text-center mb-8 flex items-center justify-center gap-2">
+        <span class="material-icons text-sm">people</span>
+        CONTRIBUTORS
+        <span class="material-icons text-sm">people</span>
+      </h2>
+
+      <div class="space-y-4">
+        <div class="contributor-card flex items-center gap-4 p-4">
+          <div class="relative">
+            <img src="https://c.termai.cc/i151/YU4EKRg.jpg" 
+                 class="w-16 h-16 border-3 border-gray-600"
+                 alt="Manzxy">
+            <span class="absolute -bottom-1 -right-1 w-4 h-4 bg-green-500 border-2 border-gray-800 rounded-full"></span>
+          </div>
+          <div class="flex-1">
+            <div class="text-sm font-bold">Manzxy</div>
+            <div class="text-[10px] opacity-70 mb-2">Lead Developer & Founder</div>
+            <div class="flex gap-3">
+              <a href="https://t.me/manzxyyx" target="_blank" class="text-gray-400 hover:text-blue-400 transition-colors">
+                <i class="fab fa-telegram text-lg"></i>
+              </a>
+              <a href="https://github.com/manzxy" target="_blank" class="text-gray-400 hover:text-white transition-colors">
+                <i class="fab fa-github text-lg"></i>
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <div class="mt-6 text-center">
+        <p class="text-[10px] opacity-50">✨ Special thanks to all contributors</p>
+      </div>
+    </div>
   </div>
 </div>
 
-<!-- SEARCH -->
-<input id="searchInput"
- class="w-full mc-input text-xs mb-6 px-4 py-3"
- placeholder="Search API endpoints...">
-
-<!-- API LIST -->
-<div id="apiList" class="space-y-3"></div>
-
-<footer class="mt-10 text-center text-xs opacity-60">
-© 2025 Manzxy
-</footer>
-
-</div>
-
-<!-- ================= CONTRIBUTORS ================= -->
-<div class="max-w-2xl mx-auto px-6 pb-16 mc-panel bg-bottom">
-
-<h2 class="font-mc text-xs text-center opacity-80 mb-6">
-CONTRIBUTORS
-</h2>
-
-<div class="space-y-4">
-
-<div class="mc-panel flex items-center gap-4 p-4">
-  <img src="https://c.termai.cc/i151/YU4EKRg.jpg" class="w-14 h-14">
-  <div class="flex-1">
-    <div class="text-xs">Manzxy</div>
-    <div class="text-[10px] opacity-70">Developer</div>
-  </div>
-  <a href="https://t.me/manzxyyx"><i class="fab fa-telegram"></i></a>
-  <a href="https://github.com/manzxy"><i class="fab fa-github"></i></a>
-</div>
-
-</div>
-</div>
-
-<!-- ================= SCRIPT ================= -->
+<!-- ===== SCRIPT ===== -->
 <script>
-function setTheme(mode){
-  document.body.classList.toggle('light', mode === 'light')
-  localStorage.setItem('theme', mode)
+// ===== THEME MANAGEMENT =====
+function setTheme(mode) {
+  document.body.classList.toggle('light', mode === 'light');
+  localStorage.setItem('theme', mode);
+  
+  // Update button states
+  const darkBtn = document.querySelector('[onclick="setTheme(\'dark\')"]');
+  const lightBtn = document.querySelector('[onclick="setTheme(\'light\')"]');
+  
+  if (mode === 'dark') {
+    darkBtn.style.opacity = '1';
+    lightBtn.style.opacity = '0.7';
+  } else {
+    darkBtn.style.opacity = '0.7';
+    lightBtn.style.opacity = '1';
+  }
 }
-setTheme(localStorage.getItem('theme') || 'dark')
 
-function setTheme(mode){
-  document.body.classList.toggle('light', mode === 'light')
-  localStorage.setItem('theme', mode)
-}
-setTheme(localStorage.getItem('theme') || 'dark')
+// Initialize theme
+setTheme(localStorage.getItem('theme') || 'dark');
 
+// ===== CATEGORY TOGGLE =====
 function toggleCategory(index) {
   const category = document.getElementById(`category-${index}`);
   const icon = document.getElementById(`category-icon-${index}`);
-  if (category.classList.contains('hidden')) {
-    category.classList.remove('hidden');
-    icon.textContent = 'expand_less';
-  } else {
-    category.classList.add('hidden');
-    icon.textContent = 'expand_more';
+  if (category) {
+    category.classList.toggle('hidden');
+    icon.textContent = category.classList.contains('hidden') ? 'expand_more' : 'expand_less';
   }
 }
 
+// ===== ENDPOINT TOGGLE =====
 function toggleEndpoint(catIndex, endpointIndex) {
   const endpoint = document.getElementById(`endpoint-${catIndex}-${endpointIndex}`);
   const icon = document.getElementById(`endpoint-icon-${catIndex}-${endpointIndex}`);
-  if (endpoint.classList.contains('hidden')) {
-    endpoint.classList.remove('hidden');
-    icon.textContent = 'expand_less';
-  } else {
-    endpoint.classList.add('hidden');
-    icon.textContent = 'expand_more';
+  if (endpoint) {
+    endpoint.classList.toggle('hidden');
+    icon.textContent = endpoint.classList.contains('hidden') ? 'expand_more' : 'expand_less';
   }
 }
 
+// ===== EXECUTE REQUEST =====
 async function executeRequest(event, catIndex, endpointIndex, method, path, produces) {
   event.preventDefault();
+  event.stopPropagation();
+  
   const form = document.getElementById(`form-${catIndex}-${endpointIndex}`);
   const responseDiv = document.getElementById(`response-${catIndex}-${endpointIndex}`);
   const responseContent = document.getElementById(`response-content-${catIndex}-${endpointIndex}`);
   const clearButton = document.getElementById(`clear-${catIndex}-${endpointIndex}`);
   
+  if (!form || !responseDiv || !responseContent) return;
+  
   const formData = new FormData(form);
   const params = new URLSearchParams();
+  
   for (const [key, value] of formData.entries()) {
-    if (value) params.append(key, value);
+    if (value && value.trim()) {
+      params.append(key, value.trim());
+    }
   }
 
-  const fullPath = `${path}?${params.toString()}`;
+  const fullPath = params.toString() ? `${path}?${params.toString()}` : path;
+  
   responseDiv.classList.remove('hidden');
   responseContent.innerHTML = '<div class="loader"></div>';
+  
+  // Add fade-in animation
+  responseDiv.classList.add('fade-in');
 
   try {
-    const response = await fetch(fullPath);
+    const controller = new AbortController();
+    const timeoutId = setTimeout(() => controller.abort(), 30000); // 30 second timeout
+    
+    const response = await fetch(fullPath, { signal: controller.signal });
+    clearTimeout(timeoutId);
+    
     const contentType = response.headers.get("content-type");
+    
+    let contentHtml = '';
+    
     if (contentType && contentType.includes("application/json")) {
       const data = await response.json();
-      responseContent.innerHTML = `<pre class="mc-response p-4">${JSON.stringify(data,null,2)}</pre>`;
+      contentHtml = `<pre class="mc-response p-4 rounded text-xs overflow-x-auto">${JSON.stringify(data, null, 2)}</pre>`;
     } else if (contentType && contentType.startsWith("image/")) {
       const blob = await response.blob();
       const imageUrl = URL.createObjectURL(blob);
-      responseContent.innerHTML = `<img src="${imageUrl}">`;
+      contentHtml = `<img src="${imageUrl}" class="max-w-full h-auto rounded border border-gray-700">`;
     } else {
       const text = await response.text();
-      responseContent.innerHTML = `<pre class="mc-response p-4">${text}</pre>`;
+      contentHtml = `<pre class="mc-response p-4 rounded text-xs overflow-x-auto">${escapeHtml(text)}</pre>`;
     }
+    
+    responseContent.innerHTML = contentHtml;
+    
   } catch (error) {
-    responseContent.innerHTML = `<pre class="mc-response p-4">${error}</pre>`;
+    let errorMessage = error.message;
+    if (error.name === 'AbortError') {
+      errorMessage = 'Request timeout (30s)';
+    }
+    responseContent.innerHTML = `<pre class="mc-response p-4 rounded text-xs text-red-400 border-red-500">❌ Error: ${escapeHtml(errorMessage)}</pre>`;
   }
-  clearButton.classList.remove('hidden');
+  
+  if (clearButton) {
+    clearButton.classList.remove('hidden');
+  }
 }
 
+// ===== ESCAPE HTML =====
+function escapeHtml(text) {
+  const div = document.createElement('div');
+  div.textContent = text;
+  return div.innerHTML;
+}
+
+// ===== CLEAR RESPONSE =====
 function clearResponse(catIndex, endpointIndex) {
   const responseDiv = document.getElementById(`response-${catIndex}-${endpointIndex}`);
   const responseContent = document.getElementById(`response-content-${catIndex}-${endpointIndex}`);
   const clearButton = document.getElementById(`clear-${catIndex}-${endpointIndex}`);
-  responseContent.innerHTML = '';
-  responseDiv.classList.add('hidden');
-  clearButton.classList.add('hidden');
+  
+  if (responseContent) responseContent.innerHTML = '';
+  if (responseDiv) {
+    responseDiv.classList.add('hidden');
+    responseDiv.classList.remove('fade-in');
+  }
+  if (clearButton) clearButton.classList.add('hidden');
 }
 
- async function loadApis() {
-        const apiList = document.getElementById('apiList');
-        try {
-            const response = await fetch('/assets/settings.json');
-            const data = await response.json();
-            
-            let html = '';
-            data.categories.forEach((category, catIndex) => {
-                html += `
-                <div class="category-group" data-category="${category.name}">
-                    <div class="mb-2">
-                        <div class="bg-gray-800 border border-gray-700">
-                            <button onclick="toggleCategory(${catIndex})" class="w-full px-4 py-3 text-left flex items-center justify-between hover:bg-gray-700 transition-colors duration-150">
-                                <h2 class="font-bold flex items-center">
-                                    <span class="material-icons text-lg mr-3 text-gray-400">folder</span>
-                                    <span class="truncate max-w-xs text-sm">${category.name}</span>
-                                    <span class="ml-2 text-xs text-gray-500">(${category.items.length})</span>
-                                </h2>
-                                <span class="material-icons transition-transform duration-150" id="category-icon-${catIndex}">expand_more</span>
-                            </button>
-                            
-                            <div id="category-${catIndex}" class="hidden">`;
-                
-                category.items.forEach((item, endpointIndex) => {
-                    const method = 'GET'; // Assuming all are GET for now
-                    const pathParts = item.path.split('?');
-                    const path = pathParts[0];
-                    const queryParams = new URLSearchParams(pathParts[1] || '');
-
-                    const statusClasses = {
-                        'ready': 'bg-green-500/20 text-green-400',
-                        'update': 'bg-yellow-500/20 text-yellow-400',
-                        'error': 'bg-red-500/20 text-red-400'
-                    };
-                    const statusClass = statusClasses[item.status] || 'bg-gray-600';
-
-                    html += `
-                                <div class="border-t border-gray-700 api-item" 
-                                     data-method="${method}"
-                                     data-path="${path}"
-                                     data-alias="${item.name}"
-                                     data-description="${item.desc}"
-                                     data-category="${category.name}">
-                                    <button onclick="toggleEndpoint(${catIndex}, ${endpointIndex})" class="w-full px-4 py-3 text-left flex items-center justify-between hover:bg-gray-700 transition-colors duration-150">
-                                        <div class="flex items-center min-w-0 flex-1">
-                                            <span class="inline-block px-3 py-1 text-xs font-semibold text-white mr-3 flex-shrink-0 bg-gray-600">
-                                                ${method}
-                                            </span>
-                                            <div class="flex flex-col min-w-0 flex-1">
-                                                <span class="font-semibold truncate max-w-[90%] font-mono text-sm" title="${path}">${path}</span>
-                                                <div class="flex items-center">
-                                                    <span class="text-xs text-gray-400 truncate max-w-[90%]" title="${item.name}">${item.name}</span>
-                                                    <span class="ml-2 px-2 py-0.5 text-xs rounded-full ${statusClass}">${item.status || 'ready'}</span>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <span class="material-icons transition-transform duration-150 flex-shrink-0" id="endpoint-icon-${catIndex}-${endpointIndex}">expand_more</span>
-                                    </button>
-                                    
-                                    <div id="endpoint-${catIndex}-${endpointIndex}" class="hidden bg-gray-800 p-4 border-t border-gray-700">
-                                        <div class="mb-3">
-                                            <div class="text-gray-400 text-xs">${item.desc}</div>
-                                        </div>
-                                        `;
-                    if (item.status === 'ready') {
-                        html += `
-                                            <div>
-                                                <div class="text-gray-300 font-bold text-xs mb-2 flex items-center">
-                                                    <span class="material-icons text-sm mr-1">play_arrow</span>
-                                                    TRY IT OUT
-                                                </div>
-                                                <div>
-                                                    <form id="form-${catIndex}-${endpointIndex}" onsubmit="executeRequest(event, ${catIndex}, ${endpointIndex}, '${method}', '${path}', 'application/json')">
-                                                        <div class="mb-4 space-y-2">`;
-                        if (item.params) {
-                            Object.keys(item.params).forEach(paramName => {
-                                const isRequired = !queryParams.has(paramName) || queryParams.get(paramName) === '';
-                                 html += `<div>
-                                            <label class="block text-xs font-medium text-slate-400 mb-2">${paramName} ${isRequired ? '<span class="text-red-500">*</span>' : ''}</label>
-                                            <input type="text" name="${paramName}" class="w-full px-3 py-2 border border-gray-600 text-sm focus:outline-none focus:border-indigo-500 bg-gray-700 placeholder:text-slate-500" placeholder="${item.params[paramName]}" ${isRequired ? 'required' : ''}>
-                                          </div>`;
-                            });
-                        }
-                        html += `
-                                                        </div>
-                                                        <button type="submit" class="bg-indigo-600 hover:bg-indigo-500 font-semibold text-white px-6 py-2 text-xs font-medium transition-colors duration-150">
-                                                            Execute
-                                                        </button>
-                                                        <button type="button" id="clear-${catIndex}-${endpointIndex}" onclick="clearResponse(${catIndex}, ${endpointIndex})" class="hidden bg-gray-700 border border-gray-600 hover:border-gray-500 font-semibold text-slate-300 px-6 py-2 text-xs font-medium transition-colors duration-150 ml-2">
-                                                            Clear
-                                                        </button>
-                                                    </form>
-                                                </div>
-                                            </div>`;
-                    } else {
-                        html += `<div class="text-yellow-400 text-xs p-3 bg-yellow-500/20 border border-yellow-500/30">Endpoint ini tidak dapat diuji coba saat ini.</div>`;
-                    }
-
-                    html += `
-                                        <div id="response-${catIndex}-${endpointIndex}" class="hidden mt-4">
-                                            <div class="text-gray-300 font-bold text-xs mb-2 flex items-center">
-                                                <span class="material-icons text-sm mr-1">code</span>
-                                                RESPONSE
-                                            </div>
-                                            <div class="bg-gray-900 text-white text-xs p-4 border border-gray-700">
-                                                <div class="max-h-80 overflow-auto" id="response-content-${catIndex}-${endpointIndex}"></div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>`;
-                });
-                html += `</div></div></div>`;
-            });
-            apiList.innerHTML = html;
-        } catch (error) {
-            apiList.innerHTML = '<p class="text-red-500">Failed to load API data.</p>';
-            console.error('Error loading API data:', error);
-        }
+// ===== LOAD APIS =====
+async function loadApis() {
+  const apiList = document.getElementById('apiList');
+  const resultCount = document.getElementById('resultCount');
+  
+  if (!apiList) return;
+  
+  try {
+    apiList.innerHTML = '<div class="flex justify-center py-8"><div class="loader"></div></div>';
+    
+    const response = await fetch('/assets/settings.json');
+    if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
+    
+    const data = await response.json();
+    
+    if (!data.categories || data.categories.length === 0) {
+      apiList.innerHTML = '<p class="text-center py-8 text-gray-500">No API endpoints available</p>';
+      return;
     }
     
-    // Function to load and render notifications
-    async function loadNotifications() {
-        const notificationsList = document.getElementById('notifications-list');
-        const unreadCountBadge = document.getElementById('unread-count');
-        try {
-            const response = await fetch('/notifications.json');
-            const notifications = await response.json();
-
-            notificationsList.innerHTML = ''; // Clear loader
-            let unreadCount = 0;
-
-            // Sort notifications by date, newest first
-            notifications.sort((a, b) => new Date(b.date) - new Date(a.date));
-
-            notifications.forEach(notif => {
-                if (!notif.read) {
-                    unreadCount++;
-                }
-                const notifElement = document.createElement('div');
-                notifElement.className = `bg-gray-800 border border-gray-700 p-4 text-xs ${notif.read ? 'opacity-60' : ''}`;
-                notifElement.innerHTML = `
-                    <div class="flex justify-between items-start">
-                        <div class="flex-1">
-                            <p class="font-bold text-slate-300 mb-1">${notif.title}</p>
-                            <p class="text-slate-400">${notif.message}</p>
-                        </div>
-                        <div class="flex items-center ml-4 flex-shrink-0">
-                            ${!notif.read ? '<div class="w-2 h-2 bg-green-400 rounded-full mr-2" title="Unread"></div>' : ''}
-                            <span class="text-slate-500">${new Date(notif.date).toLocaleDateString('id-ID', { year: 'numeric', month: 'short', day: 'numeric' })}</span>
-                        </div>
+    let html = '';
+    let totalEndpoints = 0;
+    
+    data.categories.forEach((category, catIndex) => {
+      if (!category.items || category.items.length === 0) return;
+      
+      totalEndpoints += category.items.length;
+      
+      html += `
+      <div class="category-group" data-category="${escapeHtml(category.name)}">
+        <div class="mc-panel overflow-hidden">
+          <button onclick="toggleCategory(${catIndex})" 
+                  class="w-full px-4 py-4 text-left flex items-center justify-between hover:bg-gray-800/50 transition-all duration-200 category-item">
+            <div class="flex items-center min-w-0 flex-1">
+              <span class="material-icons text-xl mr-3 text-gray-400">folder</span>
+              <div class="flex flex-col">
+                <h2 class="font-bold text-sm sm:text-base truncate max-w-[200px] sm:max-w-xs">${escapeHtml(category.name)}</h2>
+                <span class="text-[10px] text-gray-500">${category.items.length} endpoints</span>
+              </div>
+            </div>
+            <span class="material-icons transition-transform duration-200" id="category-icon-${catIndex}">expand_more</span>
+          </button>
+          
+          <div id="category-${catIndex}" class="hidden divide-y divide-gray-700">`;
+      
+      category.items.forEach((item, endpointIndex) => {
+        const method = 'GET';
+        const pathParts = item.path ? item.path.split('?') : ['', ''];
+        const path = pathParts[0] || '';
+        
+        const statusClass = item.status === 'ready' ? 'status-ready' : 
+                          item.status === 'update' ? 'status-update' : 
+                          item.status === 'error' ? 'status-error' : 'bg-gray-600';
+        
+        html += `
+            <div class="api-item" 
+                 data-method="${method}"
+                 data-path="${escapeHtml(path)}"
+                 data-alias="${escapeHtml(item.name || '')}"
+                 data-description="${escapeHtml(item.desc || '')}"
+                 data-category="${escapeHtml(category.name)}">
+              
+              <button onclick="toggleEndpoint(${catIndex}, ${endpointIndex})" 
+                      class="w-full px-4 py-3 text-left flex items-center justify-between hover:bg-gray-800/30 transition-all duration-200">
+                <div class="flex items-center min-w-0 flex-1 gap-3">
+                  <span class="method-get px-2 py-1 text-[10px] font-bold">${method}</span>
+                  <div class="flex flex-col min-w-0 flex-1">
+                    <span class="font-mono text-xs sm:text-sm truncate" title="${escapeHtml(path)}">${escapeHtml(path)}</span>
+                    <div class="flex items-center flex-wrap gap-2 mt-1">
+                      <span class="text-[10px] text-gray-400 truncate max-w-[150px]" title="${escapeHtml(item.name || '')}">
+                        ${escapeHtml(item.name || '')}
+                      </span>
+                      <span class="px-2 py-0.5 text-[10px] rounded-full ${statusClass}">
+                        ${escapeHtml(item.status || 'ready')}
+                      </span>
                     </div>
-                `;
-                notificationsList.appendChild(notifElement);
+                  </div>
+                </div>
+                <span class="material-icons transition-transform duration-200 ml-2" 
+                      id="endpoint-icon-${catIndex}-${endpointIndex}">expand_more</span>
+              </button>
+              
+              <div id="endpoint-${catIndex}-${endpointIndex}" class="hidden endpoint-content p-4">
+                <div class="mb-4">
+                  <div class="text-xs text-gray-400 bg-gray-800/50 p-3 rounded border border-gray-700">
+                    ${escapeHtml(item.desc || 'No description available')}
+                  </div>
+                </div>`;
+        
+        if (item.status === 'ready') {
+          html += `
+                <div>
+                  <div class="text-xs font-bold mb-3 flex items-center gap-2 text-blue-400">
+                    <span class="material-icons text-sm">play_circle</span>
+                    TEST ENDPOINT
+                  </div>
+                  
+                  <form id="form-${catIndex}-${endpointIndex}" 
+                        onsubmit="executeRequest(event, ${catIndex}, ${endpointIndex}, '${method}', '${escapeHtml(path)}', 'application/json')">
+                    
+                    <div class="space-y-3 mb-4">`;
+          
+          if (item.params) {
+            Object.entries(item.params).forEach(([paramName, paramValue]) => {
+              const isRequired = !pathParts[1] || !new URLSearchParams(pathParts[1]).has(paramName);
+              html += `
+                      <div>
+                        <label class="block text-xs font-medium text-gray-400 mb-1 flex items-center gap-1">
+                          <span class="material-icons text-xs">settings_ethernet</span>
+                          ${escapeHtml(paramName)}
+                          ${isRequired ? '<span class="text-red-500 text-[10px]">*required</span>' : ''}
+                        </label>
+                        <input type="text" 
+                               name="${escapeHtml(paramName)}" 
+                               class="w-full mc-input px-3 py-2 text-xs" 
+                               placeholder="${escapeHtml(paramValue)}" 
+                               ${isRequired ? 'required' : ''}>
+                      </div>`;
             });
-
-            if (unreadCount > 0) {
-                unreadCountBadge.textContent = `${unreadCount} Belum dibaca`;
-                unreadCountBadge.classList.remove('hidden');
-            }
-
-        } catch (error) {
-            notificationsList.innerHTML = '<p class="text-red-500 text-xs">Gagal memuat notifikasi.</p>';
-            console.error('Error loading notifications:', error);
-        }
-    }
-
-    // Search functionality
-    document.getElementById('searchInput').addEventListener('input', function() {
-        const searchTerm = this.value.toLowerCase();
-        const apiItems = document.querySelectorAll('.api-item');
-        const categories = document.querySelectorAll('.category-group');
-        const noResults = document.getElementById('noResults');
-        let visibleCount = 0;
-
-        apiItems.forEach(item => {
-            const path = item.dataset.path.toLowerCase();
-            const alias = item.dataset.alias.toLowerCase();
-            const description = item.dataset.description.toLowerCase();
-            
-            if (path.includes(searchTerm) || alias.includes(searchTerm) || description.includes(searchTerm)) {
-                item.style.display = '';
-                visibleCount++;
-            } else {
-                item.style.display = 'none';
-            }
-        });
-
-        categories.forEach(category => {
-            const visibleItems = category.querySelectorAll('.api-item[style=""]');
-            if (visibleItems.length > 0) {
-                category.style.display = '';
-            } else {
-                category.style.display = 'none';
-            }
-        });
-
-        if (visibleCount === 0) {
-            noResults.style.display = 'block';
+          }
+          
+          html += `
+                    </div>
+                    
+                    <div class="flex flex-wrap gap-2">
+                      <button type="submit" 
+                              class="bg-indigo-600 hover:bg-indigo-500 text-white px-6 py-2.5 text-xs font-bold 
+                                     transition-all duration-200 border-2 border-indigo-700 hover:border-indigo-600
+                                     flex items-center gap-2">
+                        <span class="material-icons text-sm">send</span>
+                        EXECUTE
+                      </button>
+                      <button type="button" 
+                              id="clear-${catIndex}-${endpointIndex}" 
+                              onclick="clearResponse(${catIndex}, ${endpointIndex})" 
+                              class="hidden bg-gray-700 hover:bg-gray-600 border-2 border-gray-600 
+                                     text-gray-200 px-6 py-2.5 text-xs font-bold transition-all duration-200
+                                     flex items-center gap-2">
+                        <span class="material-icons text-sm">clear</span>
+                        CLEAR
+                      </button>
+                    </div>
+                  </form>
+                </div>`;
         } else {
-            noResults.style.display = 'none';
+          html += `
+                <div class="bg-yellow-500/10 border border-yellow-500/30 p-4 rounded">
+                  <div class="flex items-center gap-2 text-yellow-400">
+                    <span class="material-icons text-sm">warning</span>
+                    <span class="text-xs font-bold">ENDPOINT UNAVAILABLE</span>
+                  </div>
+                  <p class="text-xs text-gray-400 mt-1">This endpoint cannot be tested at the moment.</p>
+                </div>`;
         }
+        
+        html += `
+                <div id="response-${catIndex}-${endpointIndex}" class="hidden mt-4">
+                  <div class="text-xs font-bold mb-2 flex items-center gap-2 text-green-400">
+                    <span class="material-icons text-sm">code</span>
+                    RESPONSE
+                  </div>
+                  <div id="response-content-${catIndex}-${endpointIndex}" 
+                       class="bg-gray-950 border border-gray-800 rounded overflow-hidden">
+                  </div>
+                </div>
+              </div>
+            </div>`;
+      });
+      
+      html += `
+          </div>
+        </div>
+      </div>`;
     });
+    
+    apiList.innerHTML = html;
+    
+    // Update result count
+    if (resultCount) {
+      resultCount.textContent = `${totalEndpoints} endpoints`;
+    }
+    
+  } catch (error) {
+    console.error('Error loading API data:', error);
+    apiList.innerHTML = `
+      <div class="bg-red-500/10 border border-red-500/30 p-6 rounded text-center">
+        <span class="material-icons text-3xl text-red-500 mb-2">error</span>
+        <p class="text-red-500 text-sm font-bold">Failed to load API data</p>
+        <p class="text-xs text-gray-400 mt-1">${escapeHtml(error.message)}</p>
+        <button onclick="loadApis()" class="mt-4 mc-btn-clear px-4 py-2 text-xs">
+          <span class="material-icons text-sm mr-1">refresh</span>
+          RETRY
+        </button>
+      </div>`;
+  }
+}
 
+// ===== SEARCH FUNCTIONALITY =====
+function setupSearch() {
+  const searchInput = document.getElementById('searchInput');
+  if (!searchInput) return;
+  
+  let searchTimeout;
+  
+  searchInput.addEventListener('input', function() {
+    clearTimeout(searchTimeout);
+    
+    searchTimeout = setTimeout(() => {
+      const searchTerm = this.value.toLowerCase().trim();
+      const apiItems = document.querySelectorAll('.api-item');
+      const categories = document.querySelectorAll('.category-group');
+      const noResults = document.getElementById('noResults');
+      const resultCount = document.getElementById('resultCount');
+      
+      let visibleCount = 0;
+      
+      apiItems.forEach(item => {
+        const path = (item.dataset.path || '').toLowerCase();
+        const alias = (item.dataset.alias || '').toLowerCase();
+        const description = (item.dataset.description || '').toLowerCase();
+        const category = (item.dataset.category || '').toLowerCase();
+        
+        const matches = searchTerm === '' || 
+                       path.includes(searchTerm) || 
+                       alias.includes(searchTerm) || 
+                       description.includes(searchTerm) ||
+                       category.includes(searchTerm);
+        
+        item.style.display = matches ? '' : 'none';
+        if (matches) visibleCount++;
+      });
+      
+      categories.forEach(category => {
+        const visibleItems = Array.from(category.querySelectorAll('.api-item'))
+          .filter(item => item.style.display !== 'none');
+        
+        category.style.display = visibleItems.length > 0 ? '' : 'none';
+      });
+      
+      if (noResults) {
+        noResults.style.display = searchTerm !== '' && visibleCount === 0 ? 'block' : 'none';
+      }
+      
+      if (resultCount) {
+        resultCount.textContent = searchTerm === '' 
+          ? `${apiItems.length} endpoints` 
+          : `${visibleCount} endpoints found`;
+      }
+    }, 300); // Debounce search
+  });
+}
 
-    // Initial load
-    document.addEventListener('DOMContentLoaded', () => {
-        loadApis();
-        loadNotifications();
-    });
+// ===== INITIALIZATION =====
+document.addEventListener('DOMContentLoaded', () => {
+  loadApis();
+  setupSearch();
+});
 
+// Prevent duplicate function declarations
+window.setTheme = setTheme;
+window.toggleCategory = toggleCategory;
+window.toggleEndpoint = toggleEndpoint;
+window.executeRequest = executeRequest;
+window.clearResponse = clearResponse;
 </script>
 
 </body>
-</h
+</html>
