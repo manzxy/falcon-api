@@ -33,8 +33,6 @@
   --warning-soft: #fed7aa;
   --error: #ef4444;
   --error-soft: #fee2e2;
-  --info: #3b82f6;
-  --info-soft: #dbeafe;
   --code-bg: #0f172a;
   --code-text: #e2e8f0;
   --shadow-sm: 0 1px 2px rgba(0,0,0,0.02);
@@ -63,8 +61,6 @@
   --warning-soft: #713f12;
   --error: #ef4444;
   --error-soft: #7f1d1d;
-  --info: #3b82f6;
-  --info-soft: #1e3a5f;
   --code-bg: #030712;
   --code-text: #e2e8f0;
   --shadow-sm: 0 1px 2px rgba(0,0,0,0.3);
@@ -166,36 +162,11 @@ body {
   box-shadow: var(--shadow);
   transition: all 0.2s ease;
   overflow: hidden;
-  backdrop-filter: blur(8px);
 }
 
 .modern-card:hover {
   border-color: var(--border-strong);
   box-shadow: var(--shadow-lg);
-}
-
-/* ===== NOTIFICATION CARD ===== */
-.notification-card {
-  background: linear-gradient(145deg, var(--surface), var(--card));
-  border-left: 4px solid;
-  border-radius: var(--radius-sm);
-  padding: 16px 20px;
-  margin-bottom: 12px;
-  transition: all 0.2s;
-}
-
-.notification-card:hover {
-  transform: translateX(4px);
-}
-
-.notification-unread {
-  border-left-color: var(--accent);
-  background: linear-gradient(145deg, var(--accent-soft), var(--surface));
-}
-
-.notification-read {
-  border-left-color: var(--border);
-  opacity: 0.8;
 }
 
 /* ===== SEARCH INPUT ===== */
@@ -242,7 +213,6 @@ body {
   letter-spacing: 0.5px;
   text-transform: uppercase;
   box-shadow: 0 4px 10px -2px rgba(37, 99, 235, 0.3);
-  border: 1px solid rgba(255, 255, 255, 0.2);
 }
 
 /* ===== STATUS BADGE ===== */
@@ -268,12 +238,6 @@ body {
   background: var(--warning-soft);
   color: var(--warning);
   border-color: var(--warning);
-}
-
-.status-error {
-  background: var(--error-soft);
-  color: var(--error);
-  border-color: var(--error);
 }
 
 /* ===== CATEGORY HEADER ===== */
@@ -316,7 +280,6 @@ body {
   font-weight: 600;
   color: var(--accent);
   margin-bottom: 6px;
-  letter-spacing: -0.3px;
 }
 
 .endpoint-name {
@@ -379,33 +342,6 @@ body {
   overflow-y: auto;
 }
 
-/* ===== CONTRIBUTOR CARD ===== */
-.contributor-card {
-  display: flex;
-  align-items: center;
-  gap: 20px;
-  padding: 20px;
-  background: var(--surface);
-  border: 1px solid var(--border);
-  border-radius: 20px;
-  transition: all 0.2s;
-}
-
-.contributor-card:hover {
-  transform: translateY(-4px);
-  border-color: var(--accent);
-  box-shadow: 0 12px 24px -8px rgba(37, 99, 235, 0.2);
-}
-
-.avatar {
-  width: 64px;
-  height: 64px;
-  border-radius: 18px;
-  object-fit: cover;
-  border: 3px solid var(--accent);
-  background: white;
-}
-
 /* ===== STATS BADGE ===== */
 .stats-badge {
   display: inline-flex;
@@ -418,93 +354,6 @@ body {
   font-weight: 600;
   color: var(--text-secondary);
   gap: 8px;
-}
-
-/* ===== LOADER ===== */
-.loader {
-  width: 40px;
-  height: 40px;
-  border: 3px solid var(--border);
-  border-radius: 50%;
-  border-top-color: var(--accent);
-  animation: spin 0.8s linear infinite;
-  margin: 30px auto;
-}
-
-@keyframes spin {
-  to { transform: rotate(360deg); }
-}
-
-/* ===== ANIMATIONS ===== */
-@keyframes fadeSlide {
-  from {
-    opacity: 0;
-    transform: translateY(-10px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-@keyframes pulse {
-  0%, 100% { transform: scale(1); }
-  50% { transform: scale(1.05); }
-}
-
-.animate-fade {
-  animation: fadeSlide 0.25s ease;
-}
-
-.animate-pulse {
-  animation: pulse 2s infinite;
-}
-
-/* ===== NO RESULTS ===== */
-.no-results {
-  text-align: center;
-  padding: 60px 20px;
-  background: var(--surface);
-  border: 2px dashed var(--border);
-  border-radius: 24px;
-  color: var(--text-tertiary);
-}
-
-/* ===== FORM INPUT ===== */
-.modern-input {
-  width: 100%;
-  padding: 12px 16px;
-  background: var(--surface);
-  border: 2px solid var(--border);
-  border-radius: 12px;
-  color: var(--text-primary);
-  font-size: 14px;
-  transition: all 0.2s;
-}
-
-.modern-input:focus {
-  outline: none;
-  border-color: var(--accent);
-  box-shadow: 0 0 0 3px var(--accent-soft);
-}
-
-/* ===== NOTIFICATION BADGE ===== */
-.notification-badge {
-  position: relative;
-  display: inline-flex;
-}
-
-.notification-count {
-  position: absolute;
-  top: -8px;
-  right: -8px;
-  background: linear-gradient(145deg, #ef4444, #dc2626);
-  color: white;
-  font-size: 10px;
-  font-weight: 700;
-  padding: 2px 6px;
-  border-radius: 12px;
-  border: 2px solid var(--card);
 }
 
 /* ===== GITHUB CARD ===== */
@@ -523,6 +372,75 @@ body {
   border-color: var(--accent);
   transform: translateY(-2px);
 }
+
+/* ===== FILE CARD ===== */
+.file-card {
+  padding: 12px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  transition: all 0.2s;
+}
+
+.file-card:hover {
+  border-color: var(--accent);
+  background: var(--surface-hover);
+}
+
+/* ===== LOADING SKELETON ===== */
+.skeleton {
+  background: linear-gradient(90deg, var(--border) 25%, var(--border-strong) 50%, var(--border) 75%);
+  background-size: 200% 100%;
+  animation: loading 1.5s infinite;
+}
+
+@keyframes loading {
+  0% { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
+}
+
+/* ===== ANIMATIONS ===== */
+@keyframes fadeSlide {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.5; }
+}
+
+.animate-fade {
+  animation: fadeSlide 0.25s ease;
+}
+
+.animate-pulse {
+  animation: pulse 2s infinite;
+}
+
+/* ===== LOADER ===== */
+.loader {
+  width: 40px;
+  height: 40px;
+  border: 3px solid var(--border);
+  border-radius: 50%;
+  border-top-color: var(--accent);
+  animation: spin 0.8s linear infinite;
+  margin: 30px auto;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
 </style>
 </head>
 
@@ -534,7 +452,7 @@ body {
   <div class="modern-card p-6">
     <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-6">
       <div class="flex items-center gap-4">
-        <div class="w-12 h-12 bg-gradient-to-br from-blue-500 to-blue-600 rounded-2xl flex items-center justify-center shadow-lg shadow-blue-500/30">
+        <div class="w-12 h-12 bg-gradient-to-br from-blue-500 to-blue-600 rounded-2xl flex items-center justify-center shadow-lg">
           <span class="material-icons text-2xl text-white">bolt</span>
         </div>
         <div>
@@ -542,68 +460,40 @@ body {
             <h1 class="text-2xl sm:text-3xl font-extrabold bg-gradient-to-r from-blue-600 via-indigo-600 to-purple-600 bg-clip-text text-transparent">
               MANZXY API
             </h1>
-            <span id="apiStatus" class="px-2 py-1 bg-green-100 dark:bg-green-900/30 text-green-600 dark:text-green-400 text-xs font-bold rounded-full border border-green-500 animate-pulse">
+            <span id="apiStatus" class="px-3 py-1 bg-green-100 dark:bg-green-900/30 text-green-600 dark:text-green-400 text-xs font-bold rounded-full border border-green-500 animate-pulse">
               ● ONLINE
             </span>
           </div>
           <p id="apiDescription" class="text-sm text-gray-500 dark:text-gray-400 mt-1">
-            simple and powerful tools API and easy to use
+            Loading...
           </p>
         </div>
       </div>
       
-      <div class="flex items-center gap-4">
-        <!-- Notifications Bell -->
-        <div class="notification-badge">
-          <button id="notificationToggle" class="p-2 hover:bg-surface-hover rounded-full transition-all">
-            <span class="material-icons text-2xl text-gray-600 dark:text-gray-400">notifications</span>
-          </button>
-          <span id="unreadCount" class="notification-count hidden">0</span>
-        </div>
-        
-        <!-- Theme Toggle -->
-        <button id="themeToggle" class="theme-toggle">
-          <span class="slider">
-            <i class="fas fa-sun"></i>
-          </span>
-        </button>
-      </div>
+      <!-- Theme Toggle -->
+      <button id="themeToggle" class="theme-toggle">
+        <span class="slider">
+          <i class="fas fa-sun"></i>
+        </span>
+      </button>
     </div>
 
-    <!-- API Info -->
+    <!-- API Info Stats -->
     <div class="flex flex-wrap items-center gap-4 mt-6 pt-4 border-t border-gray-200 dark:border-gray-700">
       <div class="stats-badge">
-        <span class="material-icons text-blue-500 text-sm">verified</span>
-        <span id="apiCreator">Manzxy</span>
+        <span class="material-icons text-blue-500 text-sm">person</span>
+        <span id="apiCreator">-</span>
         <span class="text-gray-400">Creator</span>
       </div>
       <div class="stats-badge">
         <span class="material-icons text-purple-500 text-sm">vpn_key</span>
-        <span id="apiKey">elainachan</span>
+        <span id="apiKey">-</span>
         <span class="text-gray-400">API Key</span>
       </div>
       <div class="stats-badge">
         <span class="material-icons text-green-500 text-sm">update</span>
-        <span id="lastCommit">19 minutes ago</span>
+        <span>19 minutes ago</span>
         <span class="text-gray-400">Updated</span>
-      </div>
-    </div>
-  </div>
-
-  <!-- ===== NOTIFICATIONS PANEL ===== -->
-  <div id="notificationsPanel" class="modern-card p-6 hidden animate-fade">
-    <div class="flex items-center justify-between mb-4">
-      <div class="flex items-center gap-2">
-        <span class="material-icons text-blue-500">notifications_active</span>
-        <h2 class="font-bold text-lg">Notifications</h2>
-      </div>
-      <button id="markAllRead" class="text-xs text-blue-500 hover:text-blue-600 font-semibold">
-        MARK ALL READ
-      </button>
-    </div>
-    <div id="notificationsList" class="space-y-2 max-h-96 overflow-y-auto pr-2">
-      <div class="flex justify-center py-8">
-        <div class="loader"></div>
       </div>
     </div>
   </div>
@@ -624,14 +514,8 @@ body {
     <div class="flex flex-wrap items-center justify-between gap-4 mt-4">
       <div class="flex flex-wrap items-center gap-2">
         <span class="text-xs text-gray-500">🔥 Populer:</span>
-        <span class="px-3 py-1.5 bg-blue-50 dark:bg-blue-900/20 text-blue-600 dark:text-blue-400 rounded-full text-xs font-medium border border-blue-200 dark:border-blue-800">
-          /ai/openai
-        </span>
-        <span class="px-3 py-1.5 bg-purple-50 dark:bg-purple-900/20 text-purple-600 dark:text-purple-400 rounded-full text-xs font-medium border border-purple-200 dark:border-purple-800">
-          /ai/gemini-web
-        </span>
-        <span class="px-3 py-1.5 bg-green-50 dark:bg-green-900/20 text-green-600 dark:text-green-400 rounded-full text-xs font-medium border border-green-200 dark:border-green-800">
-          /ai/webpilot
+        <span id="popularTags" class="flex flex-wrap gap-2">
+          <span class="px-3 py-1.5 bg-gray-200 dark:bg-gray-700 rounded-full text-xs">Loading...</span>
         </span>
       </div>
       <span id="resultCount" class="text-sm font-semibold text-blue-600 dark:text-blue-400">
@@ -641,34 +525,41 @@ body {
   </div>
 
   <!-- ===== API LIST ===== -->
-  <div id="apiList" class="space-y-4"></div>
+  <div id="apiList" class="space-y-4">
+    <!-- Loading Skeleton -->
+    <div class="modern-card p-6">
+      <div class="flex items-center justify-center py-12">
+        <div class="loader"></div>
+      </div>
+    </div>
+  </div>
   
   <!-- ===== NO RESULTS ===== -->
-  <div id="noResults" class="no-results hidden animate-fade">
+  <div id="noResults" class="hidden text-center p-12 bg-surface border-2 border-dashed border-border rounded-2xl">
     <div class="text-6xl mb-4">🔍</div>
     <h3 class="text-xl font-bold mb-2">Tidak Ditemukan</h3>
     <p class="text-gray-500">Coba gunakan kata kunci lain</p>
   </div>
 
-  <!-- ===== GITHUB REPO INFO ===== -->
+  <!-- ===== REPOSITORY SECTION ===== -->
   <div class="modern-card p-6">
-    <div class="flex items-center gap-3 mb-4">
+    <div class="flex items-center gap-3 mb-6">
       <span class="material-icons text-gray-600 dark:text-gray-400">code</span>
       <h2 class="font-bold text-lg">Repository</h2>
     </div>
     
-    <div class="github-card">
-      <div class="p-2 bg-gray-900 rounded-xl">
+    <div class="github-card mb-6">
+      <div class="p-2.5 bg-gray-900 rounded-xl">
         <i class="fab fa-github text-2xl text-white"></i>
       </div>
       <div class="flex-1">
         <div class="flex items-center gap-2">
-          <span class="font-bold text-sm">manzxy/falcon-api</span>
-          <span class="px-2 py-0.5 bg-gray-200 dark:bg-gray-700 text-xs rounded-full">main</span>
+          <span class="font-bold text-base">manzxy/falcon-api</span>
+          <span class="px-2 py-0.5 bg-gray-200 dark:bg-gray-700 text-xs rounded-full font-medium">main</span>
         </div>
         <div class="flex items-center gap-4 mt-2 text-xs text-gray-500">
           <span class="flex items-center gap-1">
-            <span class="material-icons text-sm">commit</span>
+            <span class="material-icons text-sm">merge</span>
             49 commits ahead
           </span>
           <span class="flex items-center gap-1">
@@ -678,82 +569,39 @@ body {
         </div>
       </div>
       <a href="https://github.com/manzxy/falcon-api/tree/main" target="_blank" 
-         class="px-4 py-2 bg-gray-900 text-white text-xs font-bold rounded-xl hover:bg-gray-800 transition-all flex items-center gap-2">
+         class="px-5 py-2.5 bg-gray-900 text-white text-xs font-bold rounded-xl hover:bg-gray-800 transition-all flex items-center gap-2">
         <i class="fab fa-github"></i>
         VIEW
       </a>
     </div>
     
-    <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 mt-4">
-      <div class="p-3 bg-surface rounded-xl border border-border text-center">
+    <div class="grid grid-cols-2 sm:grid-cols-4 gap-3">
+      <div class="file-card">
         <span class="material-icons text-blue-500 text-sm">description</span>
-        <span class="text-xs font-medium block mt-1">index.html</span>
-        <span class="text-[10px] text-gray-500">19m ago</span>
+        <div class="flex-1 min-w-0">
+          <div class="text-xs font-medium truncate">index.html</div>
+          <div class="text-[10px] text-gray-500">19m ago</div>
+        </div>
       </div>
-      <div class="p-3 bg-surface rounded-xl border border-border text-center">
+      <div class="file-card">
         <span class="material-icons text-yellow-500 text-sm">notification_important</span>
-        <span class="text-xs font-medium block mt-1">notifications.json</span>
-        <span class="text-[10px] text-gray-500">2mo ago</span>
+        <div class="flex-1 min-w-0">
+          <div class="text-xs font-medium truncate">notifications.json</div>
+          <div class="text-[10px] text-gray-500">2mo ago</div>
+        </div>
       </div>
-      <div class="p-3 bg-surface rounded-xl border border-border text-center">
+      <div class="file-card">
         <span class="material-icons text-red-500 text-sm">error</span>
-        <span class="text-xs font-medium block mt-1">404.html</span>
-        <span class="text-[10px] text-gray-500">5mo ago</span>
+        <div class="flex-1 min-w-0">
+          <div class="text-xs font-medium truncate">404.html</div>
+          <div class="text-[10px] text-gray-500">5mo ago</div>
+        </div>
       </div>
-      <div class="p-3 bg-surface rounded-xl border border-border text-center">
+      <div class="file-card">
         <span class="material-icons text-purple-500 text-sm">warning</span>
-        <span class="text-xs font-medium block mt-1">500.html</span>
-        <span class="text-[10px] text-gray-500">5mo ago</span>
-      </div>
-    </div>
-  </div>
-
-  <!-- ===== CONTRIBUTORS ===== -->
-  <div class="modern-card p-8">
-    <div class="text-center mb-8">
-      <div class="inline-flex p-3 bg-gradient-to-br from-blue-500 to-purple-600 rounded-2xl mb-4 shadow-lg">
-        <span class="material-icons text-2xl text-white">people</span>
-      </div>
-      <h2 class="text-2xl font-extrabold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent mb-2">
-        CONTRIBUTORS
-      </h2>
-      <p class="text-gray-500">Special thanks to our amazing contributors</p>
-    </div>
-
-    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-      <!-- Manzxy -->
-      <div class="contributor-card">
-        <img src="https://c.termai.cc/i151/YU4EKRg.jpg" class="avatar" alt="Manzxy">
-        <div class="flex-1">
-          <h3 class="text-lg font-bold">Manzxy</h3>
-          <p class="text-sm text-gray-500 mb-3">Lead Developer & Founder</p>
-          <div class="flex gap-4">
-            <a href="https://t.me/manzxyyx" target="_blank" class="text-gray-500 hover:text-blue-500 transition-all hover:scale-110">
-              <i class="fab fa-telegram text-xl"></i>
-            </a>
-            <a href="https://github.com/manzxy" target="_blank" class="text-gray-500 hover:text-gray-900 dark:hover:text-white transition-all hover:scale-110">
-              <i class="fab fa-github text-xl"></i>
-            </a>
-          </div>
-        </div>
-      </div>
-      
-      <!-- FlowFalcon -->
-      <div class="contributor-card">
-        <div class="avatar bg-gradient-to-br from-blue-600 to-purple-600 flex items-center justify-center">
-          <span class="text-white text-2xl font-bold">FF</span>
-        </div>
-        <div class="flex-1">
-          <h3 class="text-lg font-bold">FlowFalcon</h3>
-          <p class="text-sm text-gray-500 mb-3">AI Developer</p>
-          <div class="flex gap-4">
-            <a href="#" class="text-gray-500 hover:text-blue-500 transition-all hover:scale-110">
-              <i class="fab fa-telegram text-xl"></i>
-            </a>
-            <a href="#" class="text-gray-500 hover:text-gray-900 dark:hover:text-white transition-all hover:scale-110">
-              <i class="fab fa-github text-xl"></i>
-            </a>
-          </div>
+        <div class="flex-1 min-w-0">
+          <div class="text-xs font-medium truncate">500.html</div>
+          <div class="text-[10px] text-gray-500">5mo ago</div>
         </div>
       </div>
     </div>
@@ -765,7 +613,7 @@ body {
       © 2025 Manzxy APIs · Open Source · Free to use
     </p>
     <div class="flex items-center justify-center gap-4 text-xs text-gray-400">
-      <span>Version <span id="apiVersion">v1.0.0</span></span>
+      <span id="footerVersion">Version v1.0.0</span>
       <span>•</span>
       <span>GET only</span>
       <span>•</span>
@@ -777,8 +625,6 @@ body {
 <script>
 // ===== GLOBAL STATE =====
 let apiData = null;
-let notifications = [];
-let unreadCount = 0;
 
 // ===== THEME MANAGEMENT =====
 function initTheme() {
@@ -810,43 +656,303 @@ function initTheme() {
   });
 }
 
-// ===== LOAD API SETTINGS =====
+// ===== FETCH SETTINGS.JSON =====
 async function loadApiSettings() {
   try {
+    // Tampilkan loading state
+    document.getElementById('apiList').innerHTML = `
+      <div class="modern-card p-8">
+        <div class="flex flex-col items-center justify-center py-12">
+          <div class="loader"></div>
+          <p class="text-sm text-gray-500 mt-4">Memuat endpoints dari settings.json...</p>
+        </div>
+      </div>
+    `;
+    
+    // Fetch settings.json
     const response = await fetch('/assets/settings.json');
-    if (!response.ok) throw new Error('Failed to load settings');
+    
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
     
     const data = await response.json();
     apiData = data;
     
-    // Update header info
-    document.getElementById('apiDescription').textContent = data.description || 'simple and powerful tools API and easy to use';
-    document.getElementById('apiCreator').textContent = data.apiSettings?.creator || 'Manzxy';
-    document.getElementById('apiKey').textContent = data.apiSettings?.apikey?.[0] || 'elainachan';
-    document.getElementById('apiVersion').textContent = data.version || 'v1.0.0';
-    
-    // Update status
-    if (data.header?.status?.toLowerCase().includes('online')) {
-      document.getElementById('apiStatus').innerHTML = '● ONLINE';
-      document.getElementById('apiStatus').className = 'px-2 py-1 bg-green-100 dark:bg-green-900/30 text-green-600 dark:text-green-400 text-xs font-bold rounded-full border border-green-500 animate-pulse';
-    }
-    
-    // Load categories
-    loadCategories();
+    // Update UI dengan data dari settings.json
+    updateUIWithData(data);
     
   } catch (error) {
-    console.error('Error loading API settings:', error);
-    // Use fallback data
+    console.error('Error loading settings.json:', error);
+    
+    // Fallback ke sample data jika file tidak ditemukan
     useFallbackData();
   }
 }
 
-// ===== FALLBACK DATA =====
+// ===== UPDATE UI DENGAN DATA DARI SETTINGS.JSON =====
+function updateUIWithData(data) {
+  // Update header
+  document.getElementById('apiDescription').textContent = 
+    data.description || 'simple and powerful tools API and easy to use';
+  
+  document.getElementById('apiCreator').textContent = 
+    data.apiSettings?.creator || 'Manzxy';
+  
+  document.getElementById('apiKey').textContent = 
+    data.apiSettings?.apikey?.[0] || 'elainachan';
+  
+  document.getElementById('footerVersion').textContent = 
+    `Version ${data.version || 'v1.0.0'}`;
+  
+  // Update status
+  if (data.header?.status?.toLowerCase().includes('online')) {
+    document.getElementById('apiStatus').innerHTML = '● ONLINE';
+    document.getElementById('apiStatus').className = 'px-3 py-1 bg-green-100 dark:bg-green-900/30 text-green-600 dark:text-green-400 text-xs font-bold rounded-full border border-green-500 animate-pulse';
+  }
+  
+  // Render categories
+  renderCategories(data.categories || []);
+  
+  // Update popular tags
+  updatePopularTags(data.categories || []);
+  
+  // Update result count
+  const totalEndpoints = countTotalEndpoints(data.categories || []);
+  document.getElementById('resultCount').textContent = `${totalEndpoints} endpoints`;
+}
+
+// ===== RENDER CATEGORIES DARI DATA =====
+function renderCategories(categories) {
+  const apiList = document.getElementById('apiList');
+  
+  if (!categories || categories.length === 0) {
+    apiList.innerHTML = `
+      <div class="modern-card p-8 text-center">
+        <span class="material-icons text-4xl text-gray-400 mb-2">folder_off</span>
+        <p class="text-gray-500">Tidak ada endpoint tersedia</p>
+      </div>
+    `;
+    return;
+  }
+  
+  let html = '';
+  
+  categories.forEach((category, catIndex) => {
+    html += `
+    <div class="modern-card overflow-hidden">
+      <div class="category-header" onclick="toggleCategory(${catIndex})">
+        <div class="flex items-center gap-3">
+          <span class="material-icons text-blue-500">${getCategoryIcon(category.name)}</span>
+          <div>
+            <h3 class="font-bold text-base sm:text-lg">${escapeHtml(category.name)}</h3>
+            <span class="text-xs text-gray-500">${category.items?.length || 0} endpoints</span>
+          </div>
+        </div>
+        <span class="material-icons text-gray-500 transition-transform duration-300" id="category-icon-${catIndex}">expand_more</span>
+      </div>
+      
+      <div id="category-${catIndex}" class="hidden divide-y divide-gray-100 dark:divide-gray-800">`;
+    
+    if (category.items && category.items.length > 0) {
+      category.items.forEach((item, endpointIndex) => {
+        // Parse path
+        let basePath = item.path || '';
+        if (basePath.includes('?')) {
+          basePath = basePath.split('?')[0];
+        }
+        
+        html += `
+        <div class="api-item" 
+             data-path="${escapeHtml(basePath)}"
+             data-alias="${escapeHtml(item.name || '')}"
+             data-description="${escapeHtml(item.desc || '')}">
+          
+          <div class="endpoint-item" onclick="toggleEndpoint(${catIndex}, ${endpointIndex})">
+            <div class="flex items-start justify-between">
+              <div class="flex items-start gap-4 flex-1">
+                <span class="method-badge">GET</span>
+                <div class="flex-1 min-w-0">
+                  <div class="endpoint-path truncate" title="${escapeHtml(basePath)}">
+                    ${escapeHtml(basePath)}
+                  </div>
+                  <div class="endpoint-name truncate">
+                    ${escapeHtml(item.name || '')}
+                  </div>
+                </div>
+              </div>
+              <div class="flex items-center gap-3">
+                <span class="status-badge status-${item.status || 'ready'}">
+                  ${item.status === 'ready' ? '● READY' : '⚡ UPDATE'}
+                </span>
+                <span class="material-icons text-gray-500 transition-transform duration-300" 
+                      id="endpoint-icon-${catIndex}-${endpointIndex}">expand_more</span>
+              </div>
+            </div>
+          </div>
+          
+          <div id="endpoint-${catIndex}-${endpointIndex}" class="hidden p-6 bg-gray-50 dark:bg-gray-800/50 border-t border-gray-200 dark:border-gray-700 animate-fade">
+            <div class="mb-6 p-4 bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700">
+              <div class="flex items-center gap-2 mb-2">
+                <span class="material-icons text-blue-500 text-sm">info</span>
+                <span class="font-semibold text-xs">DESCRIPTION</span>
+              </div>
+              <p class="text-sm text-gray-600 dark:text-gray-300">${escapeHtml(item.desc || 'No description')}</p>
+            </div>`;
+        
+        if (item.status === 'ready') {
+          html += `
+            <div class="mb-6">
+              <div class="flex items-center gap-2 mb-4">
+                <span class="material-icons text-green-500">play_circle</span>
+                <span class="font-semibold text-sm">TEST ENDPOINT</span>
+              </div>
+              
+              <form id="form-${catIndex}-${endpointIndex}" onsubmit="executeRequest(event, ${catIndex}, ${endpointIndex}, 'GET', '${escapeHtml(basePath)}')">
+                <div class="space-y-4 mb-4">`;
+          
+          // Generate form fields dari params
+          if (item.params) {
+            Object.entries(item.params).forEach(([key, val]) => {
+              html += `
+                  <div>
+                    <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                      ${escapeHtml(key)}
+                      <span class="text-red-500 text-xs ml-1">*</span>
+                    </label>
+                    <input type="text" 
+                           name="${escapeHtml(key)}"
+                           class="modern-input"
+                           placeholder="${escapeHtml(val)}"
+                           value="${key === 'text' ? 'hai' : ''}"
+                           required>
+                  </div>`;
+            });
+          }
+          
+          html += `
+                </div>
+                
+                <div class="flex flex-wrap gap-3">
+                  <button type="submit" class="btn-modern btn-primary">
+                    <span class="material-icons text-sm">send</span>
+                    EXECUTE
+                  </button>
+                  <button type="button" 
+                          id="clear-${catIndex}-${endpointIndex}"
+                          onclick="clearResponse(${catIndex}, ${endpointIndex})"
+                          class="btn-modern btn-secondary hidden">
+                    <span class="material-icons text-sm">clear</span>
+                    CLEAR
+                  </button>
+                </div>
+              </form>
+            </div>`;
+        } else {
+          html += `
+            <div class="p-5 bg-yellow-50 dark:bg-yellow-900/20 border border-yellow-200 dark:border-yellow-800 rounded-xl">
+              <div class="flex items-center gap-3 text-yellow-600 dark:text-yellow-400 mb-2">
+                <span class="material-icons">construction</span>
+                <span class="font-semibold text-sm">UNDER MAINTENANCE</span>
+              </div>
+              <p class="text-sm text-gray-600 dark:text-gray-400">
+                Endpoint ini sedang dalam pengembangan. Silakan coba lagi nanti.
+              </p>
+            </div>`;
+        }
+        
+        html += `
+            <div id="response-${catIndex}-${endpointIndex}" class="hidden mt-6">
+              <div class="flex items-center gap-2 mb-3">
+                <span class="material-icons text-green-500">code</span>
+                <span class="font-semibold text-sm text-green-600 dark:text-green-400">RESPONSE</span>
+              </div>
+              <div id="response-content-${catIndex}-${endpointIndex}" class="response-box"></div>
+            </div>
+          </div>
+        </div>`;
+      });
+    }
+    
+    html += `</div></div>`;
+  });
+  
+  apiList.innerHTML = html;
+  
+  // Auto expand first category
+  setTimeout(() => {
+    if (categories.length > 0) {
+      toggleCategory(0);
+    }
+  }, 200);
+}
+
+// ===== HITUNG TOTAL ENDPOINTS =====
+function countTotalEndpoints(categories) {
+  let total = 0;
+  categories.forEach(cat => {
+    total += cat.items?.length || 0;
+  });
+  return total;
+}
+
+// ===== UPDATE POPULAR TAGS =====
+function updatePopularTags(categories) {
+  const popularContainer = document.getElementById('popularTags');
+  let tags = [];
+  
+  // Ambil 3 path pertama sebagai popular tags
+  categories.forEach(cat => {
+    if (cat.items && cat.items.length > 0) {
+      cat.items.slice(0, 3).forEach(item => {
+        if (item.path) {
+          let path = item.path;
+          if (path.includes('?')) path = path.split('?')[0];
+          tags.push(path);
+        }
+      });
+    }
+  });
+  
+  // Ambil 3 unique tags
+  tags = [...new Set(tags)].slice(0, 3);
+  
+  let html = '';
+  tags.forEach(tag => {
+    const colorClass = getTagColor(tag);
+    html += `<span class="px-3 py-1.5 ${colorClass} rounded-full text-xs font-medium border">${escapeHtml(tag)}</span>`;
+  });
+  
+  popularContainer.innerHTML = html || '<span class="text-gray-500">-</span>';
+}
+
+// ===== GET TAG COLOR =====
+function getTagColor(path) {
+  if (path.includes('openai')) return 'bg-blue-50 dark:bg-blue-900/20 text-blue-600 dark:text-blue-400 border-blue-200 dark:border-blue-800';
+  if (path.includes('gemini')) return 'bg-purple-50 dark:bg-purple-900/20 text-purple-600 dark:text-purple-400 border-purple-200 dark:border-purple-800';
+  if (path.includes('webpilot')) return 'bg-green-50 dark:bg-green-900/20 text-green-600 dark:text-green-400 border-green-200 dark:border-green-800';
+  return 'bg-gray-50 dark:bg-gray-800/20 text-gray-600 dark:text-gray-400 border-gray-200 dark:border-gray-700';
+}
+
+// ===== GET CATEGORY ICON =====
+function getCategoryIcon(categoryName) {
+  const name = categoryName.toLowerCase();
+  if (name.includes('ai') || name.includes('open')) return 'bolt';
+  if (name.includes('tool')) return 'build';
+  if (name.includes('image') || name.includes('media')) return 'image';
+  if (name.includes('social')) return 'share';
+  return 'folder';
+}
+
+// ===== FALLBACK DATA (JIKA SETTINGS.JSON TIDAK ADA) =====
 function useFallbackData() {
-  apiData = {
+  console.log('Using fallback data');
+  
+  const fallbackData = {
     name: "Manzxy APIs",
     version: "v1.0.0",
-    description: "simple and powerful tools API and easy to use",
+    description: "simple and powerful tools API and easy to use (Fallback Mode)",
+    header: { status: "Online!" },
     apiSettings: {
       creator: "Manzxy",
       apikey: ["elainachan"]
@@ -894,371 +1000,7 @@ function useFallbackData() {
     ]
   };
   
-  document.getElementById('apiDescription').textContent = apiData.description;
-  document.getElementById('apiCreator').textContent = apiData.apiSettings.creator;
-  document.getElementById('apiKey').textContent = apiData.apiSettings.apikey[0];
-  document.getElementById('apiVersion').textContent = apiData.version;
-  
-  loadCategories();
-}
-
-// ===== LOAD NOTIFICATIONS =====
-async function loadNotifications() {
-  try {
-    const response = await fetch('/notifications.json');
-    if (!response.ok) throw new Error('Failed to load notifications');
-    
-    notifications = await response.json();
-    
-    // Sort by date, newest first
-    notifications.sort((a, b) => new Date(b.date) - new Date(a.date));
-    
-    // Count unread
-    unreadCount = notifications.filter(n => !n.read).length;
-    
-    // Update unread badge
-    const unreadBadge = document.getElementById('unreadCount');
-    if (unreadCount > 0) {
-      unreadBadge.textContent = unreadCount;
-      unreadBadge.classList.remove('hidden');
-    } else {
-      unreadBadge.classList.add('hidden');
-    }
-    
-    // Render notifications
-    renderNotifications();
-    
-  } catch (error) {
-    console.error('Error loading notifications:', error);
-    // Create sample notifications
-    createSampleNotifications();
-  }
-}
-
-// ===== CREATE SAMPLE NOTIFICATIONS =====
-function createSampleNotifications() {
-  notifications = [
-    {
-      id: 1,
-      title: "🚀 OpenAI Llama3 Tersedia!",
-      message: "Endpoint /ai/openai sekarang menggunakan model Llama3-8B-8192 yang lebih cepat dan akurat.",
-      date: new Date().toISOString(),
-      read: false,
-      type: "update"
-    },
-    {
-      id: 2,
-      title: "⚡ Gemini Web Chat Update",
-      message: "Menambahkan parameter 'system' untuk custom instruction pada Gemini Web Chat.",
-      date: new Date(Date.now() - 86400000).toISOString(),
-      read: false,
-      type: "update"
-    },
-    {
-      id: 3,
-      title: "🔧 Maintenance Notice",
-      message: "Endpoint /ai/edit-image sedang dalam pengembangan. Akan segera hadir dengan fitur baru!",
-      date: new Date(Date.now() - 172800000).toISOString(),
-      read: true,
-      type: "warning"
-    }
-  ];
-  
-  unreadCount = notifications.filter(n => !n.read).length;
-  
-  const unreadBadge = document.getElementById('unreadCount');
-  if (unreadCount > 0) {
-    unreadBadge.textContent = unreadCount;
-    unreadBadge.classList.remove('hidden');
-  }
-  
-  renderNotifications();
-}
-
-// ===== RENDER NOTIFICATIONS =====
-function renderNotifications() {
-  const list = document.getElementById('notificationsList');
-  if (!list) return;
-  
-  let html = '';
-  
-  notifications.forEach(notif => {
-    const date = new Date(notif.date);
-    const formattedDate = date.toLocaleDateString('id-ID', { 
-      day: 'numeric', 
-      month: 'short', 
-      year: 'numeric',
-      hour: '2-digit',
-      minute: '2-digit'
-    });
-    
-    const isUnread = !notif.read;
-    
-    html += `
-      <div class="notification-card ${isUnread ? 'notification-unread' : 'notification-read'}" data-id="${notif.id}">
-        <div class="flex items-start justify-between">
-          <div class="flex-1">
-            <div class="flex items-center gap-2 mb-1">
-              <span class="font-bold text-sm">${escapeHtml(notif.title)}</span>
-              ${isUnread ? '<span class="px-1.5 py-0.5 bg-blue-500 text-white text-[8px] font-bold rounded-full">NEW</span>' : ''}
-            </div>
-            <p class="text-xs text-gray-600 dark:text-gray-400 mb-2">${escapeHtml(notif.message)}</p>
-            <div class="flex items-center gap-3 text-[10px] text-gray-500">
-              <span class="flex items-center gap-1">
-                <span class="material-icons text-[12px]">schedule</span>
-                ${formattedDate}
-              </span>
-              <span class="px-2 py-0.5 bg-gray-200 dark:bg-gray-700 rounded-full">
-                ${escapeHtml(notif.type || 'info')}
-              </span>
-            </div>
-          </div>
-          ${isUnread ? `
-            <button onclick="markAsRead('${notif.id}')" class="ml-2 p-1 hover:bg-gray-200 dark:hover:bg-gray-700 rounded-full transition-all">
-              <span class="material-icons text-gray-500 text-sm">done</span>
-            </button>
-          ` : ''}
-        </div>
-      </div>
-    `;
-  });
-  
-  if (notifications.length === 0) {
-    html = `
-      <div class="text-center py-8">
-        <span class="material-icons text-4xl text-gray-400 mb-2">notifications_off</span>
-        <p class="text-sm text-gray-500">Tidak ada notifikasi</p>
-      </div>
-    `;
-  }
-  
-  list.innerHTML = html;
-}
-
-// ===== MARK NOTIFICATION AS READ =====
-function markAsRead(id) {
-  const notif = notifications.find(n => n.id == id);
-  if (notif) {
-    notif.read = true;
-    unreadCount = notifications.filter(n => !n.read).length;
-    
-    const unreadBadge = document.getElementById('unreadCount');
-    if (unreadCount > 0) {
-      unreadBadge.textContent = unreadCount;
-    } else {
-      unreadBadge.classList.add('hidden');
-    }
-    
-    renderNotifications();
-  }
-}
-
-// ===== MARK ALL AS READ =====
-function markAllRead() {
-  notifications.forEach(n => n.read = true);
-  unreadCount = 0;
-  
-  const unreadBadge = document.getElementById('unreadCount');
-  unreadBadge.classList.add('hidden');
-  
-  renderNotifications();
-}
-
-// ===== TOGGLE NOTIFICATIONS =====
-function toggleNotifications() {
-  const panel = document.getElementById('notificationsPanel');
-  panel.classList.toggle('hidden');
-}
-
-// ===== LOAD CATEGORIES =====
-function loadCategories() {
-  const apiList = document.getElementById('apiList');
-  if (!apiList || !apiData) return;
-  
-  let totalEndpoints = 0;
-  let readyCount = 0;
-  let updateCount = 0;
-  
-  apiData.categories.forEach(cat => {
-    totalEndpoints += cat.items.length;
-    cat.items.forEach(item => {
-      if (item.status === 'ready') readyCount++;
-      else if (item.status === 'update') updateCount++;
-    });
-  });
-  
-  // Update stats
-  document.getElementById('totalEndpoints')?.textContent = totalEndpoints;
-  document.getElementById('readyCount')?.textContent = readyCount;
-  document.getElementById('updateCount')?.textContent = updateCount;
-  document.getElementById('resultCount').textContent = `${totalEndpoints} endpoints`;
-  
-  let html = '';
-  
-  apiData.categories.forEach((category, catIndex) => {
-    html += `
-    <div class="modern-card overflow-hidden category-group" data-category="${escapeHtml(category.name)}">
-      <div class="category-header" onclick="toggleCategory(${catIndex})">
-        <div class="flex items-center gap-3">
-          <span class="material-icons text-blue-500">${getCategoryIcon(category.name)}</span>
-          <div>
-            <h3 class="font-bold text-base sm:text-lg">${escapeHtml(category.name)}</h3>
-            <span class="text-xs text-gray-500">${category.items.length} endpoints</span>
-          </div>
-        </div>
-        <span class="material-icons text-gray-500 transition-transform duration-300" id="category-icon-${catIndex}">expand_more</span>
-      </div>
-      
-      <div id="category-${catIndex}" class="hidden divide-y divide-gray-100 dark:divide-gray-800">`;
-    
-    category.items.forEach((item, endpointIndex) => {
-      // Parse path to get base path and params
-      let basePath = item.path;
-      let paramNames = [];
-      
-      if (item.path.includes('?')) {
-        basePath = item.path.split('?')[0];
-        const queryString = item.path.split('?')[1];
-        if (queryString) {
-          const params = new URLSearchParams(queryString);
-          paramNames = Array.from(params.keys());
-        }
-      }
-      
-      // Use provided params or extract from path
-      const paramsObj = item.params || {};
-      
-      html += `
-        <div class="api-item" 
-             data-path="${escapeHtml(basePath)}"
-             data-alias="${escapeHtml(item.name)}"
-             data-description="${escapeHtml(item.desc)}"
-             data-category="${escapeHtml(category.name)}">
-          
-          <div class="endpoint-item" onclick="toggleEndpoint(${catIndex}, ${endpointIndex})">
-            <div class="flex items-start justify-between">
-              <div class="flex items-start gap-4 flex-1">
-                <span class="method-badge">GET</span>
-                <div class="flex-1 min-w-0">
-                  <div class="endpoint-path truncate" title="${escapeHtml(basePath)}">
-                    ${escapeHtml(basePath)}
-                  </div>
-                  <div class="endpoint-name truncate">
-                    ${escapeHtml(item.name)}
-                  </div>
-                </div>
-              </div>
-              <div class="flex items-center gap-3">
-                <span class="status-badge status-${item.status}">
-                  ${item.status === 'ready' ? '● READY' : '⚡ UPDATE'}
-                </span>
-                <span class="material-icons text-gray-500 transition-transform duration-300" 
-                      id="endpoint-icon-${catIndex}-${endpointIndex}">expand_more</span>
-              </div>
-            </div>
-          </div>
-          
-          <div id="endpoint-${catIndex}-${endpointIndex}" class="hidden p-6 bg-gray-50 dark:bg-gray-800/50 border-t border-gray-200 dark:border-gray-700 animate-fade">
-            <div class="mb-6 p-4 bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700">
-              <div class="flex items-center gap-2 mb-2">
-                <span class="material-icons text-blue-500 text-sm">info</span>
-                <span class="font-semibold text-xs">DESCRIPTION</span>
-              </div>
-              <p class="text-sm text-gray-600 dark:text-gray-300">${escapeHtml(item.desc)}</p>
-            </div>`;
-      
-      if (item.status === 'ready') {
-        html += `
-            <div class="mb-6">
-              <div class="flex items-center gap-2 mb-4">
-                <span class="material-icons text-green-500">play_circle</span>
-                <span class="font-semibold text-sm">TEST ENDPOINT</span>
-              </div>
-              
-              <form id="form-${catIndex}-${endpointIndex}" onsubmit="executeRequest(event, ${catIndex}, ${endpointIndex}, 'GET', '${escapeHtml(basePath)}')">
-                <div class="space-y-4 mb-4">`;
-        
-        // Generate form fields from params
-        Object.entries(paramsObj).forEach(([key, val]) => {
-          html += `
-                  <div>
-                    <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                      ${escapeHtml(key)}
-                      <span class="text-red-500 text-xs ml-1">*</span>
-                    </label>
-                    <input type="text" 
-                           name="${escapeHtml(key)}"
-                           class="modern-input"
-                           placeholder="${escapeHtml(val)}"
-                           value="${key === 'text' ? 'hai' : ''}"
-                           required>
-                  </div>`;
-        });
-        
-        html += `
-                </div>
-                
-                <div class="flex flex-wrap gap-3">
-                  <button type="submit" class="btn-modern btn-primary">
-                    <span class="material-icons text-sm">send</span>
-                    EXECUTE
-                  </button>
-                  <button type="button" 
-                          id="clear-${catIndex}-${endpointIndex}"
-                          onclick="clearResponse(${catIndex}, ${endpointIndex})"
-                          class="btn-modern btn-secondary hidden">
-                    <span class="material-icons text-sm">clear</span>
-                    CLEAR
-                  </button>
-                </div>
-              </form>
-            </div>`;
-      } else {
-        html += `
-            <div class="p-5 bg-yellow-50 dark:bg-yellow-900/20 border border-yellow-200 dark:border-yellow-800 rounded-xl">
-              <div class="flex items-center gap-3 text-yellow-600 dark:text-yellow-400 mb-2">
-                <span class="material-icons">construction</span>
-                <span class="font-semibold text-sm">UNDER MAINTENANCE</span>
-              </div>
-              <p class="text-sm text-gray-600 dark:text-gray-400">
-                Endpoint ini sedang dalam pengembangan. Silakan coba lagi nanti.
-              </p>
-            </div>`;
-      }
-      
-      html += `
-            <div id="response-${catIndex}-${endpointIndex}" class="hidden mt-6">
-              <div class="flex items-center gap-2 mb-3">
-                <span class="material-icons text-green-500">code</span>
-                <span class="font-semibold text-sm text-green-600 dark:text-green-400">RESPONSE</span>
-              </div>
-              <div id="response-content-${catIndex}-${endpointIndex}" class="response-box"></div>
-            </div>
-          </div>
-        </div>`;
-    });
-    
-    html += `</div></div>`;
-  });
-  
-  apiList.innerHTML = html;
-  
-  // Auto expand first category
-  setTimeout(() => {
-    if (apiData.categories.length > 0) {
-      toggleCategory(0);
-    }
-  }, 200);
-}
-
-// ===== GET CATEGORY ICON =====
-function getCategoryIcon(categoryName) {
-  const name = categoryName.toLowerCase();
-  if (name.includes('ai') || name.includes('open')) return 'bolt';
-  if (name.includes('tool')) return 'build';
-  if (name.includes('image') || name.includes('media')) return 'image';
-  if (name.includes('social') || name.includes('media')) return 'share';
-  return 'folder';
+  updateUIWithData(fallbackData);
 }
 
 // ===== HELPER: Escape HTML =====
@@ -1281,6 +1023,7 @@ function toggleCategory(index) {
     category.classList.toggle('hidden');
     if (icon) {
       icon.style.transform = category.classList.contains('hidden') ? 'rotate(0deg)' : 'rotate(180deg)';
+      icon.textContent = category.classList.contains('hidden') ? 'expand_more' : 'expand_less';
     }
   }
 }
@@ -1294,6 +1037,7 @@ function toggleEndpoint(catIndex, endpointIndex) {
     endpoint.classList.toggle('hidden');
     if (icon) {
       icon.style.transform = endpoint.classList.contains('hidden') ? 'rotate(0deg)' : 'rotate(180deg)';
+      icon.textContent = endpoint.classList.contains('hidden') ? 'expand_more' : 'expand_less';
     }
   }
 }
@@ -1318,43 +1062,23 @@ async function executeRequest(event, catIndex, endpointIndex, method, path) {
     }
   }
   
-  const fullPath = params.toString() ? `${path}?${params.toString()}` : path;
-  
   responseDiv.classList.remove('hidden');
   responseContent.innerHTML = '<div class="loader"></div>';
   
-  // Special response for OpenAI endpoints
-  if (path.includes('/ai/openai') || path.includes('/ai/gemini-web') || path.includes('/ai/webpilot')) {
-    setTimeout(() => {
-      const response = {
-        creator: "FlowFalcon",
-        status: true,
-        result: "Hai! Aku FlowFalcon AI, senang ketemu kamu 😊\n\nKamu lagi mau ngapain hari ini? Ada yang bisa aku bantu?\n\n• Belajar bahasa (Indonesia/Inggris)\n• Nulis / ngedit teks (essay, email, CV, caption)\n• Bimbingan pelajaran (matematika, sains)\n• Coding/programming (debug, review kode)\n• Rencana belajar atau manajemen waktu\n• Ide proyek seru atau brainstorming\n• Ngobrol santai atau tanya jawab cepat\n\nKamu ingin mulai dari mana? Ceritain saja topik atau tujuannya, aku siap bantu! 😊"
-      };
-      
-      responseContent.innerHTML = `<pre class="response-box" style="background: transparent; border: none; padding: 0; max-height: 400px;">${JSON.stringify(response, null, 2)}</pre>`;
-      
-      if (clearButton) clearButton.classList.remove('hidden');
-    }, 800);
-    return;
-  }
-  
-  // Mock response for other endpoints
+  // Simulasi response
   setTimeout(() => {
-    const mockResponse = {
-      status: "success",
+    const response = {
+      creator: "FlowFalcon",
+      status: true,
       endpoint: path,
-      timestamp: new Date().toISOString(),
-      data: {
-        message: "✅ Endpoint berhasil dipanggil!",
-        params: Object.fromEntries(formData.entries())
-      }
+      params: Object.fromEntries(formData.entries()),
+      result: "Hai! Aku FlowFalcon AI, senang ketemu kamu 😊\n\nKamu lagi mau ngapain hari ini? Ada yang bisa aku bantu?\n\n• Belajar bahasa (Indonesia/Inggris)\n• Nulis / ngedit teks (essay, email, CV, caption)\n• Bimbingan pelajaran (matematika, sains)\n• Coding/programming (debug, review kode)\n• Rencana belajar atau manajemen waktu\n• Ide proyek seru atau brainstorming\n\nKamu ingin mulai dari mana? Ceritain saja topik atau tujuannya, aku siap bantu! 😊"
     };
     
-    responseContent.innerHTML = `<pre class="response-box" style="background: transparent; border: none; padding: 0; max-height: 400px;">${JSON.stringify(mockResponse, null, 2)}</pre>`;
+    responseContent.innerHTML = `<pre class="response-box" style="background: transparent; border: none; padding: 0; max-height: 400px;">${JSON.stringify(response, null, 2)}</pre>`;
     
     if (clearButton) clearButton.classList.remove('hidden');
-  }, 600);
+  }, 800);
 }
 
 // ===== CLEAR RESPONSE =====
@@ -1371,79 +1095,63 @@ function clearResponse(catIndex, endpointIndex) {
 // ===== SEARCH FUNCTIONALITY =====
 function setupSearch() {
   const searchInput = document.getElementById('searchInput');
+  const resultCount = document.getElementById('resultCount');
+  const noResults = document.getElementById('noResults');
+  
   if (!searchInput) return;
   
-  let searchTimeout;
-  
   searchInput.addEventListener('input', function() {
-    clearTimeout(searchTimeout);
+    const searchTerm = this.value.toLowerCase().trim();
+    const apiItems = document.querySelectorAll('.api-item');
+    let visibleCount = 0;
+    let totalEndpoints = 0;
     
-    searchTimeout = setTimeout(() => {
-      const searchTerm = this.value.toLowerCase().trim();
-      const apiItems = document.querySelectorAll('.api-item');
-      const categories = document.querySelectorAll('.category-group');
-      const noResults = document.getElementById('noResults');
-      const resultCount = document.getElementById('resultCount');
+    if (apiData && apiData.categories) {
+      totalEndpoints = countTotalEndpoints(apiData.categories);
+    }
+    
+    apiItems.forEach(item => {
+      const path = item.dataset.path?.toLowerCase() || '';
+      const alias = item.dataset.alias?.toLowerCase() || '';
+      const description = item.dataset.description?.toLowerCase() || '';
       
-      let visibleCount = 0;
-      let totalEndpoints = 0;
+      const matches = searchTerm === '' || 
+                     path.includes(searchTerm) || 
+                     alias.includes(searchTerm) || 
+                     description.includes(searchTerm);
       
-      if (apiData) {
-        apiData.categories.forEach(cat => totalEndpoints += cat.items.length);
+      item.style.display = matches ? '' : 'none';
+      if (matches) visibleCount++;
+    });
+    
+    // Update category visibility
+    document.querySelectorAll('.modern-card').forEach(card => {
+      const visibleItems = card.querySelectorAll('.api-item[style=""]');
+      const categoryHeader = card.querySelector('.category-header');
+      if (categoryHeader && !card.querySelector('#noResults')) {
+        card.style.display = visibleItems.length > 0 ? '' : 'none';
       }
-      
-      apiItems.forEach(item => {
-        const path = item.dataset.path?.toLowerCase() || '';
-        const alias = item.dataset.alias?.toLowerCase() || '';
-        const description = item.dataset.description?.toLowerCase() || '';
-        const category = item.dataset.category?.toLowerCase() || '';
-        
-        const matches = searchTerm === '' || 
-                       path.includes(searchTerm) || 
-                       alias.includes(searchTerm) || 
-                       description.includes(searchTerm) ||
-                       category.includes(searchTerm);
-        
-        item.style.display = matches ? '' : 'none';
-        if (matches) visibleCount++;
-      });
-      
-      categories.forEach(category => {
-        const visibleItems = category.querySelectorAll('.api-item[style=""]');
-        category.style.display = visibleItems.length > 0 ? '' : 'none';
-      });
-      
-      if (resultCount) {
-        resultCount.textContent = searchTerm === '' 
-          ? `${totalEndpoints} endpoints`
-          : `${visibleCount} endpoints ditemukan`;
-      }
-      
-      if (noResults) {
-        noResults.style.display = searchTerm !== '' && visibleCount === 0 ? 'block' : 'none';
-      }
-    }, 300);
+    });
+    
+    // Update result count
+    if (resultCount) {
+      resultCount.textContent = searchTerm === '' 
+        ? `${totalEndpoints} endpoints`
+        : `${visibleCount} endpoints ditemukan`;
+    }
+    
+    // Show/hide no results
+    if (noResults) {
+      noResults.style.display = searchTerm !== '' && visibleCount === 0 ? 'block' : 'none';
+    }
   });
 }
 
 // ===== INITIALIZATION =====
 document.addEventListener('DOMContentLoaded', () => {
   initTheme();
-  loadApiSettings();
-  loadNotifications();
+  loadApiSettings(); // FETCH SETTINGS.JSON!
   setupSearch();
-  
-  // Notification toggle
-  const notifToggle = document.getElementById('notificationToggle');
-  if (notifToggle) {
-    notifToggle.addEventListener('click', toggleNotifications);
-  }
-  
-  // Mark all as read
-  const markAllBtn = document.getElementById('markAllRead');
-  if (markAllBtn) {
-    markAllBtn.addEventListener('click', markAllRead);
-  }
 });
 
 // Make functions global
@@ -1451,9 +1159,6 @@ window.toggleCategory = toggleCategory;
 window.toggleEndpoint = toggleEndpoint;
 window.executeRequest = executeRequest;
 window.clearResponse = clearResponse;
-window.markAsRead = markAsRead;
-window.toggleNotifications = toggleNotifications;
-window.markAllRead = markAllRead;
 </script>
 
 </body>
