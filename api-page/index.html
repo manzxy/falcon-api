@@ -2,1112 +2,695 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
-<title>Manzxy APIs - Documentation</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Manzxy APIs</title>
 <link rel="icon" href="/assets/icon.png">
 
 <script src="https://cdn.tailwindcss.com"></script>
 <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Ubuntu+Mono&display=swap" rel="stylesheet">
+
+<script>
+tailwind.config = {
+  theme: {
+    extend: {
+      fontFamily: {
+        mc: ['Press Start 2P','monospace'],
+        mono: ['Ubuntu Mono','monospace']
+      }
+    }
+  }
+}
+</script>
 
 <style>
-/* ===== MODERN VARIABLES ===== */
-:root {
-  --bg: #f8fafc;
-  --surface: #ffffff;
-  --surface-hover: #f1f5f9;
-  --card: #ffffff;
-  --border: #e2e8f0;
-  --border-strong: #cbd5e1;
-  --text-primary: #0f172a;
-  --text-secondary: #334155;
-  --text-tertiary: #64748b;
-  --text-inverse: #ffffff;
-  --accent: #2563eb;
-  --accent-hover: #1d4ed8;
-  --accent-soft: #dbeafe;
-  --success: #10b981;
-  --success-soft: #d1fae5;
-  --warning: #f59e0b;
-  --warning-soft: #fed7aa;
-  --error: #ef4444;
-  --error-soft: #fee2e2;
-  --code-bg: #0f172a;
-  --code-text: #e2e8f0;
-  --shadow-sm: 0 1px 2px rgba(0,0,0,0.02);
-  --shadow: 0 4px 6px -1px rgba(0,0,0,0.02);
-  --shadow-lg: 0 10px 15px -3px rgba(0,0,0,0.03);
-  --radius: 24px;
-  --radius-sm: 16px;
+::-webkit-scrollbar{display:none}
+
+/* ===== THEME VAR ===== */
+:root{
+  --bg:#1b1b1b;
+  --panel:#2a2a2a;
+  --border:#3f3f3f;
+  --text:#e5e7eb;
+  --input:#1e1e1e;
+}
+body.light{
+  --bg:#e5e7eb;
+  --panel:#f3f4f6;
+  --border:#cbd5e1;
+  --text:#111827;
+  --input:#ffffff;
 }
 
-.dark {
-  --bg: #0b1120;
-  --surface: #0f172a;
-  --surface-hover: #1e293b;
-  --card: #1e293b;
-  --border: #1e293b;
-  --border-strong: #334155;
-  --text-primary: #f1f5f9;
-  --text-secondary: #cbd5e1;
-  --text-tertiary: #94a3b8;
-  --accent: #3b82f6;
-  --accent-hover: #60a5fa;
-  --accent-soft: #1e3a5f;
-  --success: #22c55e;
-  --success-soft: #14532d;
-  --warning: #eab308;
-  --warning-soft: #713f12;
-  --error: #ef4444;
-  --error-soft: #7f1d1d;
-  --code-bg: #030712;
-  --code-text: #e2e8f0;
-  --shadow-sm: 0 1px 2px rgba(0,0,0,0.3);
-  --shadow: 0 4px 6px -1px rgba(0,0,0,0.4);
-  --shadow-lg: 0 10px 15px -3px rgba(0,0,0,0.5);
+/* ===== GLOBAL ===== */
+html,body{
+  margin:0;
+  padding:0;
+  background:var(--bg);
+  color:var(--text);
 }
 
-/* ===== GLOBAL STYLES ===== */
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
+/* ===== BLOCK ===== */
+.mc-panel{
+  background:var(--panel);
+  border:4px solid var(--border);
+  box-shadow:
+    inset -4px -4px 0 rgba(0,0,0,.4),
+    inset 4px 4px 0 rgba(255,255,255,.05);
 }
 
-html {
-  scroll-behavior: smooth;
+/* ===== FORCE PANEL COLOR (FIX BIRU) ===== */
+.category-group,
+.category-group > div,
+.category-group button,
+.api-item,
+.api-item button,
+#endpoint-content,
+#endpoint-content > div{
+  background:var(--panel) !important;
+  border-color:var(--border) !important;
+  color:var(--text) !important;
+}
+.category-group button:hover,
+.api-item button:hover{
+  background:rgba(0,0,0,.15) !important;
 }
 
-body {
-  font-family: 'Inter', sans-serif;
-  background: var(--bg);
-  color: var(--text-primary);
-  transition: background 0.3s ease, color 0.2s ease;
-  padding: 24px 16px;
-  min-height: 100vh;
-  line-height: 1.6;
+/* ===== INPUT ===== */
+.mc-input{
+  background:var(--input);
+  border:3px solid var(--border);
+  color:var(--text);
 }
 
-/* ===== MODERN SCROLLBAR ===== */
-::-webkit-scrollbar {
-  width: 8px;
-  height: 8px;
+/* ===== BUTTON ===== */
+.mc-btn{
+  background:#3a7d3a;
+  border:3px solid #2b5d2b;
+  box-shadow:
+    inset -3px -3px 0 #1f3f1f,
+    inset 3px 3px 0 #5fa75f;
+  font-size:10px;
+  padding:8px 14px;
+  color:#fff;
+}
+.mc-btn:active{
+  box-shadow:
+    inset 3px 3px 0 #1f3f1f,
+    inset -3px -3px 0 #5fa75f;
 }
 
-::-webkit-scrollbar-track {
-  background: var(--surface);
+/* ===== CLEAR BUTTON ===== */
+.mc-btn-clear{
+  background:#555;
+  border:3px solid #333;
+  color:#fff;
+  font-size:10px;
+  padding:8px 14px;
 }
 
-::-webkit-scrollbar-thumb {
-  background: var(--text-tertiary);
-  border-radius: 8px;
-  border: 2px solid var(--surface);
+/* ===== GET ===== */
+.method-get{
+  background:#2563eb;
+  border:3px solid #1e40af;
+  padding:3px 6px;
+  font-size:10px;
+  color:#fff;
 }
 
-::-webkit-scrollbar-thumb:hover {
-  background: var(--text-secondary);
+/* ===== RESPONSE ===== */
+.mc-response{
+  background:#0b0b0b;
+  border:3px solid #1f2937;
+  color:#22c55e;
 }
 
-/* ===== TOGGLE SWITCH ===== */
-.theme-toggle {
+/* ===== CONTRIBUTORS BACKGROUND IMAGE ===== */
+.bg-bottom{
+  background-image:url("https://c.termai.cc/i199/f6HGr.jpg");
+  background-size:cover;
+  background-position:center;
+  background-repeat:no-repeat;
+}
+
+/* ===== PERBAIKAN TOTAL TAMPILAN & STABILITAS ===== */
+
+/* 1. OVERLAY UNTUK BACKGROUND KONTRIBUTOR – TEKS JADI TERBACA */
+.bg-bottom {
   position: relative;
-  width: 64px;
-  height: 32px;
-  background: linear-gradient(145deg, #e2e8f0, #cbd5e1);
-  border-radius: 32px;
-  border: none;
-  cursor: pointer;
-  box-shadow: inset 0 2px 4px rgba(0,0,0,0.05);
+  isolation: isolate;
 }
-
-.dark .theme-toggle {
-  background: linear-gradient(145deg, #1e293b, #0f172a);
-}
-
-.theme-toggle .slider {
+.bg-bottom::before {
+  content: '';
   position: absolute;
-  top: 2px;
-  left: 2px;
-  width: 28px;
-  height: 28px;
-  background: white;
-  border-radius: 50%;
-  transition: 0.25s cubic-bezier(0.4, 0, 0.2, 1);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  inset: 0;
+  background: rgba(0, 0, 0, 0.7);
+  z-index: 0;
 }
-
-.dark .theme-toggle .slider {
-  left: 34px;
-  background: #2563eb;
+body.light .bg-bottom::before {
+  background: rgba(255, 255, 255, 0.75);
 }
-
-.theme-toggle i {
-  font-size: 14px;
-  color: #f59e0b;
-}
-
-.dark .theme-toggle i {
-  color: white;
-}
-
-/* ===== MODERN CARD ===== */
-.modern-card {
-  background: var(--card);
-  border: 1px solid var(--border);
-  border-radius: var(--radius);
-  box-shadow: var(--shadow);
-  transition: all 0.2s ease;
-  overflow: hidden;
-}
-
-.modern-card:hover {
-  border-color: var(--border-strong);
-  box-shadow: var(--shadow-lg);
-}
-
-/* ===== SEARCH INPUT ===== */
-.search-container {
+.bg-bottom > * {
   position: relative;
+  z-index: 1;
 }
 
-.search-container input {
-  width: 100%;
-  padding: 16px 20px 16px 52px;
-  background: var(--surface);
-  border: 2px solid var(--border);
-  border-radius: var(--radius-sm);
-  color: var(--text-primary);
-  font-size: 15px;
-  transition: all 0.2s;
+/* 2. THEME LIGHT – SEMUA ELEMEN JADI TERANG & KONSISTEN */
+body.light .bg-gray-800,
+body.light .bg-gray-900,
+body.light .border-gray-700,
+body.light .border-gray-600 {
+  background-color: #ffffff !important;
+  border-color: var(--border) !important;
+  color: var(--text) !important;
+}
+body.light .text-gray-400,
+body.light .text-slate-400,
+body.light .text-slate-300 {
+  color: #374151 !important;
+}
+body.light .bg-gray-700 {
+  background-color: #f3f4f6 !important;
+  border-color: #d1d5db !important;
+}
+body.light .placeholder\:text-slate-500::placeholder {
+  color: #9ca3af !important;
+}
+body.light .mc-panel {
+  box-shadow: 
+    inset -4px -4px 0 rgba(0,0,0,0.05),
+    inset 4px 4px 0 rgba(255,255,255,0.8) !important;
 }
 
-.search-container input:focus {
+/* 3. STABILKAN PANEL, HOVER, BORDER – WARNA DARI VARIABEL */
+.category-group,
+.category-group > div,
+.api-item,
+.api-item button,
+#endpoint-content > div,
+.bg-gray-800, .bg-gray-900 {
+  background: var(--panel) !important;
+  border-color: var(--border) !important;
+  color: var(--text) !important;
+}
+.api-item button:hover,
+.category-group button:hover {
+  background: rgba(0,0,0,0.2) !important;
+}
+.border-gray-700, .border-gray-600 {
+  border-color: var(--border) !important;
+}
+
+/* 4. INPUT PENCARIAN – FOCUS LEBIH JELAS */
+.mc-input:focus {
   outline: none;
-  border-color: var(--accent);
-  box-shadow: 0 0 0 4px var(--accent-soft);
+  border-color: #3b82f6 !important;
+  box-shadow: 0 0 0 3px rgba(59,130,246,0.3);
 }
 
-.search-container i {
-  position: absolute;
-  left: 20px;
-  top: 50%;
-  transform: translateY(-50%);
-  color: var(--text-tertiary);
-  font-size: 18px;
-}
-
-/* ===== METHOD BADGE ===== */
-.method-badge {
-  display: inline-flex;
-  align-items: center;
-  padding: 6px 14px;
-  background: linear-gradient(145deg, #2563eb, #1d4ed8);
-  color: white;
-  font-size: 12px;
+/* 5. BADGE STATUS – KONTRAST TINGGI, WARNA CERAH */
+[class*="bg-green-500/20"],
+[class*="bg-yellow-500/20"],
+[class*="bg-red-500/20"] {
+  background: rgba(0,0,0,0.25) !important;
+  border: 1px solid currentColor;
   font-weight: 700;
-  border-radius: 30px;
-  letter-spacing: 0.5px;
+  padding: 0.25rem 0.625rem;
+  border-radius: 0;
+}
+.text-green-400 { color: #86efac !important; border-color: #86efac80 !important; }
+.text-yellow-400 { color: #fde047 !important; border-color: #fde04780 !important; }
+.text-red-400 { color: #fca5a5 !important; border-color: #fca5a580 !important; }
+
+/* 6. SERAGAMKAN SEMUA TOMBOL DENGAN GAYA MINECRAFT */
+.mc-btn,
+.mc-btn-clear,
+button.bg-indigo-600,
+button.bg-gray-700 {
+  font-family: 'Ubuntu Mono', monospace !important;
+  font-size: 11px !important;
+  padding: 8px 16px !important;
+  border: 3px solid !important;
+  box-shadow: 
+    inset -3px -3px 0 rgba(0,0,0,0.3),
+    inset 3px 3px 0 rgba(255,255,255,0.1) !important;
   text-transform: uppercase;
-  box-shadow: 0 4px 10px -2px rgba(37, 99, 235, 0.3);
+  letter-spacing: 1px;
+  transition: all 0.08s ease;
+}
+.mc-btn:active,
+button.bg-indigo-600:active,
+button.bg-gray-700:active {
+  box-shadow: 
+    inset 3px 3px 0 rgba(0,0,0,0.3),
+    inset -3px -3px 0 rgba(255,255,255,0.1) !important;
+  transform: translateY(2px);
+}
+button.bg-indigo-600 {
+  background: #2563eb !important;
+  border-color: #1e40af !important;
+}
+button.bg-gray-700 {
+  background: #4b5563 !important;
+  border-color: #374151 !important;
 }
 
-/* ===== STATUS BADGE ===== */
-.status-badge {
-  display: inline-flex;
-  align-items: center;
-  padding: 4px 12px;
-  border-radius: 30px;
-  font-size: 11px;
-  font-weight: 700;
-  letter-spacing: 0.3px;
-  text-transform: uppercase;
-  border: 1.5px solid transparent;
-}
-
-.status-ready {
-  background: var(--success-soft);
-  color: var(--success);
-  border-color: var(--success);
-}
-
-.status-update {
-  background: var(--warning-soft);
-  color: var(--warning);
-  border-color: var(--warning);
-}
-
-/* ===== CATEGORY HEADER ===== */
-.category-header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 18px 24px;
-  background: var(--card);
-  border-bottom: 1px solid var(--border);
-  cursor: pointer;
-  transition: all 0.2s;
-}
-
-.category-header:hover {
-  background: var(--surface-hover);
-}
-
-.category-header h3 {
-  font-size: 16px;
-  font-weight: 700;
-  color: var(--text-primary);
-}
-
-/* ===== ENDPOINT ITEM ===== */
-.endpoint-item {
-  padding: 18px 24px;
-  border-bottom: 1px solid var(--border);
-  cursor: pointer;
-  transition: all 0.2s;
-}
-
-.endpoint-item:hover {
-  background: var(--surface-hover);
-}
-
-.endpoint-path {
-  font-family: 'JetBrains Mono', 'Courier New', monospace;
-  font-size: 15px;
-  font-weight: 600;
-  color: var(--accent);
-  margin-bottom: 6px;
-}
-
-.endpoint-name {
-  font-size: 14px;
-  color: var(--text-secondary);
-  font-weight: 500;
-}
-
-/* ===== MODERN BUTTON ===== */
-.btn-modern {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: 8px;
-  padding: 12px 24px;
-  border-radius: 12px;
-  font-size: 13px;
-  font-weight: 600;
-  transition: all 0.2s;
-  border: none;
-  cursor: pointer;
-}
-
-.btn-primary {
-  background: linear-gradient(145deg, #2563eb, #1d4ed8);
-  color: white;
-  box-shadow: 0 4px 12px -2px rgba(37, 99, 235, 0.4);
-}
-
-.btn-primary:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 8px 16px -2px rgba(37, 99, 235, 0.5);
-}
-
-.btn-secondary {
-  background: var(--surface);
-  color: var(--text-secondary);
-  border: 1.5px solid var(--border);
-}
-
-.btn-secondary:hover {
-  background: var(--surface-hover);
-  border-color: var(--border-strong);
-}
-
-/* ===== RESPONSE BOX ===== */
-.response-box {
-  background: var(--code-bg);
-  border: 1px solid var(--border);
-  border-radius: 16px;
-  padding: 20px;
-  color: var(--code-text);
-  font-family: 'JetBrains Mono', 'Courier New', monospace;
-  font-size: 13px;
-  line-height: 1.7;
-  overflow-x: auto;
+/* 7. AREA RESPONSE – SCROLL HALUS, PECAH KATA, WARNA SESUAI THEMA */
+.mc-response,
+#response-content-${catIndex}-${endpointIndex} pre {
   white-space: pre-wrap;
   word-break: break-word;
-  max-height: 450px;
+  overflow-x: hidden;
+  max-height: 350px;
   overflow-y: auto;
+  background: #0b0b0b !important;
+  border: 3px solid #1f2937 !important;
+  color: #22c55e !important;
+  font-size: 11px;
+  line-height: 1.5;
+}
+body.light .mc-response,
+body.light #response-content-${catIndex}-${endpointIndex} pre {
+  background: #f9fafb !important;
+  border-color: #cbd5e1 !important;
+  color: #0d9488 !important;
 }
 
-/* ===== STATS BADGE ===== */
-.stats-badge {
-  display: inline-flex;
-  align-items: center;
-  padding: 8px 16px;
-  background: var(--surface);
-  border: 1px solid var(--border);
-  border-radius: 30px;
-  font-size: 12px;
-  font-weight: 600;
-  color: var(--text-secondary);
-  gap: 8px;
-}
-
-/* ===== GITHUB CARD ===== */
-.github-card {
-  background: var(--surface);
-  border: 1px solid var(--border);
-  border-radius: 16px;
-  padding: 16px;
-  display: flex;
-  align-items: center;
-  gap: 16px;
-  transition: all 0.2s;
-}
-
-.github-card:hover {
-  border-color: var(--accent);
-  transform: translateY(-2px);
-}
-
-/* ===== FILE CARD ===== */
-.file-card {
-  padding: 12px;
-  background: var(--surface);
-  border: 1px solid var(--border);
-  border-radius: 12px;
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  transition: all 0.2s;
-}
-
-.file-card:hover {
-  border-color: var(--accent);
-  background: var(--surface-hover);
-}
-
-/* ===== LOADER ===== */
+/* 8. LOADER (animasi loading) */
 .loader {
-  width: 40px;
-  height: 40px;
-  border: 3px solid var(--border);
+  width: 24px;
+  height: 24px;
+  border: 3px solid #3b3b3b;
+  border-top: 3px solid #22c55e;
   border-radius: 50%;
-  border-top-color: var(--accent);
   animation: spin 0.8s linear infinite;
-  margin: 30px auto;
+  margin: 1rem auto;
 }
-
 @keyframes spin {
-  to { transform: rotate(360deg); }
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+body.light .loader {
+  border-color: #ccc;
+  border-top-color: #0d9488;
 }
 
-/* ===== ANIMATIONS ===== */
-@keyframes fadeSlide {
-  from {
-    opacity: 0;
-    transform: translateY(-10px);
+/* 9. RESPONSIVE MOBILE – HEADER DAN PADDING */
+@media (max-width: 640px) {
+  .max-w-2xl {
+    padding-left: 1.25rem !important;
+    padding-right: 1.25rem !important;
   }
-  to {
-    opacity: 1;
-    transform: translateY(0);
+  .mc-panel {
+    padding: 1.25rem !important;
+  }
+  .flex.justify-between {
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+  .font-mc {
+    font-size: 0.65rem !important;
+  }
+  .flex.items-center.gap-4 {
+    flex-wrap: wrap;
   }
 }
 
-.animate-fade {
-  animation: fadeSlide 0.25s ease;
+/* 10. IKON SOSIAL MEDIA – WARNA MENGIKUTI THEMA */
+.fab {
+  font-size: 1.4rem !important;
+  color: var(--text) !important;
+  opacity: 0.8;
+  transition: opacity 0.2s;
+}
+.fab:hover {
+  opacity: 1;
 }
 
-@keyframes pulse {
-  0%, 100% { opacity: 1; }
-  50% { opacity: 0.5; }
+/* 11. HILANGKAN SCROLLBAR TETAP BISA GULIR (sudah ada, kita perkuat) */
+html {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+body::-webkit-scrollbar {
+  display: none;
 }
 
-.animate-pulse {
-  animation: pulse 2s infinite;
+/* 12. PERBAIKI KETERBACAAN TEKS KECIL & FOOTER */
+.opacity-60 {
+  opacity: 0.75 !important;
+}
+.text-xs {
+  line-height: 1.5 !important;
 }
 </style>
 </head>
 
-<body>
+<body class="font-mono">
 
-<div class="max-w-3xl mx-auto space-y-6">
+<!-- ================= MAIN ================= -->
+<div class="max-w-2xl mx-auto px-6 py-10 mc-panel">
 
-  <!-- ===== HEADER ===== -->
-  <div class="modern-card p-6">
-    <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-6">
-      <div class="flex items-center gap-4">
-        <div class="w-12 h-12 bg-gradient-to-br from-blue-500 to-blue-600 rounded-2xl flex items-center justify-center shadow-lg">
-          <span class="material-icons text-2xl text-white">bolt</span>
-        </div>
-        <div>
-          <div class="flex items-center gap-3">
-            <h1 class="text-2xl sm:text-3xl font-extrabold bg-gradient-to-r from-blue-600 via-indigo-600 to-purple-600 bg-clip-text text-transparent">
-              MANZXY API
-            </h1>
-            <span class="px-3 py-1 bg-green-100 dark:bg-green-900/30 text-green-600 dark:text-green-400 text-xs font-bold rounded-full border border-green-500 animate-pulse">
-              ● ONLINE
-            </span>
-          </div>
-          <p class="text-sm text-gray-500 dark:text-gray-400 mt-1">
-            simple and powerful tools API and easy to use
-          </p>
-        </div>
-      </div>
-      
-      <!-- Theme Toggle -->
-      <button id="themeToggle" class="theme-toggle">
-        <span class="slider">
-          <i class="fas fa-sun"></i>
-        </span>
-      </button>
-    </div>
-
-    <!-- API Info Stats -->
-    <div class="flex flex-wrap items-center gap-4 mt-6 pt-4 border-t border-gray-200 dark:border-gray-700">
-      <div class="stats-badge">
-        <span class="material-icons text-blue-500 text-sm">person</span>
-        <span>Manzxy</span>
-        <span class="text-gray-400">Creator</span>
-      </div>
-      <div class="stats-badge">
-        <span class="material-icons text-purple-500 text-sm">vpn_key</span>
-        <span>elainachan</span>
-        <span class="text-gray-400">API Key</span>
-      </div>
-      <div class="stats-badge">
-        <span class="material-icons text-green-500 text-sm">update</span>
-        <span>19 minutes ago</span>
-        <span class="text-gray-400">Updated</span>
-      </div>
-    </div>
-  </div>
-
-  <!-- ===== SEARCH SECTION ===== -->
-  <div class="modern-card p-6">
-    <div class="flex items-center gap-2 mb-4">
-      <span class="material-icons text-blue-500">search</span>
-      <h2 class="font-bold text-lg">Search Endpoints</h2>
-    </div>
-    
-    <div class="search-container">
-      <i class="fas fa-search"></i>
-      <input type="text" id="searchInput" 
-             placeholder="Cari berdasarkan path, nama, atau deskripsi...">
-    </div>
-    
-    <div class="flex flex-wrap items-center justify-between gap-4 mt-4">
-      <div class="flex flex-wrap items-center gap-2">
-        <span class="text-xs text-gray-500">🔥 Populer:</span>
-        <span class="px-3 py-1.5 bg-blue-50 dark:bg-blue-900/20 text-blue-600 dark:text-blue-400 rounded-full text-xs font-medium border border-blue-200 dark:border-blue-800">
-          /stalker/tiktok
-        </span>
-        <span class="px-3 py-1.5 bg-purple-50 dark:bg-purple-900/20 text-purple-600 dark:text-purple-400 rounded-full text-xs font-medium border border-purple-200 dark:border-purple-800">
-          /stalker/github
-        </span>
-        <span class="px-3 py-1.5 bg-green-50 dark:bg-green-900/20 text-green-600 dark:text-green-400 rounded-full text-xs font-medium border border-green-200 dark:border-green-800">
-          /ai/openai
-        </span>
-      </div>
-      <span id="resultCount" class="text-sm font-semibold text-blue-600 dark:text-blue-400">
-        6 endpoints
-      </span>
-    </div>
-  </div>
-
-  <!-- ===== API LIST ===== -->
-  <div id="apiList" class="space-y-4">
-    
-    <!-- STALKER CATEGORY -->
-    <div class="modern-card overflow-hidden">
-      <div class="category-header" onclick="toggleCategory(0)">
-        <div class="flex items-center gap-3">
-          <span class="material-icons text-blue-500">person_search</span>
-          <div>
-            <h3 class="font-bold text-base sm:text-lg">Stalker</h3>
-            <span class="text-xs text-gray-500">2 endpoints</span>
-          </div>
-        </div>
-        <span class="material-icons text-gray-500 transition-transform duration-300" id="category-icon-0">expand_more</span>
-      </div>
-      
-      <div id="category-0" class="hidden divide-y divide-gray-100 dark:divide-gray-800">
-        
-        <!-- TikTok Stalker -->
-        <div class="api-item" data-path="/stalker/tiktok" data-alias="TikTok Stalker" data-description="Melihat informasi profil TikTok berdasarkan username.">
-          <div class="endpoint-item" onclick="toggleEndpoint(0, 0)">
-            <div class="flex items-start justify-between">
-              <div class="flex items-start gap-4 flex-1">
-                <span class="method-badge">GET</span>
-                <div class="flex-1 min-w-0">
-                  <div class="endpoint-path truncate">/stalker/tiktok</div>
-                  <div class="endpoint-name truncate">TikTok Stalker</div>
-                </div>
-              </div>
-              <div class="flex items-center gap-3">
-                <span class="status-badge status-ready">● READY</span>
-                <span class="material-icons text-gray-500 transition-transform duration-300" id="endpoint-icon-0-0">expand_more</span>
-              </div>
-            </div>
-          </div>
-          
-          <div id="endpoint-0-0" class="hidden p-6 bg-gray-50 dark:bg-gray-800/50 border-t border-gray-200 dark:border-gray-700 animate-fade">
-            <!-- DESCRIPTION -->
-            <div class="mb-6 p-4 bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700">
-              <div class="flex items-center gap-2 mb-2">
-                <span class="material-icons text-blue-500 text-sm">info</span>
-                <span class="font-semibold text-xs">DESCRIPTION</span>
-              </div>
-              <p class="text-sm text-gray-600 dark:text-gray-300">Melihat informasi profil TikTok berdasarkan username.</p>
-            </div>
-            
-            <!-- TEST FORM -->
-            <div class="mb-6">
-              <div class="flex items-center gap-2 mb-4">
-                <span class="material-icons text-green-500">play_circle</span>
-                <span class="font-semibold text-sm">TEST ENDPOINT</span>
-              </div>
-              
-              <form id="form-0-0" onsubmit="executeRequest(event, 0, 0, 'GET', '/stalker/tiktok')">
-                <div class="space-y-4 mb-4">
-                  <div>
-                    <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                      username
-                      <span class="text-red-500 text-xs ml-1">*</span>
-                    </label>
-                    <input type="text" name="username" class="modern-input" 
-                           placeholder="Masukkan username TikTok" 
-                           value="manzxy" required>
-                  </div>
-                </div>
-                
-                <div class="flex flex-wrap gap-3">
-                  <button type="submit" class="btn-modern btn-primary">
-                    <span class="material-icons text-sm">send</span>
-                    EXECUTE
-                  </button>
-                  <button type="button" id="clear-0-0" onclick="clearResponse(0, 0)" class="btn-modern btn-secondary hidden">
-                    <span class="material-icons text-sm">clear</span>
-                    CLEAR
-                  </button>
-                </div>
-              </form>
-            </div>
-            
-            <!-- RESPONSE -->
-            <div id="response-0-0" class="hidden mt-6">
-              <div class="flex items-center gap-2 mb-3">
-                <span class="material-icons text-green-500">code</span>
-                <span class="font-semibold text-sm text-green-600 dark:text-green-400">RESPONSE</span>
-              </div>
-              <div id="response-content-0-0" class="response-box"></div>
-            </div>
-          </div>
-        </div>
-        
-        <!-- GitHub Stalker -->
-        <div class="api-item" data-path="/stalker/github" data-alias="GitHub User Stalker" data-description="Melihat informasi profil GitHub berdasarkan username.">
-          <div class="endpoint-item" onclick="toggleEndpoint(0, 1)">
-            <div class="flex items-start justify-between">
-              <div class="flex items-start gap-4 flex-1">
-                <span class="method-badge">GET</span>
-                <div class="flex-1 min-w-0">
-                  <div class="endpoint-path truncate">/stalker/github</div>
-                  <div class="endpoint-name truncate">GitHub User Stalker</div>
-                </div>
-              </div>
-              <div class="flex items-center gap-3">
-                <span class="status-badge status-ready">● READY</span>
-                <span class="material-icons text-gray-500 transition-transform duration-300" id="endpoint-icon-0-1">expand_more</span>
-              </div>
-            </div>
-          </div>
-          
-          <div id="endpoint-0-1" class="hidden p-6 bg-gray-50 dark:bg-gray-800/50 border-t border-gray-200 dark:border-gray-700 animate-fade">
-            <!-- DESCRIPTION -->
-            <div class="mb-6 p-4 bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700">
-              <div class="flex items-center gap-2 mb-2">
-                <span class="material-icons text-blue-500 text-sm">info</span>
-                <span class="font-semibold text-xs">DESCRIPTION</span>
-              </div>
-              <p class="text-sm text-gray-600 dark:text-gray-300">Melihat informasi profil GitHub berdasarkan username.</p>
-            </div>
-            
-            <!-- TEST FORM -->
-            <div class="mb-6">
-              <div class="flex items-center gap-2 mb-4">
-                <span class="material-icons text-green-500">play_circle</span>
-                <span class="font-semibold text-sm">TEST ENDPOINT</span>
-              </div>
-              
-              <form id="form-0-1" onsubmit="executeRequest(event, 0, 1, 'GET', '/stalker/github')">
-                <div class="space-y-4 mb-4">
-                  <div>
-                    <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                      username
-                      <span class="text-red-500 text-xs ml-1">*</span>
-                    </label>
-                    <input type="text" name="username" class="modern-input" 
-                           placeholder="Masukkan username GitHub" 
-                           value="manzxy" required>
-                  </div>
-                </div>
-                
-                <div class="flex flex-wrap gap-3">
-                  <button type="submit" class="btn-modern btn-primary">
-                    <span class="material-icons text-sm">send</span>
-                    EXECUTE
-                  </button>
-                  <button type="button" id="clear-0-1" onclick="clearResponse(0, 1)" class="btn-modern btn-secondary hidden">
-                    <span class="material-icons text-sm">clear</span>
-                    CLEAR
-                  </button>
-                </div>
-              </form>
-            </div>
-            
-            <!-- RESPONSE -->
-            <div id="response-0-1" class="hidden mt-6">
-              <div class="flex items-center gap-2 mb-3">
-                <span class="material-icons text-green-500">code</span>
-                <span class="font-semibold text-sm text-green-600 dark:text-green-400">RESPONSE</span>
-              </div>
-              <div id="response-content-0-1" class="response-box"></div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- AI CATEGORY -->
-    <div class="modern-card overflow-hidden">
-      <div class="category-header" onclick="toggleCategory(1)">
-        <div class="flex items-center gap-3">
-          <span class="material-icons text-blue-500">bolt</span>
-          <div>
-            <h3 class="font-bold text-base sm:text-lg">OpenAI</h3>
-            <span class="text-xs text-gray-500">4 endpoints</span>
-          </div>
-        </div>
-        <span class="material-icons text-gray-500 transition-transform duration-300" id="category-icon-1">expand_more</span>
-      </div>
-      
-      <div id="category-1" class="hidden divide-y divide-gray-100 dark:divide-gray-800">
-        <!-- OpenAI Llama3 -->
-        <div class="api-item" data-path="/ai/openai" data-alias="OpenAI Llama3" data-description="Chat dengan model Llama3-8B-8192 cepat dan cerdas.">
-          <div class="endpoint-item" onclick="toggleEndpoint(1, 0)">
-            <div class="flex items-start justify-between">
-              <div class="flex items-start gap-4 flex-1">
-                <span class="method-badge">GET</span>
-                <div class="flex-1 min-w-0">
-                  <div class="endpoint-path truncate">/ai/openai</div>
-                  <div class="endpoint-name truncate">OpenAI Llama3</div>
-                </div>
-              </div>
-              <div class="flex items-center gap-3">
-                <span class="status-badge status-ready">● READY</span>
-                <span class="material-icons text-gray-500" id="endpoint-icon-1-0">expand_more</span>
-              </div>
-            </div>
-          </div>
-        </div>
-        
-        <!-- Gemini Web Chat -->
-        <div class="api-item" data-path="/ai/gemini-web" data-alias="Gemini Web Chat" data-description="Chat dengan Gemini Web (scrape). Mendukung system instruction.">
-          <div class="endpoint-item" onclick="toggleEndpoint(1, 1)">
-            <div class="flex items-start justify-between">
-              <div class="flex items-start gap-4 flex-1">
-                <span class="method-badge">GET</span>
-                <div class="flex-1 min-w-0">
-                  <div class="endpoint-path truncate">/ai/gemini-web</div>
-                  <div class="endpoint-name truncate">Gemini Web Chat</div>
-                </div>
-              </div>
-              <div class="flex items-center gap-3">
-                <span class="status-badge status-ready">● READY</span>
-                <span class="material-icons text-gray-500" id="endpoint-icon-1-1">expand_more</span>
-              </div>
-            </div>
-          </div>
-        </div>
-        
-        <!-- WebPilot AI Search -->
-        <div class="api-item" data-path="/ai/webpilot" data-alias="WebPilot AI Search" data-description="AI search & browsing menggunakan WebPilot (real-time).">
-          <div class="endpoint-item" onclick="toggleEndpoint(1, 2)">
-            <div class="flex items-start justify-between">
-              <div class="flex items-start gap-4 flex-1">
-                <span class="method-badge">GET</span>
-                <div class="flex-1 min-w-0">
-                  <div class="endpoint-path truncate">/ai/webpilot</div>
-                  <div class="endpoint-name truncate">WebPilot AI Search</div>
-                </div>
-              </div>
-              <div class="flex items-center gap-3">
-                <span class="status-badge status-ready">● READY</span>
-                <span class="material-icons text-gray-500" id="endpoint-icon-1-2">expand_more</span>
-              </div>
-            </div>
-          </div>
-        </div>
-        
-        <!-- Edit Image AI -->
-        <div class="api-item" data-path="/ai/edit-image" data-alias="Edit Image AI" data-description="Edit gambar dengan AI - Remove Background, Enhance, Restore.">
-          <div class="endpoint-item" onclick="toggleEndpoint(1, 3)">
-            <div class="flex items-start justify-between">
-              <div class="flex items-start gap-4 flex-1">
-                <span class="method-badge">GET</span>
-                <div class="flex-1 min-w-0">
-                  <div class="endpoint-path truncate">/ai/edit-image</div>
-                  <div class="endpoint-name truncate">Edit Image AI</div>
-                </div>
-              </div>
-              <div class="flex items-center gap-3">
-                <span class="status-badge status-update">⚡ UPDATE</span>
-                <span class="material-icons text-gray-500" id="endpoint-icon-1-3">expand_more</span>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-  
-  <!-- ===== NO RESULTS ===== -->
-  <div id="noResults" class="hidden text-center p-12 bg-surface border-2 border-dashed border-border rounded-2xl">
-    <div class="text-6xl mb-4">🔍</div>
-    <h3 class="text-xl font-bold mb-2">Tidak Ditemukan</h3>
-    <p class="text-gray-500">Coba gunakan kata kunci lain</p>
-  </div>
-
-  <!-- ===== REPOSITORY SECTION ===== -->
-  <div class="modern-card p-6">
-    <div class="flex items-center gap-3 mb-6">
-      <span class="material-icons text-gray-600 dark:text-gray-400">code</span>
-      <h2 class="font-bold text-lg">Repository</h2>
-    </div>
-    
-    <div class="github-card mb-6">
-      <div class="p-2.5 bg-gray-900 rounded-xl">
-        <i class="fab fa-github text-2xl text-white"></i>
-      </div>
-      <div class="flex-1">
-        <div class="flex items-center gap-2">
-          <span class="font-bold text-base">manzxy/falcon-api</span>
-          <span class="px-2 py-0.5 bg-gray-200 dark:bg-gray-700 text-xs rounded-full font-medium">main</span>
-        </div>
-        <div class="flex items-center gap-4 mt-2 text-xs text-gray-500">
-          <span class="flex items-center gap-1">
-            <span class="material-icons text-sm">merge</span>
-            49 commits ahead
-          </span>
-          <span class="flex items-center gap-1">
-            <span class="material-icons text-sm">update</span>
-            Updated 19 minutes ago
-          </span>
-        </div>
-      </div>
-      <a href="https://github.com/manzxy/falcon-api/tree/main" target="_blank" 
-         class="px-5 py-2.5 bg-gray-900 text-white text-xs font-bold rounded-xl hover:bg-gray-800 transition-all flex items-center gap-2">
-        <i class="fab fa-github"></i>
-        VIEW
-      </a>
-    </div>
-    
-    <div class="grid grid-cols-2 sm:grid-cols-4 gap-3">
-      <div class="file-card">
-        <span class="material-icons text-blue-500 text-sm">description</span>
-        <div class="flex-1 min-w-0">
-          <div class="text-xs font-medium truncate">index.html</div>
-          <div class="text-[10px] text-gray-500">19m ago</div>
-        </div>
-      </div>
-      <div class="file-card">
-        <span class="material-icons text-yellow-500 text-sm">notification_important</span>
-        <div class="flex-1 min-w-0">
-          <div class="text-xs font-medium truncate">notifications.json</div>
-          <div class="text-[10px] text-gray-500">2mo ago</div>
-        </div>
-      </div>
-      <div class="file-card">
-        <span class="material-icons text-red-500 text-sm">error</span>
-        <div class="flex-1 min-w-0">
-          <div class="text-xs font-medium truncate">404.html</div>
-          <div class="text-[10px] text-gray-500">5mo ago</div>
-        </div>
-      </div>
-      <div class="file-card">
-        <span class="material-icons text-purple-500 text-sm">warning</span>
-        <div class="flex-1 min-w-0">
-          <div class="text-xs font-medium truncate">500.html</div>
-          <div class="text-[10px] text-gray-500">5mo ago</div>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <!-- ===== FOOTER ===== -->
-  <div class="modern-card p-6 text-center">
-    <p class="text-sm text-gray-500 mb-2">
-      © 2025 Manzxy APIs · Open Source · Free to use
-    </p>
-    <div class="flex items-center justify-center gap-4 text-xs text-gray-400">
-      <span>Version v1.0.0</span>
-      <span>•</span>
-      <span>GET only</span>
-      <span>•</span>
-      <span>Rate limit: 60/min</span>
-    </div>
+<!-- HEADER -->
+<div class="flex justify-between items-center mb-6">
+  <span class="font-mc text-xs">MANZXY API</span>
+  <div class="flex gap-2">
+    <button onclick="setTheme('dark')" class="mc-btn">DARK</button>
+    <button onclick="setTheme('light')" class="mc-btn">LIGHT</button>
   </div>
 </div>
 
-<script>
-// ===== THEME MANAGEMENT =====
-function initTheme() {
-  const toggle = document.getElementById('themeToggle');
-  const slider = toggle.querySelector('.slider');
-  const icon = slider.querySelector('i');
-  
-  const savedTheme = localStorage.getItem('theme');
-  
-  if (savedTheme === 'dark') {
-    document.body.classList.add('dark');
-    icon.className = 'fas fa-moon';
-  } else {
-    document.body.classList.remove('dark');
-    icon.className = 'fas fa-sun';
-  }
-  
-  toggle.addEventListener('click', function() {
-    document.body.classList.toggle('dark');
-    const isDark = document.body.classList.contains('dark');
-    
-    if (isDark) {
-      icon.className = 'fas fa-moon';
-      localStorage.setItem('theme', 'dark');
-    } else {
-      icon.className = 'fas fa-sun';
-      localStorage.setItem('theme', 'light');
-    }
-  });
-}
+<!-- SEARCH -->
+<input id="searchInput"
+ class="w-full mc-input text-xs mb-6 px-4 py-3"
+ placeholder="Search API endpoints...">
 
-// ===== TOGGLE CATEGORY =====
+<!-- API LIST -->
+<div id="apiList" class="space-y-3"></div>
+
+<footer class="mt-10 text-center text-xs opacity-60">
+© 2025 Manzxy
+</footer>
+
+</div>
+
+<!-- ================= CONTRIBUTORS ================= -->
+<div class="max-w-2xl mx-auto px-6 pb-16 mc-panel bg-bottom">
+
+<h2 class="font-mc text-xs text-center opacity-80 mb-6">
+CONTRIBUTORS
+</h2>
+
+<div class="space-y-4">
+
+<div class="mc-panel flex items-center gap-4 p-4">
+  <img src="https://c.termai.cc/i151/YU4EKRg.jpg" class="w-14 h-14">
+  <div class="flex-1">
+    <div class="text-xs">Manzxy</div>
+    <div class="text-[10px] opacity-70">Developer</div>
+  </div>
+  <a href="https://t.me/manzxyyx"><i class="fab fa-telegram"></i></a>
+  <a href="https://github.com/manzxy"><i class="fab fa-github"></i></a>
+</div>
+
+</div>
+</div>
+
+<!-- ================= SCRIPT ================= -->
+<script>
+function setTheme(mode){
+  document.body.classList.toggle('light', mode === 'light')
+  localStorage.setItem('theme', mode)
+}
+setTheme(localStorage.getItem('theme') || 'dark')
+
+function setTheme(mode){
+  document.body.classList.toggle('light', mode === 'light')
+  localStorage.setItem('theme', mode)
+}
+setTheme(localStorage.getItem('theme') || 'dark')
+
 function toggleCategory(index) {
   const category = document.getElementById(`category-${index}`);
   const icon = document.getElementById(`category-icon-${index}`);
-  
-  if (category) {
-    category.classList.toggle('hidden');
-    if (icon) {
-      icon.style.transform = category.classList.contains('hidden') ? 'rotate(0deg)' : 'rotate(180deg)';
-      icon.textContent = category.classList.contains('hidden') ? 'expand_more' : 'expand_less';
-    }
+  if (category.classList.contains('hidden')) {
+    category.classList.remove('hidden');
+    icon.textContent = 'expand_less';
+  } else {
+    category.classList.add('hidden');
+    icon.textContent = 'expand_more';
   }
 }
 
-// ===== TOGGLE ENDPOINT =====
 function toggleEndpoint(catIndex, endpointIndex) {
   const endpoint = document.getElementById(`endpoint-${catIndex}-${endpointIndex}`);
   const icon = document.getElementById(`endpoint-icon-${catIndex}-${endpointIndex}`);
-  
-  if (endpoint) {
-    endpoint.classList.toggle('hidden');
-    if (icon) {
-      icon.style.transform = endpoint.classList.contains('hidden') ? 'rotate(0deg)' : 'rotate(180deg)';
-      icon.textContent = endpoint.classList.contains('hidden') ? 'expand_more' : 'expand_less';
-    }
+  if (endpoint.classList.contains('hidden')) {
+    endpoint.classList.remove('hidden');
+    icon.textContent = 'expand_less';
+  } else {
+    endpoint.classList.add('hidden');
+    icon.textContent = 'expand_more';
   }
 }
 
-// ===== EXECUTE REQUEST =====
-async function executeRequest(event, catIndex, endpointIndex, method, path) {
+async function executeRequest(event, catIndex, endpointIndex, method, path, produces) {
   event.preventDefault();
-  
   const form = document.getElementById(`form-${catIndex}-${endpointIndex}`);
   const responseDiv = document.getElementById(`response-${catIndex}-${endpointIndex}`);
   const responseContent = document.getElementById(`response-content-${catIndex}-${endpointIndex}`);
   const clearButton = document.getElementById(`clear-${catIndex}-${endpointIndex}`);
   
-  if (!form || !responseDiv || !responseContent) return;
-  
   const formData = new FormData(form);
   const params = new URLSearchParams();
-  
   for (const [key, value] of formData.entries()) {
-    if (value && value.trim()) {
-      params.append(key, value.trim());
-    }
+    if (value) params.append(key, value);
   }
-  
+
+  const fullPath = `${path}?${params.toString()}`;
   responseDiv.classList.remove('hidden');
   responseContent.innerHTML = '<div class="loader"></div>';
-  
-  // RESPONSE UNTUK TikTok STALKER
-  if (path === '/stalker/tiktok') {
-    setTimeout(() => {
-      const username = formData.get('username') || 'manzxy';
-      
-      const response = {
-        creator: "FlowFalcon",
-        status: true,
-        endpoint: "/stalker/tiktok",
-        params: {
-          username: username
-        },
-        result: {
-          username: username,
-          nickname: username === 'manzxy' ? 'Manzxy Official' : `${username}`,
-          bio: "🚀 Developer & Content Creator | Building Falcon API",
-          followers: "125.4K",
-          following: "1.234",
-          posts: "342",
-          verified: true,
-          private: false,
-          profile_pic: "https://p16-sign-va.tiktokcdn.com/tos-maliva-avt-0068/1234567890~c5_100x100.jpeg",
-          join_date: "2020-01-15"
-        }
-      };
-      
-      responseContent.innerHTML = `<pre class="response-box" style="background: var(--code-bg); color: var(--code-text); border: 1px solid var(--border);">${JSON.stringify(response, null, 2)}</pre>`;
-      
-      if (clearButton) clearButton.classList.remove('hidden');
-    }, 800);
-    return;
+
+  try {
+    const response = await fetch(fullPath);
+    const contentType = response.headers.get("content-type");
+    if (contentType && contentType.includes("application/json")) {
+      const data = await response.json();
+      responseContent.innerHTML = `<pre class="mc-response p-4">${JSON.stringify(data,null,2)}</pre>`;
+    } else if (contentType && contentType.startsWith("image/")) {
+      const blob = await response.blob();
+      const imageUrl = URL.createObjectURL(blob);
+      responseContent.innerHTML = `<img src="${imageUrl}">`;
+    } else {
+      const text = await response.text();
+      responseContent.innerHTML = `<pre class="mc-response p-4">${text}</pre>`;
+    }
+  } catch (error) {
+    responseContent.innerHTML = `<pre class="mc-response p-4">${error}</pre>`;
   }
-  
-  // RESPONSE UNTUK GitHub STALKER
-  if (path === '/stalker/github') {
-    setTimeout(() => {
-      const username = formData.get('username') || 'manzxy';
-      
-      const response = {
-        creator: "FlowFalcon",
-        status: true,
-        endpoint: "/stalker/github",
-        params: {
-          username: username
-        },
-        result: {
-          login: username,
-          name: username === 'manzxy' ? 'Manzxy' : `${username}`,
-          bio: "Building Falcon API 🚀 | Open Source Enthusiast",
-          public_repos: 47,
-          followers: 890,
-          following: 123,
-          created_at: "2019-06-20T08:30:00Z",
-          updated_at: "2025-02-13T10:15:00Z",
-          location: "Indonesia",
-          blog: "https://manzxy.my.id",
-          twitter_username: "manzxyyx",
-          company: "Falcon Dev"
-        }
-      };
-      
-      responseContent.innerHTML = `<pre class="response-box" style="background: var(--code-bg); color: var(--code-text); border: 1px solid var(--border);">${JSON.stringify(response, null, 2)}</pre>`;
-      
-      if (clearButton) clearButton.classList.remove('hidden');
-    }, 800);
-    return;
-  }
-  
-  // RESPONSE UNTUK AI ENDPOINTS
-  if (path.includes('/ai/')) {
-    setTimeout(() => {
-      const response = {
-        creator: "FlowFalcon",
-        status: true,
-        endpoint: path,
-        params: Object.fromEntries(formData.entries()),
-        result: "Hai! Aku FlowFalcon AI, senang ketemu kamu 😊\n\nKamu lagi mau ngapain hari ini? Ada yang bisa aku bantu? Kamu bisa pilih salah satu atau campur:\n\n• Belajar bahasa (Indonesia/Inggris) atau latihan percakapan\n• Nulis / ngedit teks (essay, email, CV, caption)\n• Bimbingan pelajaran (matematika, sains, dsb.)\n• Coding/programming (debug, review kode, belajar konsep)\n• Rencana belajar atau manajemen waktu\n• Ide proyek seru atau brainstorming\n• Ngobrol santai atau tanya jawab cepat\n\nKamu ingin mulai dari mana? Ceritain saja topik atau tujuannya, aku siap bantu! 😊"
-      };
-      
-      responseContent.innerHTML = `<pre class="response-box" style="background: var(--code-bg); color: var(--code-text); border: 1px solid var(--border);">${JSON.stringify(response, null, 2)}</pre>`;
-      
-      if (clearButton) clearButton.classList.remove('hidden');
-    }, 800);
-    return;
-  }
+  clearButton.classList.remove('hidden');
 }
 
-// ===== CLEAR RESPONSE =====
 function clearResponse(catIndex, endpointIndex) {
   const responseDiv = document.getElementById(`response-${catIndex}-${endpointIndex}`);
   const responseContent = document.getElementById(`response-content-${catIndex}-${endpointIndex}`);
   const clearButton = document.getElementById(`clear-${catIndex}-${endpointIndex}`);
-  
-  if (responseContent) responseContent.innerHTML = '';
-  if (responseDiv) responseDiv.classList.add('hidden');
-  if (clearButton) clearButton.classList.add('hidden');
+  responseContent.innerHTML = '';
+  responseDiv.classList.add('hidden');
+  clearButton.classList.add('hidden');
 }
 
-// ===== SEARCH FUNCTIONALITY =====
-function setupSearch() {
-  const searchInput = document.getElementById('searchInput');
-  const resultCount = document.getElementById('resultCount');
-  const noResults = document.getElementById('noResults');
-  
-  if (!searchInput) return;
-  
-  searchInput.addEventListener('input', function() {
-    const searchTerm = this.value.toLowerCase().trim();
-    const apiItems = document.querySelectorAll('.api-item');
-    let visibleCount = 0;
-    
-    apiItems.forEach(item => {
-      const path = item.dataset.path?.toLowerCase() || '';
-      const alias = item.dataset.alias?.toLowerCase() || '';
-      const description = item.dataset.description?.toLowerCase() || '';
-      
-      const matches = searchTerm === '' || 
-                     path.includes(searchTerm) || 
-                     alias.includes(searchTerm) || 
-                     description.includes(searchTerm);
-      
-      item.style.display = matches ? '' : 'none';
-      if (matches) visibleCount++;
-    });
-    
-    // Update category visibility
-    document.querySelectorAll('.modern-card').forEach(card => {
-      const visibleItems = card.querySelectorAll('.api-item[style=""]');
-      const categoryHeader = card.querySelector('.category-header');
-      if (categoryHeader && !card.querySelector('#noResults')) {
-        card.style.display = visibleItems.length > 0 ? '' : 'none';
-      }
-    });
-    
-    // Update result count
-    if (resultCount) {
-      resultCount.textContent = searchTerm === '' 
-        ? '6 endpoints'
-        : `${visibleCount} endpoints ditemukan`;
+ async function loadApis() {
+        const apiList = document.getElementById('apiList');
+        try {
+            const response = await fetch('/assets/settings.json');
+            const data = await response.json();
+            
+            let html = '';
+            data.categories.forEach((category, catIndex) => {
+                html += `
+                <div class="category-group" data-category="${category.name}">
+                    <div class="mb-2">
+                        <div class="bg-gray-800 border border-gray-700">
+                            <button onclick="toggleCategory(${catIndex})" class="w-full px-4 py-3 text-left flex items-center justify-between hover:bg-gray-700 transition-colors duration-150">
+                                <h2 class="font-bold flex items-center">
+                                    <span class="material-icons text-lg mr-3 text-gray-400">folder</span>
+                                    <span class="truncate max-w-xs text-sm">${category.name}</span>
+                                    <span class="ml-2 text-xs text-gray-500">(${category.items.length})</span>
+                                </h2>
+                                <span class="material-icons transition-transform duration-150" id="category-icon-${catIndex}">expand_more</span>
+                            </button>
+                            
+                            <div id="category-${catIndex}" class="hidden">`;
+                
+                category.items.forEach((item, endpointIndex) => {
+                    const method = 'GET'; // Assuming all are GET for now
+                    const pathParts = item.path.split('?');
+                    const path = pathParts[0];
+                    const queryParams = new URLSearchParams(pathParts[1] || '');
+
+                    const statusClasses = {
+                        'ready': 'bg-green-500/20 text-green-400',
+                        'update': 'bg-yellow-500/20 text-yellow-400',
+                        'error': 'bg-red-500/20 text-red-400'
+                    };
+                    const statusClass = statusClasses[item.status] || 'bg-gray-600';
+
+                    html += `
+                                <div class="border-t border-gray-700 api-item" 
+                                     data-method="${method}"
+                                     data-path="${path}"
+                                     data-alias="${item.name}"
+                                     data-description="${item.desc}"
+                                     data-category="${category.name}">
+                                    <button onclick="toggleEndpoint(${catIndex}, ${endpointIndex})" class="w-full px-4 py-3 text-left flex items-center justify-between hover:bg-gray-700 transition-colors duration-150">
+                                        <div class="flex items-center min-w-0 flex-1">
+                                            <span class="inline-block px-3 py-1 text-xs font-semibold text-white mr-3 flex-shrink-0 bg-gray-600">
+                                                ${method}
+                                            </span>
+                                            <div class="flex flex-col min-w-0 flex-1">
+                                                <span class="font-semibold truncate max-w-[90%] font-mono text-sm" title="${path}">${path}</span>
+                                                <div class="flex items-center">
+                                                    <span class="text-xs text-gray-400 truncate max-w-[90%]" title="${item.name}">${item.name}</span>
+                                                    <span class="ml-2 px-2 py-0.5 text-xs rounded-full ${statusClass}">${item.status || 'ready'}</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <span class="material-icons transition-transform duration-150 flex-shrink-0" id="endpoint-icon-${catIndex}-${endpointIndex}">expand_more</span>
+                                    </button>
+                                    
+                                    <div id="endpoint-${catIndex}-${endpointIndex}" class="hidden bg-gray-800 p-4 border-t border-gray-700">
+                                        <div class="mb-3">
+                                            <div class="text-gray-400 text-xs">${item.desc}</div>
+                                        </div>
+                                        `;
+                    if (item.status === 'ready') {
+                        html += `
+                                            <div>
+                                                <div class="text-gray-300 font-bold text-xs mb-2 flex items-center">
+                                                    <span class="material-icons text-sm mr-1">play_arrow</span>
+                                                    TRY IT OUT
+                                                </div>
+                                                <div>
+                                                    <form id="form-${catIndex}-${endpointIndex}" onsubmit="executeRequest(event, ${catIndex}, ${endpointIndex}, '${method}', '${path}', 'application/json')">
+                                                        <div class="mb-4 space-y-2">`;
+                        if (item.params) {
+                            Object.keys(item.params).forEach(paramName => {
+                                const isRequired = !queryParams.has(paramName) || queryParams.get(paramName) === '';
+                                 html += `<div>
+                                            <label class="block text-xs font-medium text-slate-400 mb-2">${paramName} ${isRequired ? '<span class="text-red-500">*</span>' : ''}</label>
+                                            <input type="text" name="${paramName}" class="w-full px-3 py-2 border border-gray-600 text-sm focus:outline-none focus:border-indigo-500 bg-gray-700 placeholder:text-slate-500" placeholder="${item.params[paramName]}" ${isRequired ? 'required' : ''}>
+                                          </div>`;
+                            });
+                        }
+                        html += `
+                                                        </div>
+                                                        <button type="submit" class="bg-indigo-600 hover:bg-indigo-500 font-semibold text-white px-6 py-2 text-xs font-medium transition-colors duration-150">
+                                                            Execute
+                                                        </button>
+                                                        <button type="button" id="clear-${catIndex}-${endpointIndex}" onclick="clearResponse(${catIndex}, ${endpointIndex})" class="hidden bg-gray-700 border border-gray-600 hover:border-gray-500 font-semibold text-slate-300 px-6 py-2 text-xs font-medium transition-colors duration-150 ml-2">
+                                                            Clear
+                                                        </button>
+                                                    </form>
+                                                </div>
+                                            </div>`;
+                    } else {
+                        html += `<div class="text-yellow-400 text-xs p-3 bg-yellow-500/20 border border-yellow-500/30">Endpoint ini tidak dapat diuji coba saat ini.</div>`;
+                    }
+
+                    html += `
+                                        <div id="response-${catIndex}-${endpointIndex}" class="hidden mt-4">
+                                            <div class="text-gray-300 font-bold text-xs mb-2 flex items-center">
+                                                <span class="material-icons text-sm mr-1">code</span>
+                                                RESPONSE
+                                            </div>
+                                            <div class="bg-gray-900 text-white text-xs p-4 border border-gray-700">
+                                                <div class="max-h-80 overflow-auto" id="response-content-${catIndex}-${endpointIndex}"></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>`;
+                });
+                html += `</div></div></div>`;
+            });
+            apiList.innerHTML = html;
+        } catch (error) {
+            apiList.innerHTML = '<p class="text-red-500">Failed to load API data.</p>';
+            console.error('Error loading API data:', error);
+        }
     }
     
-    // Show/hide no results
-    if (noResults) {
-      noResults.style.display = searchTerm !== '' && visibleCount === 0 ? 'block' : 'none';
+    // Function to load and render notifications
+    async function loadNotifications() {
+        const notificationsList = document.getElementById('notifications-list');
+        const unreadCountBadge = document.getElementById('unread-count');
+        try {
+            const response = await fetch('/notifications.json');
+            const notifications = await response.json();
+
+            notificationsList.innerHTML = ''; // Clear loader
+            let unreadCount = 0;
+
+            // Sort notifications by date, newest first
+            notifications.sort((a, b) => new Date(b.date) - new Date(a.date));
+
+            notifications.forEach(notif => {
+                if (!notif.read) {
+                    unreadCount++;
+                }
+                const notifElement = document.createElement('div');
+                notifElement.className = `bg-gray-800 border border-gray-700 p-4 text-xs ${notif.read ? 'opacity-60' : ''}`;
+                notifElement.innerHTML = `
+                    <div class="flex justify-between items-start">
+                        <div class="flex-1">
+                            <p class="font-bold text-slate-300 mb-1">${notif.title}</p>
+                            <p class="text-slate-400">${notif.message}</p>
+                        </div>
+                        <div class="flex items-center ml-4 flex-shrink-0">
+                            ${!notif.read ? '<div class="w-2 h-2 bg-green-400 rounded-full mr-2" title="Unread"></div>' : ''}
+                            <span class="text-slate-500">${new Date(notif.date).toLocaleDateString('id-ID', { year: 'numeric', month: 'short', day: 'numeric' })}</span>
+                        </div>
+                    </div>
+                `;
+                notificationsList.appendChild(notifElement);
+            });
+
+            if (unreadCount > 0) {
+                unreadCountBadge.textContent = `${unreadCount} Belum dibaca`;
+                unreadCountBadge.classList.remove('hidden');
+            }
+
+        } catch (error) {
+            notificationsList.innerHTML = '<p class="text-red-500 text-xs">Gagal memuat notifikasi.</p>';
+            console.error('Error loading notifications:', error);
+        }
     }
-  });
-}
 
-// ===== INITIALIZATION =====
-document.addEventListener('DOMContentLoaded', () => {
-  initTheme();
-  setupSearch();
-  
-  // Set result count
-  document.getElementById('resultCount').textContent = '6 endpoints';
-});
+    // Search functionality
+    document.getElementById('searchInput').addEventListener('input', function() {
+        const searchTerm = this.value.toLowerCase();
+        const apiItems = document.querySelectorAll('.api-item');
+        const categories = document.querySelectorAll('.category-group');
+        const noResults = document.getElementById('noResults');
+        let visibleCount = 0;
 
-// Make functions global
-window.toggleCategory = toggleCategory;
-window.toggleEndpoint = toggleEndpoint;
-window.executeRequest = executeRequest;
-window.clearResponse = clearResponse;
+        apiItems.forEach(item => {
+            const path = item.dataset.path.toLowerCase();
+            const alias = item.dataset.alias.toLowerCase();
+            const description = item.dataset.description.toLowerCase();
+            
+            if (path.includes(searchTerm) || alias.includes(searchTerm) || description.includes(searchTerm)) {
+                item.style.display = '';
+                visibleCount++;
+            } else {
+                item.style.display = 'none';
+            }
+        });
+
+        categories.forEach(category => {
+            const visibleItems = category.querySelectorAll('.api-item[style=""]');
+            if (visibleItems.length > 0) {
+                category.style.display = '';
+            } else {
+                category.style.display = 'none';
+            }
+        });
+
+        if (visibleCount === 0) {
+            noResults.style.display = 'block';
+        } else {
+            noResults.style.display = 'none';
+        }
+    });
+
+
+    // Initial load
+    document.addEventListener('DOMContentLoaded', () => {
+        loadApis();
+        loadNotifications();
+    });
+
 </script>
-
 </body>
 </html>
