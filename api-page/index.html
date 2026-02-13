@@ -27,7 +27,6 @@ tailwind.config = {
 <style>
 ::-webkit-scrollbar{display:none}
 
-/* ===== THEME VAR ===== */
 :root{
   --bg:#1b1b1b;
   --panel:#2a2a2a;
@@ -43,7 +42,6 @@ body.light{
   --input:#ffffff;
 }
 
-/* ===== GLOBAL ===== */
 html,body{
   margin:0;
   padding:0;
@@ -51,7 +49,6 @@ html,body{
   color:var(--text);
 }
 
-/* ===== BLOCK ===== */
 .mc-panel{
   background:var(--panel);
   border:4px solid var(--border);
@@ -60,7 +57,6 @@ html,body{
     inset 4px 4px 0 rgba(255,255,255,.05);
 }
 
-/* ===== FORCE PANEL COLOR (FIX BIRU) ===== */
 .category-group,
 .category-group > div,
 .category-group button,
@@ -77,14 +73,12 @@ html,body{
   background:rgba(0,0,0,.15) !important;
 }
 
-/* ===== INPUT ===== */
 .mc-input{
   background:var(--input);
   border:3px solid var(--border);
   color:var(--text);
 }
 
-/* ===== BUTTON ===== */
 .mc-btn{
   background:#3a7d3a;
   border:3px solid #2b5d2b;
@@ -101,7 +95,6 @@ html,body{
     inset -3px -3px 0 #5fa75f;
 }
 
-/* ===== CLEAR BUTTON ===== */
 .mc-btn-clear{
   background:#555;
   border:3px solid #333;
@@ -110,7 +103,6 @@ html,body{
   padding:8px 14px;
 }
 
-/* ===== GET ===== */
 .method-get{
   background:#2563eb;
   border:3px solid #1e40af;
@@ -119,14 +111,12 @@ html,body{
   color:#fff;
 }
 
-/* ===== RESPONSE ===== */
 .mc-response{
   background:#0b0b0b;
   border:3px solid #1f2937;
   color:#22c55e;
 }
 
-/* ===== CONTRIBUTORS BACKGROUND IMAGE ===== */
 .bg-bottom{
   background-image:url("https://c.termai.cc/i199/f6HGr.jpg");
   background-size:cover;
@@ -134,9 +124,7 @@ html,body{
   background-repeat:no-repeat;
 }
 
-/* ===== PERBAIKAN TOTAL TAMPILAN & STABILITAS ===== */
-
-/* 1. OVERLAY UNTUK BACKGROUND KONTRIBUTOR */
+/* ===== PERBAIKAN TAMPILAN ===== */
 .bg-bottom {
   position: relative;
   isolation: isolate;
@@ -156,7 +144,6 @@ body.light .bg-bottom::before {
   z-index: 1;
 }
 
-/* 2. THEME LIGHT */
 body.light .bg-gray-800,
 body.light .bg-gray-900,
 body.light .border-gray-700,
@@ -183,33 +170,12 @@ body.light .mc-panel {
     inset 4px 4px 0 rgba(255,255,255,0.8) !important;
 }
 
-/* 3. STABILKAN PANEL */
-.category-group,
-.category-group > div,
-.api-item,
-.api-item button,
-#endpoint-content > div,
-.bg-gray-800, .bg-gray-900 {
-  background: var(--panel) !important;
-  border-color: var(--border) !important;
-  color: var(--text) !important;
-}
-.api-item button:hover,
-.category-group button:hover {
-  background: rgba(0,0,0,0.2) !important;
-}
-.border-gray-700, .border-gray-600 {
-  border-color: var(--border) !important;
-}
-
-/* 4. INPUT FOCUS */
 .mc-input:focus {
   outline: none;
   border-color: #3b82f6 !important;
   box-shadow: 0 0 0 3px rgba(59,130,246,0.3);
 }
 
-/* 5. BADGE STATUS */
 [class*="bg-green-500/20"],
 [class*="bg-yellow-500/20"],
 [class*="bg-red-500/20"] {
@@ -223,7 +189,6 @@ body.light .mc-panel {
 .text-yellow-400 { color: #fde047 !important; border-color: #fde04780 !important; }
 .text-red-400 { color: #fca5a5 !important; border-color: #fca5a580 !important; }
 
-/* 6. SERAGAMKAN TOMBOL */
 .mc-btn,
 .mc-btn-clear,
 button.bg-indigo-600,
@@ -256,9 +221,7 @@ button.bg-gray-700 {
   border-color: #374151 !important;
 }
 
-/* 7. AREA RESPONSE */
-.mc-response,
-#response-content-${catIndex}-${endpointIndex} pre {
+.mc-response {
   white-space: pre-wrap;
   word-break: break-word;
   overflow-x: hidden;
@@ -270,14 +233,12 @@ button.bg-gray-700 {
   font-size: 11px;
   line-height: 1.5;
 }
-body.light .mc-response,
-body.light #response-content-${catIndex}-${endpointIndex} pre {
+body.light .mc-response {
   background: #f9fafb !important;
   border-color: #cbd5e1 !important;
   color: #0d9488 !important;
 }
 
-/* 8. LOADER */
 .loader {
   width: 24px;
   height: 24px;
@@ -296,7 +257,6 @@ body.light .loader {
   border-top-color: #0d9488;
 }
 
-/* 9. RESPONSIVE MOBILE */
 @media (max-width: 640px) {
   .max-w-2xl {
     padding-left: 1.25rem !important;
@@ -312,12 +272,8 @@ body.light .loader {
   .font-mc {
     font-size: 0.65rem !important;
   }
-  .flex.items-center.gap-4 {
-    flex-wrap: wrap;
-  }
 }
 
-/* 10. IKON SOSIAL MEDIA */
 .fab {
   font-size: 1.4rem !important;
   color: var(--text) !important;
@@ -328,7 +284,6 @@ body.light .loader {
   opacity: 1;
 }
 
-/* 11. SCROLLBAR */
 html {
   scrollbar-width: none;
   -ms-overflow-style: none;
@@ -337,7 +292,6 @@ body::-webkit-scrollbar {
   display: none;
 }
 
-/* 12. TEKS KECIL */
 .opacity-60 {
   opacity: 0.75 !important;
 }
@@ -349,10 +303,8 @@ body::-webkit-scrollbar {
 
 <body class="font-mono">
 
-<!-- ================= MAIN ================= -->
 <div class="max-w-2xl mx-auto px-6 py-10 mc-panel">
 
-<!-- HEADER -->
 <div class="flex justify-between items-center mb-6">
   <span class="font-mc text-xs">MANZXY API</span>
   <div class="flex gap-2">
@@ -361,12 +313,10 @@ body::-webkit-scrollbar {
   </div>
 </div>
 
-<!-- SEARCH -->
 <input id="searchInput"
  class="w-full mc-input text-xs mb-6 px-4 py-3"
  placeholder="Search API endpoints...">
 
-<!-- API LIST -->
 <div id="apiList" class="space-y-3"></div>
 
 <footer class="mt-10 text-center text-xs opacity-60">
@@ -375,7 +325,6 @@ body::-webkit-scrollbar {
 
 </div>
 
-<!-- ================= CONTRIBUTORS ================= -->
 <div class="max-w-2xl mx-auto px-6 pb-16 mc-panel bg-bottom">
 
 <h2 class="font-mc text-xs text-center opacity-80 mb-6">
@@ -385,7 +334,8 @@ CONTRIBUTORS
 <div class="space-y-4">
 
 <div class="mc-panel flex items-center gap-4 p-4">
-  <img src="https://c.termai.cc/i151/YU4EKRg.jpg" class="w-14 h-14">
+  <!-- FIX GAMBAR: pakai avatar GitHub -->
+  <img src="https://avatars.githubusercontent.com/manzxy" class="w-14 h-14 rounded-none border-2 border-gray-600" onerror="this.src='https://ui-avatars.com/api/?name=Manzxy&background=2a2a2a&color=fff&size=56'">
   <div class="flex-1">
     <div class="text-xs">Manzxy</div>
     <div class="text-[10px] opacity-70">Developer</div>
@@ -397,14 +347,8 @@ CONTRIBUTORS
 </div>
 </div>
 
-<!-- ================= SCRIPT ================= -->
 <script>
-function setTheme(mode){
-  document.body.classList.toggle('light', mode === 'light')
-  localStorage.setItem('theme', mode)
-}
-setTheme(localStorage.getItem('theme') || 'dark')
-
+// FIX: Hanya SATU function setTheme
 function setTheme(mode){
   document.body.classList.toggle('light', mode === 'light')
   localStorage.setItem('theme', mode)
@@ -461,13 +405,13 @@ async function executeRequest(event, catIndex, endpointIndex, method, path, prod
     } else if (contentType && contentType.startsWith("image/")) {
       const blob = await response.blob();
       const imageUrl = URL.createObjectURL(blob);
-      responseContent.innerHTML = `<img src="${imageUrl}">`;
+      responseContent.innerHTML = `<img src="${imageUrl}" class="max-w-full">`;
     } else {
       const text = await response.text();
       responseContent.innerHTML = `<pre class="mc-response p-4">${text}</pre>`;
     }
   } catch (error) {
-    responseContent.innerHTML = `<pre class="mc-response p-4">${error}</pre>`;
+    responseContent.innerHTML = `<pre class="mc-response p-4">Error: ${error.message}</pre>`;
   }
   clearButton.classList.remove('hidden');
 }
@@ -484,7 +428,8 @@ function clearResponse(catIndex, endpointIndex) {
 async function loadApis() {
   const apiList = document.getElementById('apiList');
   try {
-    const response = await fetch('assets/settings.json'); // PERBAIKAN: HAPUS "/"
+    // FIX PATH: gunakan './assets/settings.json' atau sesuaikan dengan lokasi file
+    const response = await fetch('assets/settings.json');
     const data = await response.json();
     
     let html = '';
@@ -508,7 +453,6 @@ async function loadApis() {
         const method = 'GET';
         const pathParts = item.path.split('?');
         const path = pathParts[0];
-        const queryParams = new URLSearchParams(pathParts[1] || '');
 
         const statusClasses = {
           'ready': 'bg-green-500/20 text-green-400',
@@ -558,10 +502,9 @@ async function loadApis() {
           
           if (item.params) {
             Object.keys(item.params).forEach(paramName => {
-              const isRequired = !queryParams.has(paramName) || queryParams.get(paramName) === '';
               html += `<div>
-                <label class="block text-xs font-medium text-slate-400 mb-2">${paramName} ${isRequired ? '<span class="text-red-500">*</span>' : ''}</label>
-                <input type="text" name="${paramName}" class="w-full px-3 py-2 border border-gray-600 text-sm focus:outline-none focus:border-indigo-500 bg-gray-700 placeholder:text-slate-500" placeholder="${item.params[paramName]}" ${isRequired ? 'required' : ''}>
+                <label class="block text-xs font-medium text-slate-400 mb-2">${paramName}</label>
+                <input type="text" name="${paramName}" class="w-full px-3 py-2 border border-gray-600 text-sm focus:outline-none focus:border-indigo-500 bg-gray-700 placeholder:text-slate-500" placeholder="${item.params[paramName]}">
               </div>`;
             });
           }
@@ -600,53 +543,43 @@ async function loadApis() {
     
     apiList.innerHTML = html;
   } catch (error) {
-    apiList.innerHTML = '<p class="text-red-500">Failed to load API data.</p>';
+    apiList.innerHTML = '<p class="text-red-500">Failed to load API data. Pastikan file assets/settings.json ada.</p>';
     console.error('Error loading API data:', error);
   }
 }
 
 // Search functionality
-document.getElementById('searchInput').addEventListener('input', function() {
-  const searchTerm = this.value.toLowerCase();
-  const apiItems = document.querySelectorAll('.api-item');
-  const categories = document.querySelectorAll('.category-group');
-  const noResults = document.getElementById('noResults');
-  let visibleCount = 0;
+document.addEventListener('DOMContentLoaded', function() {
+  loadApis();
+  
+  const searchInput = document.getElementById('searchInput');
+  if (searchInput) {
+    searchInput.addEventListener('input', function() {
+      const searchTerm = this.value.toLowerCase();
+      const apiItems = document.querySelectorAll('.api-item');
+      const categories = document.querySelectorAll('.category-group');
+      let visibleCount = 0;
 
-  apiItems.forEach(item => {
-    const path = item.dataset.path.toLowerCase();
-    const alias = item.dataset.alias.toLowerCase();
-    const description = item.dataset.description.toLowerCase();
-    
-    if (path.includes(searchTerm) || alias.includes(searchTerm) || description.includes(searchTerm)) {
-      item.style.display = '';
-      visibleCount++;
-    } else {
-      item.style.display = 'none';
-    }
-  });
+      apiItems.forEach(item => {
+        const path = item.dataset.path?.toLowerCase() || '';
+        const alias = item.dataset.alias?.toLowerCase() || '';
+        const description = item.dataset.description?.toLowerCase() || '';
+        
+        if (path.includes(searchTerm) || alias.includes(searchTerm) || description.includes(searchTerm)) {
+          item.style.display = '';
+          visibleCount++;
+        } else {
+          item.style.display = 'none';
+        }
+      });
 
-  categories.forEach(category => {
-    const visibleItems = category.querySelectorAll('.api-item[style=""]');
-    if (visibleItems.length > 0) {
-      category.style.display = '';
-    } else {
-      category.style.display = 'none';
-    }
-  });
-
-  if (visibleCount === 0 && noResults) {
-    noResults.style.display = 'block';
-  } else if (noResults) {
-    noResults.style.display = 'none';
+      categories.forEach(category => {
+        const visibleItems = Array.from(category.querySelectorAll('.api-item')).filter(el => el.style.display !== 'none');
+        category.style.display = visibleItems.length > 0 ? '' : 'none';
+      });
+    });
   }
 });
-
-// Initial load
-document.addEventListener('DOMContentLoaded', () => {
-  loadApis();
-});
-
 </script>
 </body>
 </html>
