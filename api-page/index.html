@@ -317,6 +317,7 @@ body::-webkit-scrollbar {
  class="w-full mc-input text-xs mb-6 px-4 py-3"
  placeholder="Search API endpoints...">
 
+<!-- API LIST -->
 <div id="apiList" class="space-y-3"></div>
 
 <footer class="mt-10 text-center text-xs opacity-60">
@@ -325,6 +326,7 @@ body::-webkit-scrollbar {
 
 </div>
 
+<!-- CONTRIBUTORS -->
 <div class="max-w-2xl mx-auto px-6 pb-16 mc-panel bg-bottom">
 
 <h2 class="font-mc text-xs text-center opacity-80 mb-6">
@@ -332,29 +334,28 @@ CONTRIBUTORS
 </h2>
 
 <div class="space-y-4">
-
-<div class="mc-panel flex items-center gap-4 p-4">
-  <!-- FIX GAMBAR: pakai avatar GitHub -->
-  <img src="https://avatars.githubusercontent.com/manzxy" class="w-14 h-14 rounded-none border-2 border-gray-600" onerror="this.src='https://ui-avatars.com/api/?name=Manzxy&background=2a2a2a&color=fff&size=56'">
-  <div class="flex-1">
-    <div class="text-xs">Manzxy</div>
-    <div class="text-[10px] opacity-70">Developer</div>
+  <div class="mc-panel flex items-center gap-4 p-4">
+    <img src="https://avatars.githubusercontent.com/manzxy" class="w-14 h-14 border-2 border-gray-600" onerror="this.src='https://ui-avatars.com/api/?name=Manzxy&background=2a2a2a&color=fff&size=56'">
+    <div class="flex-1">
+      <div class="text-xs">Manzxy</div>
+      <div class="text-[10px] opacity-70">Developer</div>
+    </div>
+    <a href="https://t.me/manzxyyx"><i class="fab fa-telegram"></i></a>
+    <a href="https://github.com/manzxy"><i class="fab fa-github"></i></a>
   </div>
-  <a href="https://t.me/manzxyyx"><i class="fab fa-telegram"></i></a>
-  <a href="https://github.com/manzxy"><i class="fab fa-github"></i></a>
 </div>
 
-</div>
 </div>
 
 <script>
-// FIX: Hanya SATU function setTheme
+// THEME - HANYA SATU FUNGSI
 function setTheme(mode){
   document.body.classList.toggle('light', mode === 'light')
   localStorage.setItem('theme', mode)
 }
 setTheme(localStorage.getItem('theme') || 'dark')
 
+// TOGGLE CATEGORY
 function toggleCategory(index) {
   const category = document.getElementById(`category-${index}`);
   const icon = document.getElementById(`category-icon-${index}`);
@@ -367,6 +368,7 @@ function toggleCategory(index) {
   }
 }
 
+// TOGGLE ENDPOINT
 function toggleEndpoint(catIndex, endpointIndex) {
   const endpoint = document.getElementById(`endpoint-${catIndex}-${endpointIndex}`);
   const icon = document.getElementById(`endpoint-icon-${catIndex}-${endpointIndex}`);
@@ -379,7 +381,8 @@ function toggleEndpoint(catIndex, endpointIndex) {
   }
 }
 
-async function executeRequest(event, catIndex, endpointIndex, method, path, produces) {
+// EXECUTE REQUEST
+async function executeRequest(event, catIndex, endpointIndex, method, path) {
   event.preventDefault();
   const form = document.getElementById(`form-${catIndex}-${endpointIndex}`);
   const responseDiv = document.getElementById(`response-${catIndex}-${endpointIndex}`);
@@ -392,7 +395,10 @@ async function executeRequest(event, catIndex, endpointIndex, method, path, prod
     if (value) params.append(key, value);
   }
 
-  const fullPath = `${path}?${params.toString()}`;
+  // BASE URL - ganti dengan domain API Anda
+  const baseURL = 'https://api.manzxy.my.id';
+  const fullPath = `${baseURL}${path}?${params.toString()}`;
+  
   responseDiv.classList.remove('hidden');
   responseContent.innerHTML = '<div class="loader"></div>';
 
@@ -401,7 +407,7 @@ async function executeRequest(event, catIndex, endpointIndex, method, path, prod
     const contentType = response.headers.get("content-type");
     if (contentType && contentType.includes("application/json")) {
       const data = await response.json();
-      responseContent.innerHTML = `<pre class="mc-response p-4">${JSON.stringify(data,null,2)}</pre>`;
+      responseContent.innerHTML = `<pre class="mc-response p-4">${JSON.stringify(data, null, 2)}</pre>`;
     } else if (contentType && contentType.startsWith("image/")) {
       const blob = await response.blob();
       const imageUrl = URL.createObjectURL(blob);
@@ -416,6 +422,7 @@ async function executeRequest(event, catIndex, endpointIndex, method, path, prod
   clearButton.classList.remove('hidden');
 }
 
+// CLEAR RESPONSE
 function clearResponse(catIndex, endpointIndex) {
   const responseDiv = document.getElementById(`response-${catIndex}-${endpointIndex}`);
   const responseContent = document.getElementById(`response-content-${catIndex}-${endpointIndex}`);
@@ -425,14 +432,31 @@ function clearResponse(catIndex, endpointIndex) {
   clearButton.classList.add('hidden');
 }
 
+// LOAD APIS - PAKAI FILE SETTINGS.JSON ANDA!
 async function loadApis() {
   const apiList = document.getElementById('apiList');
+  
   try {
-    // FIX PATH: gunakan './assets/settings.json' atau sesuaikan dengan lokasi file
-    const response = await fetch('assets/settings.json');
+    // ===== INI YANG DIPERBAIKI =====
+    // Coba beberapa kemungkinan path
+    let response;
+    try {
+      // Path 1: relative ke root (paling umum)
+      response = await fetch('./assets/settings.json');
+    } catch {
+      try {
+        // Path 2: tanpa titik
+        response = await fetch('assets/settings.json');
+      } catch {
+        // Path 3: dengan nama folder falcon-api
+        response = await fetch('/falcon-api/assets/settings.json');
+      }
+    }
+    
     const data = await response.json();
     
     let html = '';
+    
     data.categories.forEach((category, catIndex) => {
       html += `
       <div class="category-group" data-category="${category.name}">
@@ -497,7 +521,7 @@ async function loadApis() {
                 TRY IT OUT
               </div>
               <div>
-                <form id="form-${catIndex}-${endpointIndex}" onsubmit="executeRequest(event, ${catIndex}, ${endpointIndex}, '${method}', '${path}', 'application/json')">
+                <form id="form-${catIndex}-${endpointIndex}" onsubmit="executeRequest(event, ${catIndex}, ${endpointIndex}, '${method}', '${path}')">
                   <div class="mb-4 space-y-2">`;
           
           if (item.params) {
@@ -542,16 +566,22 @@ async function loadApis() {
     });
     
     apiList.innerHTML = html;
+    
   } catch (error) {
-    apiList.innerHTML = '<p class="text-red-500">Failed to load API data. Pastikan file assets/settings.json ada.</p>';
     console.error('Error loading API data:', error);
+    apiList.innerHTML = `
+      <div class="text-red-500 p-4 border border-red-500">
+        <p class="font-bold">Gagal memuat data API!</p>
+        <p class="text-xs mt-2">Error: ${error.message}</p>
+        <p class="text-xs mt-2">Pastikan file <strong>assets/settings.json</strong> ada di folder yang benar.</p>
+        <p class="text-xs">Struktur folder: /falcon-api/assets/settings.json</p>
+      </div>
+    `;
   }
 }
 
-// Search functionality
-document.addEventListener('DOMContentLoaded', function() {
-  loadApis();
-  
+// SEARCH FUNCTION
+function initSearch() {
   const searchInput = document.getElementById('searchInput');
   if (searchInput) {
     searchInput.addEventListener('input', function() {
@@ -579,7 +609,14 @@ document.addEventListener('DOMContentLoaded', function() {
       });
     });
   }
+}
+
+// INITIAL LOAD
+document.addEventListener('DOMContentLoaded', function() {
+  loadApis();
+  initSearch();
 });
 </script>
+
 </body>
-</html>
+  </html>
