@@ -303,16 +303,15 @@ pre {
 
 <!-- ================= SCRIPT ================= -->
 <script>
-// Theme management (deduplicated)
+// Theme management
 function setTheme(mode){
-  document.body.classList.toggle('light', mode === 'light');
-  localStorage.setItem('theme', mode);
+  document.body.classList.toggle('light', mode === 'light')
+  localStorage.setItem('theme', mode)
 }
 
 // Initialize theme
 (function initTheme() {
-  const savedTheme = localStorage.getItem('theme') || 'dark';
-  setTheme(savedTheme);
+  setTheme(localStorage.getItem('theme') || 'dark')
 })();
 
 function toggleCategory(index) {
@@ -321,11 +320,9 @@ function toggleCategory(index) {
   if (category.classList.contains('hidden')) {
     category.classList.remove('hidden');
     icon.textContent = 'expand_less';
-    icon.style.transform = 'rotate(0deg)';
   } else {
     category.classList.add('hidden');
     icon.textContent = 'expand_more';
-    icon.style.transform = 'rotate(0deg)';
   }
 }
 
@@ -335,11 +332,9 @@ function toggleEndpoint(catIndex, endpointIndex) {
   if (endpoint.classList.contains('hidden')) {
     endpoint.classList.remove('hidden');
     icon.textContent = 'expand_less';
-    icon.style.transform = 'rotate(0deg)';
   } else {
     endpoint.classList.add('hidden');
     icon.textContent = 'expand_more';
-    icon.style.transform = 'rotate(0deg)';
   }
 }
 
@@ -358,29 +353,24 @@ async function executeRequest(event, catIndex, endpointIndex, method, path, prod
 
   const fullPath = `${path}?${params.toString()}`;
   responseDiv.classList.remove('hidden');
-  responseContent.innerHTML = '<div class="loader"></div><p class="text-center text-xs mt-2">Loading...</p>';
+  responseContent.innerHTML = '<div class="loader"></div>';
 
   try {
     const response = await fetch(fullPath);
     const contentType = response.headers.get("content-type");
-    
-    if (!response.ok) {
-      throw new Error(`HTTP error! status: ${response.status}`);
-    }
-    
     if (contentType && contentType.includes("application/json")) {
       const data = await response.json();
-      responseContent.innerHTML = `<pre class="mc-response p-4 overflow-auto">${JSON.stringify(data, null, 2)}</pre>`;
+      responseContent.innerHTML = `<pre class="mc-response p-4">${JSON.stringify(data,null,2)}</pre>`;
     } else if (contentType && contentType.startsWith("image/")) {
       const blob = await response.blob();
       const imageUrl = URL.createObjectURL(blob);
       responseContent.innerHTML = `<img src="${imageUrl}" class="max-w-full h-auto border-2 border-[var(--border)]">`;
     } else {
       const text = await response.text();
-      responseContent.innerHTML = `<pre class="mc-response p-4 overflow-auto">${text}</pre>`;
+      responseContent.innerHTML = `<pre class="mc-response p-4">${text}</pre>`;
     }
   } catch (error) {
-    responseContent.innerHTML = `<pre class="mc-response p-4 text-red-400">Error: ${error.message}</pre>`;
+    responseContent.innerHTML = `<pre class="mc-response p-4 text-red-400">${error}</pre>`;
   }
   clearButton.classList.remove('hidden');
 }
@@ -399,52 +389,8 @@ async function loadApis() {
   const endpointCountSpan = document.getElementById('endpoint-count');
   
   try {
-    // Simulated data for demo - in production, fetch from actual endpoint
-    const mockData = {
-      categories: [
-        {
-          name: "Core APIs",
-          items: [
-            {
-              name: "Get User Info",
-              path: "/api/user?",
-              desc: "Retrieve user information by ID",
-              status: "ready",
-              params: { user_id: "User ID to fetch" }
-            },
-            {
-              name: "List Users",
-              path: "/api/users?",
-              desc: "Get paginated list of users",
-              status: "ready",
-              params: { page: "Page number", limit: "Items per page" }
-            }
-          ]
-        },
-        {
-          name: "Data APIs",
-          items: [
-            {
-              name: "Get Posts",
-              path: "/api/posts?",
-              desc: "Fetch blog posts",
-              status: "update",
-              params: { category: "Post category" }
-            },
-            {
-              name: "Get Comments",
-              path: "/api/comments?",
-              desc: "Get comments for a post",
-              status: "error",
-              params: { post_id: "Post ID" }
-            }
-          ]
-        }
-      ]
-    };
-    
-    // Use mock data instead of fetch to avoid 404
-    const data = mockData;
+    const response = await fetch('/assets/settings.json');
+    const data = await response.json();
     
     let html = '';
     let totalEndpoints = 0;
@@ -471,6 +417,7 @@ async function loadApis() {
         const method = 'GET';
         const pathParts = item.path.split('?');
         const path = pathParts[0];
+        const queryParams = new URLSearchParams(pathParts[1] || '');
 
         const statusColors = {
           'ready': 'bg-green-500/20 text-green-400 border-green-500/30',
@@ -520,9 +467,10 @@ async function loadApis() {
                                   
           if (item.params) {
             Object.keys(item.params).forEach(paramName => {
+              const isRequired = !queryParams.has(paramName) || queryParams.get(paramName) === '';
               html += `<div>
-                          <label class="block text-xs font-medium text-slate-400 mb-1">${paramName}</label>
-                          <input type="text" name="${paramName}" class="w-full px-3 py-2 border border-gray-600 text-sm focus:outline-none focus:border-blue-500 bg-gray-700 placeholder:text-slate-500 rounded" placeholder="${item.params[paramName]}">
+                          <label class="block text-xs font-medium text-slate-400 mb-1">${paramName} ${isRequired ? '<span class="text-red-500">*</span>' : ''}</label>
+                          <input type="text" name="${paramName}" class="w-full px-3 py-2 border border-gray-600 text-sm focus:outline-none focus:border-blue-500 bg-gray-700 placeholder:text-slate-500 rounded" placeholder="${item.params[paramName]}" ${isRequired ? 'required' : ''}>
                         </div>`;
             });
           }
@@ -541,7 +489,7 @@ async function loadApis() {
                           </div>
                       </div>`;
         } else {
-          html += `<div class="text-yellow-400 text-xs p-3 bg-yellow-500/20 border border-yellow-500/30 rounded">⚠️ Endpoint ini sedang dalam perbaikan.</div>`;
+          html += `<div class="text-yellow-400 text-xs p-3 bg-yellow-500/20 border border-yellow-500/30 rounded">⚠️ Endpoint ini tidak dapat diuji coba saat ini.</div>`;
         }
 
         html += `
@@ -562,7 +510,7 @@ async function loadApis() {
     });
     
     apiList.innerHTML = html;
-    endpointCountSpan.textContent = totalEndpoints;
+    if (endpointCountSpan) endpointCountSpan.textContent = totalEndpoints;
     
   } catch (error) {
     apiList.innerHTML = '<div class="text-red-500 text-center p-4 border border-red-500/30 rounded">❌ Failed to load API data. Please refresh.</div>';
@@ -571,7 +519,7 @@ async function loadApis() {
 }
 
 // Search functionality
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', () => {
   loadApis();
   
   const searchInput = document.getElementById('searchInput');
