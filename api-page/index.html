@@ -3,46 +3,61 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Manzxy APIs</title>
+<title>Manzxy API</title>
 <link rel="icon" href="/assets/icon.png">
 
 <script src="https://cdn.tailwindcss.com"></script>
 <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-<link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Ubuntu+Mono&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 
 <style>
 /* Hide scrollbar */
-::-webkit-scrollbar{display:none}
-
-/* ===== THEME VAR ===== */
-:root{
-  --bg:#1a1a1a;
-  --panel:#2d2d2d;
-  --border:#404040;
-  --text:#ffffff;
-  --text-secondary:#a0a0a0;
-  --input:#333333;
-  --accent:#3b82f6;
-  --success:#10b981;
-  --warning:#f59e0b;
-  --error:#ef4444;
-  --hover:#404040;
+::-webkit-scrollbar {
+  display: none;
 }
 
-/* Light theme colors */
-body.light{
-  --bg:#f0f0f0;
-  --panel:#ffffff;
-  --border:#d1d5db;
-  --text:#1f2937;
-  --text-secondary:#6b7280;
-  --input:#f3f4f6;
-  --accent:#2563eb;
-  --success:#059669;
-  --warning:#d97706;
-  --error:#dc2626;
-  --hover:#e5e7eb;
+/* ===== THEME VAR ===== */
+:root {
+  --bg: #0d1117;
+  --panel: #161b22;
+  --border: #30363d;
+  --text: #e6edf3;
+  --text-secondary: #8b949e;
+  --text-muted: #6e7681;
+  --input: #0d1117;
+  --accent: #2f81f7;
+  --accent-hover: #3c8eff;
+  --success: #3fb950;
+  --warning: #d29922;
+  --error: #f85149;
+  --hover: #21262d;
+  --button-primary: #238636;
+  --button-primary-hover: #2ea043;
+  --button-secondary: #21262d;
+  --button-secondary-hover: #30363d;
+  --code-bg: #0d1117;
+}
+
+body.light {
+  --bg: #ffffff;
+  --panel: #f6f8fa;
+  --border: #d0d7de;
+  --text: #1f2328;
+  --text-secondary: #656d76;
+  --text-muted: #6e7781;
+  --input: #ffffff;
+  --accent: #0969da;
+  --accent-hover: #1a7f37;
+  --success: #1a7f37;
+  --warning: #9a6700;
+  --error: #cf222e;
+  --hover: #eaeef2;
+  --button-primary: #1f883d;
+  --button-primary-hover: #2c974b;
+  --button-secondary: #eaeef2;
+  --button-secondary-hover: #d0d7de;
+  --code-bg: #f6f8fa;
 }
 
 /* ===== GLOBAL ===== */
@@ -52,232 +67,41 @@ html, body {
   min-height: 100vh;
   background: var(--bg);
   color: var(--text);
-  font-family: 'Ubuntu Mono', monospace;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  line-height: 1.5;
+  font-size: 14px;
 }
 
 /* ===== CONTAINER ===== */
 .container-custom {
-  max-width: 42rem;
+  max-width: 800px;
   margin: 0 auto;
   padding: 2rem 1.5rem;
 }
 
 /* ===== PANEL ===== */
-.mc-panel {
+.panel {
   background: var(--panel);
   border: 1px solid var(--border);
-  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+  border-radius: 6px;
 }
 
 /* ===== HEADER ===== */
-.header-title {
-  font-family: 'Press Start 2P', monospace;
-  font-size: 0.75rem;
-  color: var(--text);
-}
-
-/* ===== SEARCH INPUT ===== */
-.search-input {
-  width: 100%;
-  background: var(--input);
-  border: 1px solid var(--border);
-  color: var(--text);
-  font-size: 0.75rem;
-  padding: 0.75rem 1rem;
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
   margin-bottom: 1.5rem;
 }
-.search-input:focus {
-  outline: none;
-  border-color: var(--accent);
-}
 
-/* ===== CATEGORY ===== */
-.category-group {
-  margin-bottom: 0.5rem;
-}
-
-.category-header {
-  width: 100%;
-  padding: 0.75rem 1rem;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  background: var(--panel);
-  border: 1px solid var(--border);
-  color: var(--text);
-  cursor: pointer;
-}
-.category-header:hover {
-  background: var(--hover);
-}
-
-.category-title {
-  display: flex;
-  align-items: center;
-  gap: 0.75rem;
-  font-weight: bold;
-  font-size: 0.875rem;
-}
-
-.category-count {
-  color: var(--text-secondary);
-  font-size: 0.75rem;
-  margin-left: 0.5rem;
-}
-
-/* ===== ENDPOINT ===== */
-.endpoint-item {
-  border-top: 1px solid var(--border);
-}
-
-.endpoint-header {
-  width: 100%;
-  padding: 0.75rem 1rem;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  background: var(--panel);
-  color: var(--text);
-  cursor: pointer;
-}
-.endpoint-header:hover {
-  background: var(--hover);
-}
-
-.method-badge {
-  display: inline-block;
-  padding: 0.25rem 0.75rem;
-  background: #2563eb;
-  border: 1px solid #1e40af;
-  color: white;
-  font-size: 0.75rem;
+.header-title {
+  font-size: 1.25rem;
   font-weight: 600;
-  margin-right: 0.75rem;
-}
-
-.endpoint-info {
-  display: flex;
-  flex-direction: column;
-  min-width: 0;
-  flex: 1;
-}
-
-.endpoint-path {
-  font-weight: 600;
-  font-size: 0.875rem;
-  font-family: 'Ubuntu Mono', monospace;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-}
-
-.endpoint-meta {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  margin-top: 0.25rem;
-}
-
-.endpoint-name {
-  color: var(--text-secondary);
-  font-size: 0.75rem;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-}
-
-.status-badge {
-  padding: 0.125rem 0.5rem;
-  font-size: 0.625rem;
-  border-radius: 9999px;
-}
-.status-ready { background: rgba(16, 185, 129, 0.2); color: #10b981; }
-.status-update { background: rgba(245, 158, 11, 0.2); color: #f59e0b; }
-.status-error { background: rgba(239, 68, 68, 0.2); color: #ef4444; }
-
-/* ===== ENDPOINT DETAIL ===== */
-.endpoint-detail {
-  background: var(--panel);
-  padding: 1rem;
-  border-top: 1px solid var(--border);
-}
-
-.endpoint-desc {
-  color: var(--text-secondary);
-  font-size: 0.75rem;
-  line-height: 1.5;
-  margin-bottom: 0.75rem;
-}
-
-/* ===== FORM ===== */
-.form-label {
-  display: block;
-  color: var(--text-secondary);
-  font-size: 0.75rem;
-  font-weight: 500;
-  margin-bottom: 0.25rem;
-}
-
-.form-input {
-  width: 100%;
-  padding: 0.5rem 0.75rem;
-  background: var(--input);
-  border: 1px solid var(--border);
   color: var(--text);
-  font-size: 0.875rem;
-}
-.form-input:focus {
-  outline: none;
-  border-color: var(--accent);
 }
 
-/* ===== BUTTONS ===== */
-.btn {
-  padding: 0.5rem 1rem;
-  font-size: 0.75rem;
-  font-weight: 500;
-  border: 1px solid;
-  cursor: pointer;
-  transition: all 0.1s ease;
-}
-.btn:active {
-  transform: translateY(1px);
-}
-
-.btn-execute {
-  background: #2563eb;
-  border-color: #1e40af;
-  color: white;
-}
-.btn-execute:hover {
-  background: #1d4ed8;
-}
-
-.btn-curl {
-  background: #7e22ce;
-  border-color: #6b21a5;
-  color: white;
-}
-.btn-curl:hover {
-  background: #6b21a5;
-}
-
-.btn-copy {
-  background: #4b5563;
-  border-color: #374151;
-  color: white;
-}
-.btn-copy:hover {
-  background: #374151;
-}
-
-.btn-clear {
-  background: #4b5563;
-  border-color: #374151;
-  color: white;
-}
-.btn-clear:hover {
-  background: #374151;
+.header-title span {
+  color: var(--accent);
 }
 
 /* ===== THEME TOGGLE ===== */
@@ -307,8 +131,8 @@ html, body {
   left: 0;
   right: 0;
   bottom: 0;
-  background-color: #2d2d2d;
-  border: 1px solid #404040;
+  background-color: var(--button-secondary);
+  border: 1px solid var(--border);
   transition: .2s;
   border-radius: 24px;
 }
@@ -318,15 +142,15 @@ html, body {
   content: "";
   height: 18px;
   width: 18px;
-  left: 3px;
+  left: 2px;
   bottom: 2px;
-  background-color: white;
+  background-color: var(--text);
   transition: .2s;
   border-radius: 50%;
 }
 
 input:checked + .toggle-slider {
-  background-color: #3b82f6;
+  background-color: var(--accent);
 }
 
 input:checked + .toggle-slider:before {
@@ -335,11 +159,349 @@ input:checked + .toggle-slider:before {
 
 .toggle-icon {
   font-size: 0.875rem;
+  color: var(--text-secondary);
+}
+
+/* ===== SEARCH ===== */
+.search-container {
+  margin-bottom: 1.5rem;
+}
+
+.search-input {
+  width: 100%;
+  padding: 0.625rem 0.75rem;
+  background: var(--input);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  color: var(--text);
+  font-size: 0.875rem;
+}
+
+.search-input:focus {
+  outline: none;
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px rgba(47, 129, 247, 0.1);
+}
+
+.search-input::placeholder {
+  color: var(--text-muted);
+}
+
+/* ===== NOTIFICATIONS ===== */
+.notifications-section {
+  margin-bottom: 2rem;
+}
+
+.notifications-header {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 1rem;
+  color: var(--text-secondary);
+  font-weight: 600;
+  font-size: 0.875rem;
+}
+
+.notifications-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.notification-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 1rem;
+  padding: 1rem;
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  font-size: 0.875rem;
+}
+
+.notification-item.unread {
+  border-left: 4px solid var(--accent);
+}
+
+.notification-content {
+  flex: 1;
+}
+
+.notification-title {
+  font-weight: 600;
+  color: var(--text);
+  margin-bottom: 0.25rem;
+}
+
+.notification-message {
+  color: var(--text-secondary);
+  font-size: 0.8125rem;
+}
+
+.notification-date {
+  color: var(--text-muted);
+  font-size: 0.75rem;
+  margin-top: 0.25rem;
+}
+
+.notification-badge {
+  padding: 0.25rem 0.5rem;
+  background: var(--accent);
+  color: white;
+  font-size: 0.625rem;
+  font-weight: 600;
+  border-radius: 12px;
+  white-space: nowrap;
+}
+
+/* ===== CATEGORY ===== */
+.category-group {
+  margin-bottom: 0.5rem;
+}
+
+.category-header {
+  width: 100%;
+  padding: 0.75rem 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  color: var(--text);
+  cursor: pointer;
+  font-size: 0.875rem;
+  font-weight: 500;
+}
+
+.category-header:hover {
+  background: var(--hover);
+}
+
+.category-title {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.category-count {
+  color: var(--text-secondary);
+  font-size: 0.75rem;
+  margin-left: 0.5rem;
+}
+
+.category-check {
+  color: var(--success);
+  font-size: 1rem;
+}
+
+/* ===== ENDPOINT ===== */
+.endpoint-item {
+  border: 1px solid var(--border);
+  border-top: none;
+  background: var(--panel);
+}
+
+.endpoint-item:first-child {
+  border-top-left-radius: 6px;
+  border-top-right-radius: 6px;
+}
+
+.endpoint-item:last-child {
+  border-bottom-left-radius: 6px;
+  border-bottom-right-radius: 6px;
+}
+
+.endpoint-header {
+  width: 100%;
+  padding: 1rem;
+  display: flex;
+  align-items: flex-start;
+  gap: 1rem;
+  background: var(--panel);
+  color: var(--text);
+  cursor: pointer;
+  text-align: left;
+}
+
+.endpoint-header:hover {
+  background: var(--hover);
+}
+
+.method-badge {
+  display: inline-block;
+  padding: 0.25rem 0.5rem;
+  background: #1f6feb;
+  color: white;
+  font-size: 0.75rem;
+  font-weight: 600;
+  border-radius: 4px;
+  white-space: nowrap;
+}
+
+.endpoint-info {
+  flex: 1;
+  min-width: 0;
+}
+
+.endpoint-name {
+  font-weight: 600;
+  color: var(--text);
+  margin-bottom: 0.25rem;
+}
+
+.endpoint-path {
+  font-family: 'SF Mono', 'Monaco', 'Inconsolata', 'Fira Code', monospace;
+  font-size: 0.8125rem;
+  color: var(--accent);
+  text-decoration: none;
+  display: inline-block;
+  margin-bottom: 0.25rem;
+}
+
+.endpoint-path:hover {
+  text-decoration: underline;
+}
+
+.endpoint-status {
+  display: inline-block;
+  padding: 0.125rem 0.5rem;
+  background: rgba(63, 185, 80, 0.1);
+  color: var(--success);
+  font-size: 0.6875rem;
+  font-weight: 500;
+  border-radius: 12px;
+  margin-left: 0.5rem;
+}
+
+.endpoint-desc {
+  color: var(--text-secondary);
+  font-size: 0.8125rem;
+  margin-top: 0.25rem;
+}
+
+/* ===== ENDPOINT DETAIL ===== */
+.endpoint-detail {
+  padding: 1.5rem;
+  border-top: 1px solid var(--border);
+  background: var(--panel);
+}
+
+.detail-title {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: var(--text-secondary);
+  font-weight: 600;
+  font-size: 0.875rem;
+  margin-bottom: 1rem;
+}
+
+/* ===== FORM ===== */
+.form-group {
+  margin-bottom: 1rem;
+}
+
+.form-label {
+  display: block;
+  color: var(--text-secondary);
+  font-size: 0.8125rem;
+  font-weight: 500;
+  margin-bottom: 0.25rem;
+}
+
+.form-input {
+  width: 100%;
+  padding: 0.5rem 0.75rem;
+  background: var(--input);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  color: var(--text);
+  font-size: 0.875rem;
+}
+
+.form-input:focus {
+  outline: none;
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px rgba(47, 129, 247, 0.1);
+}
+
+/* ===== BUTTONS ===== */
+.btn-group {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin: 1rem 0;
+}
+
+.btn {
+  padding: 0.5rem 1rem;
+  font-size: 0.8125rem;
+  font-weight: 500;
+  border: 1px solid transparent;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.1s ease;
+}
+
+.btn:active {
+  transform: translateY(1px);
+}
+
+.btn-primary {
+  background: var(--button-primary);
+  color: white;
+}
+
+.btn-primary:hover {
+  background: var(--button-primary-hover);
+}
+
+.btn-secondary {
+  background: var(--button-secondary);
+  border: 1px solid var(--border);
+  color: var(--text);
+}
+
+.btn-secondary:hover {
+  background: var(--button-secondary-hover);
+}
+
+/* ===== CURL COMMAND ===== */
+.curl-container {
+  margin: 1rem 0;
+}
+
+.curl-command {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 0.75rem 1rem;
+  background: var(--code-bg);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  font-family: 'SF Mono', 'Monaco', 'Inconsolata', 'Fira Code', monospace;
+  font-size: 0.8125rem;
+  color: #79c0ff;
+}
+
+.curl-text {
+  flex: 1;
+  word-break: break-all;
+  white-space: pre-wrap;
+}
+
+.curl-url {
+  color: var(--text-secondary);
+  font-size: 0.75rem;
+  margin-top: 0.25rem;
+  word-break: break-all;
 }
 
 /* ===== RESPONSE ===== */
 .response-container {
-  margin-top: 1rem;
+  margin-top: 1.5rem;
 }
 
 .response-header {
@@ -347,17 +509,17 @@ input:checked + .toggle-slider:before {
   align-items: center;
   gap: 0.5rem;
   color: var(--text-secondary);
-  font-weight: bold;
-  font-size: 0.75rem;
-  margin-bottom: 0.5rem;
+  font-weight: 600;
+  font-size: 0.875rem;
+  margin-bottom: 0.75rem;
 }
 
 .response-content {
-  background: #1a1a1a;
-  border: 1px solid #2d2d2d;
-  color: #10b981;
-  font-size: 0.75rem;
+  background: var(--code-bg);
+  border: 1px solid var(--border);
+  border-radius: 6px;
   position: relative;
+  min-height: 100px;
 }
 
 .response-pre {
@@ -365,72 +527,39 @@ input:checked + .toggle-slider:before {
   margin: 0;
   white-space: pre-wrap;
   word-wrap: break-word;
-  max-height: 300px;
+  max-height: 400px;
   overflow-y: auto;
-  font-family: 'Ubuntu Mono', monospace;
+  font-family: 'SF Mono', 'Monaco', 'Inconsolata', 'Fira Code', monospace;
+  font-size: 0.8125rem;
+  color: #79c0ff;
 }
 
-/* ===== CURL COMMAND ===== */
-.curl-command {
-  background: #1a1a1a;
-  border: 1px solid #2d2d2d;
-  padding: 0.5rem 0.75rem;
-  margin-top: 0.5rem;
-  font-family: 'Ubuntu Mono', monospace;
-  font-size: 0.6875rem;
-  color: #10b981;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  gap: 0.5rem;
-}
-
-.curl-text {
-  flex: 1;
-  word-break: break-all;
-}
-
-/* ===== TOAST NOTIFICATION ===== */
-.toast {
-  position: fixed;
-  bottom: -100px;
-  left: 50%;
-  transform: translateX(-50%);
-  background: var(--panel);
+.copy-btn {
+  position: absolute;
+  top: 0.5rem;
+  right: 0.5rem;
+  padding: 0.25rem 0.5rem;
+  background: var(--button-secondary);
   border: 1px solid var(--border);
-  padding: 0.75rem 1.5rem;
+  border-radius: 4px;
   color: var(--text);
-  font-size: 0.75rem;
-  z-index: 9999;
-  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
-  transition: bottom 0.3s ease;
-  border-radius: 0;
-  white-space: nowrap;
+  font-size: 0.6875rem;
+  cursor: pointer;
 }
 
-.toast.show {
-  bottom: 20px;
-}
-
-.toast.success {
-  border-left: 4px solid #10b981;
-}
-.toast.error {
-  border-left: 4px solid #ef4444;
-}
-.toast.info {
-  border-left: 4px solid #3b82f6;
+.copy-btn:hover {
+  background: var(--button-secondary-hover);
 }
 
 /* ===== LOADER ===== */
 .loader {
-  border: 2px solid #2d2d2d;
-  border-top: 2px solid #3b82f6;
+  border: 2px solid var(--border);
+  border-top: 2px solid var(--accent);
   border-radius: 50%;
   width: 24px;
   height: 24px;
   animation: spin 0.8s linear infinite;
-  margin: 10px auto;
+  margin: 2rem auto;
 }
 @keyframes spin {
   0% { transform: rotate(0deg); }
@@ -440,17 +569,19 @@ input:checked + .toggle-slider:before {
 /* ===== NO RESULTS ===== */
 .no-results {
   text-align: center;
-  padding: 2.5rem 1.25rem;
+  padding: 3rem 1rem;
   color: var(--text-secondary);
-  font-size: 0.75rem;
+  font-size: 0.875rem;
 }
 
 /* ===== FOOTER ===== */
 .footer {
-  margin-top: 2.5rem;
+  margin-top: 2rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid var(--border);
   text-align: center;
-  font-size: 0.75rem;
-  color: var(--text-secondary);
+  color: var(--text-muted);
+  font-size: 0.8125rem;
 }
 
 /* ===== CONTRIBUTORS ===== */
@@ -459,11 +590,10 @@ input:checked + .toggle-slider:before {
 }
 
 .contributors-title {
-  font-family: 'Press Start 2P', monospace;
-  font-size: 0.75rem;
-  text-align: center;
-  color: var(--text-secondary);
-  margin-bottom: 1.5rem;
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--text);
+  margin-bottom: 1rem;
 }
 
 .contributor-card {
@@ -473,28 +603,34 @@ input:checked + .toggle-slider:before {
   padding: 1rem;
   background: var(--panel);
   border: 1px solid var(--border);
+  border-radius: 6px;
 }
 
 .contributor-avatar {
-  width: 3.5rem;
-  height: 3.5rem;
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
   border: 1px solid var(--border);
 }
 
+.contributor-info {
+  flex: 1;
+}
+
 .contributor-name {
-  font-size: 0.75rem;
-  font-weight: bold;
+  font-weight: 600;
+  color: var(--text);
+  margin-bottom: 0.25rem;
 }
 
 .contributor-role {
-  font-size: 0.625rem;
   color: var(--text-secondary);
+  font-size: 0.8125rem;
 }
 
 .contributor-links {
   display: flex;
   gap: 0.75rem;
-  margin-left: auto;
 }
 
 .contributor-links a {
@@ -504,96 +640,95 @@ input:checked + .toggle-slider:before {
 .contributor-links a:hover {
   color: var(--text);
 }
+
+/* ===== UTILITY ===== */
+.hidden {
+  display: none;
+}
+
+.material-icons {
+  font-size: 1.25rem;
+  color: var(--text-secondary);
+}
 </style>
 </head>
 
 <body>
 
-<!-- Toast Notification -->
-<div id="toast" class="toast"></div>
-
 <!-- ================= MAIN ================= -->
-<div class="container-custom mc-panel">
+<div class="container-custom">
 
-<!-- HEADER with Toggle Switch -->
-<div class="flex justify-between items-center mb-6">
-  <span class="header-title">⚡ MANZXY API</span>
-  <div class="theme-toggle">
-    <span class="toggle-icon">🌙</span>
-    <label class="toggle-switch">
-      <input type="checkbox" id="themeToggle" onchange="toggleTheme()">
-      <span class="toggle-slider"></span>
-    </label>
-    <span class="toggle-icon">☀️</span>
+  <!-- HEADER with Toggle Switch -->
+  <div class="header">
+    <div class="header-title">MANZXY <span>API</span></div>
+    <div class="theme-toggle">
+      <span class="toggle-icon">🌙</span>
+      <label class="toggle-switch">
+        <input type="checkbox" id="themeToggle" onchange="toggleTheme()">
+        <span class="toggle-slider"></span>
+      </label>
+      <span class="toggle-icon">☀️</span>
+    </div>
   </div>
-</div>
 
-<!-- SEARCH -->
-<input type="text" id="searchInput" class="search-input" placeholder="Search by path, name, or description...">
-
-<!-- API LIST -->
-<div id="apiList" class="space-y-1"></div>
-
-<!-- NO RESULTS MESSAGE -->
-<div id="noResults" class="no-results hidden">
-  <span class="material-icons text-4xl mb-2">search_off</span>
-  <p>No endpoints found matching your search</p>
-</div>
-
-<!-- FOOTER -->
-<div class="footer">
-© 2025 Manzxy • <span id="endpoint-count">0</span> endpoints available
-</div>
-
-</div>
-
-<!-- ================= CONTRIBUTORS ================= -->
-<div class="container-custom mc-panel contributors-section">
-
-<div class="contributors-title">👥 CONTRIBUTORS</div>
-
-<div class="contributor-card">
-  <img src="https://c.termai.cc/i151/YU4EKRg.jpg" class="contributor-avatar">
-  <div>
-    <div class="contributor-name">Manzxy</div>
-    <div class="contributor-role">Lead Developer</div>
+  <!-- SEARCH -->
+  <div class="search-container">
+    <input type="text" id="searchInput" class="search-input" placeholder="Search by path, name, or description...">
   </div>
-  <div class="contributor-links">
-    <a href="https://t.me/manzxyyx" target="_blank"><i class="fab fa-telegram"></i></a>
-    <a href="https://github.com/manzxy" target="_blank"><i class="fab fa-github"></i></a>
+
+  <!-- NOTIFICATIONS SECTION -->
+  <div class="notifications-section panel">
+    <div class="notifications-header">
+      <span class="material-icons">notifications</span>
+      <span>NOTIFICATIONS</span>
+    </div>
+    <div id="notificationsList" class="notifications-list">
+      <div class="loader"></div>
+    </div>
   </div>
-</div>
+
+  <!-- CATEGORIES LIST -->
+  <div id="apiList"></div>
+
+  <!-- NO RESULTS MESSAGE -->
+  <div id="noResults" class="no-results hidden">
+    <span class="material-icons" style="font-size: 3rem;">search_off</span>
+    <p style="margin-top: 1rem;">No endpoints found matching your search</p>
+  </div>
+
+  <!-- FOOTER -->
+  <div class="footer">
+    © 2025 Manzxy • <span id="endpoint-count">0</span> endpoints available
+  </div>
+
+  <!-- CONTRIBUTORS -->
+  <div class="contributors-section">
+    <div class="contributors-title">CONTRIBUTORS</div>
+    <div class="contributor-card">
+      <img src="https://c.termai.cc/i151/YU4EKRg.jpg" class="contributor-avatar">
+      <div class="contributor-info">
+        <div class="contributor-name">Manzxy</div>
+        <div class="contributor-role">Lead Developer</div>
+      </div>
+      <div class="contributor-links">
+        <a href="https://t.me/manzxyyx" target="_blank"><i class="fab fa-telegram"></i></a>
+        <a href="https://github.com/manzxy" target="_blank"><i class="fab fa-github"></i></a>
+      </div>
+    </div>
+  </div>
 
 </div>
 
 <script>
-// Toast notification with slide animation
-function showToast(message, type = 'info', duration = 3000) {
-  const toast = document.getElementById('toast');
-  toast.textContent = message;
-  toast.className = `toast ${type}`;
-  
-  // Trigger reflow
-  void toast.offsetWidth;
-  
-  toast.classList.add('show');
-  
-  setTimeout(() => {
-    toast.classList.remove('show');
-  }, duration);
-}
-
 // Theme toggle
 function toggleTheme() {
   const isChecked = document.getElementById('themeToggle').checked;
   if (isChecked) {
     document.body.classList.add('light');
     localStorage.setItem('theme', 'light');
-    showToast('🌞 Light mode activated', 'info');
   } else {
     document.body.classList.remove('light');
     localStorage.setItem('theme', 'dark');
-    showToast('🌙 Dark mode activated', 'info');
   }
 }
 
@@ -610,24 +745,75 @@ function toggleTheme() {
 async function copyToClipboard(text) {
   try {
     await navigator.clipboard.writeText(text);
-    showToast('✅ Copied to clipboard!', 'success');
+    alert('✅ Copied to clipboard!');
   } catch (err) {
-    showToast('❌ Failed to copy', 'error');
+    alert('❌ Failed to copy');
   }
 }
 
-// Generate curl command
-function generateCurlCommand(method, path, params) {
-  let curlCmd = `curl -X ${method} `;
+// Generate curl command with full URL
+function generateCurlCommand(method, path, params, baseUrl = 'https://api.manzxy.my.id') {
+  let fullUrl = baseUrl + path;
   if (params && Object.keys(params).length > 0) {
     const paramString = new URLSearchParams(params).toString();
-    curlCmd += `"${path}?${paramString}"`;
-  } else {
-    curlCmd += `"${path}"`;
+    fullUrl += '?' + paramString;
   }
-  return curlCmd;
+  
+  return {
+    command: `curl -X ${method} "${fullUrl}"`,
+    url: fullUrl
+  };
 }
 
+// Format date
+function formatDate(dateString) {
+  const date = new Date(dateString);
+  return date.toLocaleDateString('id-ID', { 
+    year: 'numeric', 
+    month: 'short', 
+    day: 'numeric' 
+  });
+}
+
+// Load notifications from /api-page/notifications.json
+async function loadNotifications() {
+  const notificationsList = document.getElementById('notificationsList');
+  
+  try {
+    const response = await fetch('/api-page/notifications.json');
+    const notifications = await response.json();
+    
+    if (!notifications || notifications.length === 0) {
+      notificationsList.innerHTML = '<div style="padding: 1rem; text-align: center; color: var(--text-muted);">Tidak ada notifikasi</div>';
+      return;
+    }
+    
+    // Sort by date descending
+    notifications.sort((a, b) => new Date(b.date) - new Date(a.date));
+    
+    let html = '';
+    notifications.forEach(notif => {
+      const isUnread = !notif.read;
+      html += `
+        <div class="notification-item ${isUnread ? 'unread' : ''}">
+          <div class="notification-content">
+            <div class="notification-title">${notif.title}</div>
+            <div class="notification-message">${notif.message}</div>
+            <div class="notification-date">${formatDate(notif.date)}</div>
+          </div>
+          ${isUnread ? '<div class="notification-badge">Baru</div>' : ''}
+        </div>
+      `;
+    });
+    
+    notificationsList.innerHTML = html;
+  } catch (error) {
+    console.error('Error loading notifications:', error);
+    notificationsList.innerHTML = '<div style="padding: 1rem; text-align: center; color: var(--error);">❌ Gagal memuat notifikasi</div>';
+  }
+}
+
+// Category toggle
 function toggleCategory(index) {
   const category = document.getElementById(`category-${index}`);
   const icon = document.getElementById(`category-icon-${index}`);
@@ -640,6 +826,7 @@ function toggleCategory(index) {
   }
 }
 
+// Endpoint toggle
 function toggleEndpoint(catIndex, endpointIndex) {
   const endpoint = document.getElementById(`endpoint-${catIndex}-${endpointIndex}`);
   const icon = document.getElementById(`endpoint-icon-${catIndex}-${endpointIndex}`);
@@ -652,6 +839,7 @@ function toggleEndpoint(catIndex, endpointIndex) {
   }
 }
 
+// Show curl command
 function showCurl(catIndex, endpointIndex, method, path) {
   const form = document.getElementById(`form-${catIndex}-${endpointIndex}`);
   const formData = new FormData(form);
@@ -661,34 +849,36 @@ function showCurl(catIndex, endpointIndex, method, path) {
     if (value) params[key] = value;
   }
   
-  const curlCmd = generateCurlCommand(method, path, params);
+  const { command, url } = generateCurlCommand(method, path, params);
   
   let curlDiv = document.getElementById(`curl-${catIndex}-${endpointIndex}`);
   if (!curlDiv) {
     curlDiv = document.createElement('div');
     curlDiv.id = `curl-${catIndex}-${endpointIndex}`;
-    curlDiv.className = 'curl-command';
+    curlDiv.className = 'curl-container';
     
-    const curlText = document.createElement('span');
-    curlText.className = 'curl-text';
-    curlText.textContent = curlCmd;
-    
-    const copyBtn = document.createElement('button');
-    copyBtn.className = 'btn btn-copy text-[8px] px-2 py-1';
-    copyBtn.innerHTML = '📋';
-    copyBtn.onclick = () => copyToClipboard(curlCmd);
-    
-    curlDiv.appendChild(curlText);
-    curlDiv.appendChild(copyBtn);
+    curlDiv.innerHTML = `
+      <div class="curl-command">
+        <span class="curl-text">${command}</span>
+        <button class="copy-btn" onclick='copyToClipboard(\`${command}\`)'>📋</button>
+      </div>
+      <div class="curl-url">${url}</div>
+    `;
     
     const form_element = document.getElementById(`form-${catIndex}-${endpointIndex}`);
     form_element.parentNode.insertBefore(curlDiv, form_element.nextSibling);
   } else {
-    curlDiv.querySelector('.curl-text').textContent = curlCmd;
-    curlDiv.querySelector('button').onclick = () => copyToClipboard(curlCmd);
+    curlDiv.innerHTML = `
+      <div class="curl-command">
+        <span class="curl-text">${command}</span>
+        <button class="copy-btn" onclick='copyToClipboard(\`${command}\`)'>📋</button>
+      </div>
+      <div class="curl-url">${url}</div>
+    `;
   }
 }
 
+// Execute request
 async function executeRequest(event, catIndex, endpointIndex, method, path) {
   event.preventDefault();
   const form = document.getElementById(`form-${catIndex}-${endpointIndex}`);
@@ -707,13 +897,14 @@ async function executeRequest(event, catIndex, endpointIndex, method, path) {
     }
   }
 
-  const fullPath = `${path}?${params.toString()}`;
+  const baseUrl = 'https://api.manzxy.my.id';
+  const fullPath = `${baseUrl}${path}?${params.toString()}`;
   
+  // Show curl command
   showCurl(catIndex, endpointIndex, method, path, paramsObj);
   
   responseDiv.classList.remove('hidden');
   responseContent.innerHTML = '<div class="loader"></div>';
-  showToast('🚀 Executing request...', 'info');
 
   try {
     const response = await fetch(fullPath);
@@ -730,38 +921,31 @@ async function executeRequest(event, catIndex, endpointIndex, method, path) {
       const data = await response.json();
       resultText = JSON.stringify(data, null, 2);
       resultHtml = `<pre class="response-pre">${resultText}</pre>`;
-      showToast('✅ Request successful', 'success');
     } else if (contentType && contentType.startsWith("image/")) {
       const blob = await response.blob();
       const imageUrl = URL.createObjectURL(blob);
-      resultHtml = `<img src="${imageUrl}" class="max-w-full h-auto">`;
+      resultHtml = `<img src="${imageUrl}" style="max-width: 100%; height: auto; display: block;">`;
       resultText = '[IMAGE DATA]';
-      showToast('✅ Image loaded', 'success');
     } else {
       const text = await response.text();
       resultText = text;
       resultHtml = `<pre class="response-pre">${text}</pre>`;
-      showToast('✅ Request successful', 'success');
     }
     
     responseContent.innerHTML = `
       <div style="position: relative;">
-        <div style="position: absolute; top: 0.5rem; right: 0.5rem;">
-          <button onclick='copyToClipboard(${JSON.stringify(resultText)})' class="btn btn-copy text-[8px] px-2 py-1">
-            📋
-          </button>
-        </div>
+        <button class="copy-btn" onclick='copyToClipboard(${JSON.stringify(resultText)})'>📋 Copy</button>
         ${resultHtml}
       </div>
     `;
     
   } catch (error) {
-    responseContent.innerHTML = `<pre class="response-pre" style="color: #ef4444;">Error: ${error.message}</pre>`;
-    showToast('❌ Request failed', 'error');
+    responseContent.innerHTML = `<pre class="response-pre" style="color: var(--error);">Error: ${error.message}</pre>`;
   }
   clearButton.classList.remove('hidden');
 }
 
+// Clear response
 function clearResponse(catIndex, endpointIndex) {
   const responseDiv = document.getElementById(`response-${catIndex}-${endpointIndex}`);
   const responseContent = document.getElementById(`response-content-${catIndex}-${endpointIndex}`);
@@ -775,10 +959,9 @@ function clearResponse(catIndex, endpointIndex) {
   if (curlDiv) {
     curlDiv.remove();
   }
-  
-  showToast('🧹 Response cleared', 'info');
 }
 
+// Load APIs
 async function loadApis() {
   const apiList = document.getElementById('apiList');
   const endpointCountSpan = document.getElementById('endpoint-count');
@@ -794,60 +977,52 @@ async function loadApis() {
       totalEndpoints += category.items.length;
       
       html += `
-      <div class="category-group">
-        <button onclick="toggleCategory(${catIndex})" class="category-header">
-          <div class="category-title">
-            <span class="material-icons">folder</span>
-            <span>${category.name}</span>
-            <span class="category-count">(${category.items.length})</span>
-          </div>
-          <span class="material-icons" id="category-icon-${catIndex}">expand_more</span>
-        </button>
-        <div id="category-${catIndex}" class="hidden">`;
+        <div class="category-group">
+          <button onclick="toggleCategory(${catIndex})" class="category-header">
+            <div class="category-title">
+              <span class="material-icons">folder</span>
+              <span>${category.name}</span>
+              <span class="category-count">(${category.items.length})</span>
+              <span class="category-check">✓</span>
+            </div>
+            <span class="material-icons" id="category-icon-${catIndex}">expand_more</span>
+          </button>
+          <div id="category-${catIndex}" class="hidden">`;
       
       category.items.forEach((item, endpointIndex) => {
         const method = 'GET';
         const pathParts = item.path.split('?');
         const path = pathParts[0];
-        
-        let statusClass = '';
-        if (item.status === 'ready') statusClass = 'status-ready';
-        else if (item.status === 'update') statusClass = 'status-update';
-        else if (item.status === 'error') statusClass = 'status-error';
 
         html += `
           <div class="endpoint-item">
             <button onclick="toggleEndpoint(${catIndex}, ${endpointIndex})" class="endpoint-header">
-              <div style="display: flex; align-items: center; min-width: 0; flex: 1;">
-                <span class="method-badge">${method}</span>
-                <div class="endpoint-info">
-                  <span class="endpoint-path" title="${path}">${path}</span>
-                  <div class="endpoint-meta">
-                    <span class="endpoint-name" title="${item.name}">${item.name}</span>
-                    <span class="status-badge ${statusClass}">${item.status || 'ready'}</span>
-                  </div>
+              <span class="method-badge">${method}</span>
+              <div class="endpoint-info">
+                <div class="endpoint-name">
+                  ${item.name}
+                  <span class="endpoint-status">${item.status || 'ready'}</span>
                 </div>
+                <a href="https://api.manzxy.my.id${path}" target="_blank" class="endpoint-path" onclick="event.stopPropagation()">${path}</a>
+                <div class="endpoint-desc">${item.desc}</div>
               </div>
               <span class="material-icons" id="endpoint-icon-${catIndex}-${endpointIndex}">expand_more</span>
             </button>
             
-            <div id="endpoint-${catIndex}-${endpointIndex}" class="endpoint-detail hidden">
-              <div class="endpoint-desc">${item.desc}</div>`;
+            <div id="endpoint-${catIndex}-${endpointIndex}" class="endpoint-detail hidden">`;
         
         if (item.status === 'ready') {
           html += `
-            <div>
-              <div style="display: flex; align-items: center; gap: 0.25rem; color: var(--text-secondary); font-weight: bold; font-size: 0.75rem; margin-bottom: 0.5rem;">
-                <span class="material-icons" style="font-size: 1rem;">play_arrow</span>
-                <span>TRY IT OUT</span>
-              </div>
-              <form id="form-${catIndex}-${endpointIndex}" onsubmit="executeRequest(event, ${catIndex}, ${endpointIndex}, '${method}', '${path}')">
-                <div style="margin-bottom: 1rem; display: flex; flex-direction: column; gap: 0.75rem;">`;
+            <div class="detail-title">
+              <span class="material-icons">play_arrow</span>
+              <span>TRY IT OUT</span>
+            </div>
+            <form id="form-${catIndex}-${endpointIndex}" onsubmit="executeRequest(event, ${catIndex}, ${endpointIndex}, '${method}', '${path}')">`;
           
           if (item.params) {
             Object.keys(item.params).forEach(paramName => {
               html += `
-                <div>
+                <div class="form-group">
                   <label class="form-label">${paramName}</label>
                   <input type="text" name="${paramName}" class="form-input" placeholder="${item.params[paramName]}">
                 </div>`;
@@ -855,30 +1030,28 @@ async function loadApis() {
           }
           
           html += `
-                </div>
-                <div style="display: flex; flex-wrap: wrap; gap: 0.5rem;">
-                  <button type="submit" class="btn btn-execute">Execute</button>
-                  <button type="button" onclick="showCurl(${catIndex}, ${endpointIndex}, '${method}', '${path}')" class="btn btn-curl">CURL</button>
-                  <button type="button" id="clear-${catIndex}-${endpointIndex}" onclick="clearResponse(${catIndex}, ${endpointIndex})" class="btn btn-clear hidden">Clear</button>
-                </div>
-              </form>
-            </div>`;
+              <div class="btn-group">
+                <button type="submit" class="btn btn-primary">Execute</button>
+                <button type="button" class="btn btn-secondary" onclick="showCurl(${catIndex}, ${endpointIndex}, '${method}', '${path}')">CURL</button>
+                <button type="button" id="clear-${catIndex}-${endpointIndex}" class="btn btn-secondary hidden" onclick="clearResponse(${catIndex}, ${endpointIndex})">Clear</button>
+              </div>
+            </form>`;
         } else {
-          html += `<div style="color: #f59e0b; font-size: 0.75rem; padding: 0.75rem; background: rgba(245, 158, 11, 0.1); border: 1px solid rgba(245, 158, 11, 0.2);">⚠️ Endpoint ini tidak dapat diuji coba saat ini.</div>`;
+          html += `<div style="color: var(--warning); padding: 1rem; background: rgba(210, 153, 34, 0.1); border-radius: 6px;">⚠️ Endpoint ini tidak dapat diuji coba saat ini.</div>`;
         }
 
         html += `
-              <div id="response-${catIndex}-${endpointIndex}" class="response-container hidden">
-                <div class="response-header">
-                  <span class="material-icons" style="font-size: 1rem;">code</span>
-                  <span>RESPONSE</span>
-                </div>
-                <div class="response-content">
-                  <div id="response-content-${catIndex}-${endpointIndex}" style="max-height: 300px; overflow-y: auto;"></div>
-                </div>
+            <div id="response-${catIndex}-${endpointIndex}" class="response-container hidden">
+              <div class="response-header">
+                <span class="material-icons">code</span>
+                <span>RESPONSE</span>
+              </div>
+              <div class="response-content">
+                <div id="response-content-${catIndex}-${endpointIndex}"></div>
               </div>
             </div>
-          </div>`;
+          </div>
+        </div>`;
       });
       
       html += `</div></div>`;
@@ -886,11 +1059,9 @@ async function loadApis() {
     
     apiList.innerHTML = html;
     if (endpointCountSpan) endpointCountSpan.textContent = totalEndpoints;
-    showToast(`📚 Loaded ${totalEndpoints} endpoints`, 'info');
     
   } catch (error) {
-    apiList.innerHTML = '<div style="color: #ef4444; text-align: center; padding: 1rem; border: 1px solid rgba(239, 68, 68, 0.3);">❌ Failed to load API data. Please refresh.</div>';
-    showToast('❌ Failed to load API data', 'error');
+    apiList.innerHTML = '<div style="color: var(--error); text-align: center; padding: 2rem; border: 1px solid var(--border); border-radius: 6px;">❌ Failed to load API data. Please refresh.</div>';
     console.error('Error loading API data:', error);
   }
 }
@@ -898,6 +1069,7 @@ async function loadApis() {
 // Search functionality
 document.addEventListener('DOMContentLoaded', () => {
   loadApis();
+  loadNotifications();
   
   const searchInput = document.getElementById('searchInput');
   if (searchInput) {
@@ -909,10 +1081,11 @@ document.addEventListener('DOMContentLoaded', () => {
       let visibleCount = 0;
 
       apiItems.forEach(item => {
-        const path = (item.querySelector('.endpoint-path')?.textContent || '').toLowerCase();
-        const name = (item.querySelector('.endpoint-name')?.textContent || '').toLowerCase();
+        const name = item.querySelector('.endpoint-name')?.textContent.toLowerCase() || '';
+        const path = item.querySelector('.endpoint-path')?.textContent.toLowerCase() || '';
+        const desc = item.querySelector('.endpoint-desc')?.textContent.toLowerCase() || '';
         
-        const matches = path.includes(searchTerm) || name.includes(searchTerm);
+        const matches = name.includes(searchTerm) || path.includes(searchTerm) || desc.includes(searchTerm);
         
         if (matches || searchTerm === '') {
           item.style.display = '';
@@ -929,10 +1102,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
       if (noResults) {
         noResults.style.display = visibleCount === 0 && searchTerm !== '' ? 'block' : 'none';
-      }
-      
-      if (searchTerm !== '') {
-        showToast(`🔍 Found ${visibleCount} results`, 'info');
       }
     });
   }
