@@ -758,7 +758,7 @@ async function copyToClipboard(text) {
 }
 
 // Generate curl command with full URL
-function generateCurlCommand(method, path, params, baseUrl = 'https://api.manzxy.my.id') {
+function generateCurlCommand(method, path, params, baseUrl = 'https://manzxy.my.id') {
   let fullUrl = baseUrl + path;
   if (params && Object.keys(params).length > 0) {
     const paramString = new URLSearchParams(params).toString();
