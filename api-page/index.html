@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Manzxy APIs - Anime Style</title>
+<title>Manzxy APIs</title>
 <link rel="icon" href="/assets/icon.png">
 
 <script src="https://cdn.tailwindcss.com"></script>
@@ -11,225 +11,421 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Ubuntu+Mono&display=swap" rel="stylesheet">
 
-<script>
-tailwind.config = {
-  theme: {
-    extend: {
-      fontFamily: {
-        mc: ['Press Start 2P','monospace'],
-        mono: ['Ubuntu Mono','monospace']
-      }
-    }
-  }
-}
-</script>
-
 <style>
-/* Hide scrollbar but keep functionality */
+/* Hide scrollbar */
 ::-webkit-scrollbar{display:none}
 
 /* ===== THEME VAR ===== */
 :root{
-  --bg:#1b1b1b;
-  --panel:rgba(42, 42, 42, 0.95);
-  --border:#3f3f3f;
-  --text:#e5e7eb;
-  --input:rgba(30, 30, 30, 0.95);
+  --bg:#1a1a1a;
+  --panel:#2d2d2d;
+  --border:#404040;
+  --text:#ffffff;
+  --text-secondary:#a0a0a0;
+  --input:#333333;
   --accent:#3b82f6;
-  --success:#22c55e;
-  --warning:#eab308;
+  --success:#10b981;
+  --warning:#f59e0b;
   --error:#ef4444;
+  --hover:#404040;
 }
+
+/* Light theme colors */
 body.light{
-  --bg:#e5e7eb;
-  --panel:rgba(243, 244, 246, 0.95);
-  --border:#cbd5e1;
-  --text:#111827;
-  --input:rgba(255, 255, 255, 0.95);
-  --accent:#3b82f6;
-  --success:#16a34a;
-  --warning:#ca8a04;
+  --bg:#f0f0f0;
+  --panel:#ffffff;
+  --border:#d1d5db;
+  --text:#1f2937;
+  --text-secondary:#6b7280;
+  --input:#f3f4f6;
+  --accent:#2563eb;
+  --success:#059669;
+  --warning:#d97706;
   --error:#dc2626;
+  --hover:#e5e7eb;
 }
 
 /* ===== GLOBAL ===== */
-html,body{
-  margin:0;
-  padding:0;
-  min-height:100vh;
+html, body {
+  margin: 0;
+  padding: 0;
+  min-height: 100vh;
+  background: var(--bg);
+  color: var(--text);
+  font-family: 'Ubuntu Mono', monospace;
 }
 
-/* Simple Anime Background - No blur effects */
-body {
-  background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)),
-              url('https://c.termai.cc/i199/f6HGr.jpg');
-  background-size: cover;
-  background-position: center;
-  background-attachment: fixed;
-  background-repeat: no-repeat;
+/* ===== CONTAINER ===== */
+.container-custom {
+  max-width: 42rem;
+  margin: 0 auto;
+  padding: 2rem 1.5rem;
+}
+
+/* ===== PANEL ===== */
+.mc-panel {
+  background: var(--panel);
+  border: 1px solid var(--border);
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+}
+
+/* ===== HEADER ===== */
+.header-title {
+  font-family: 'Press Start 2P', monospace;
+  font-size: 0.75rem;
   color: var(--text);
 }
 
-body.light {
-  background: linear-gradient(rgba(255, 255, 255, 0.8), rgba(255, 255, 255, 0.8)),
-              url('https://c.termai.cc/i199/f6HGr.jpg');
-  background-size: cover;
-  background-position: center;
-  background-attachment: fixed;
-  background-repeat: no-repeat;
+/* ===== SEARCH INPUT ===== */
+.search-input {
+  width: 100%;
+  background: var(--input);
+  border: 1px solid var(--border);
+  color: var(--text);
+  font-size: 0.75rem;
+  padding: 0.75rem 1rem;
+  margin-bottom: 1.5rem;
 }
-
-/* Minimal transitions - only for interactive elements */
-button, .api-item, .mc-btn, .mc-btn-curl, .mc-btn-copy {
-  transition: all 0.1s ease;
-}
-
-/* ===== BLOCK ===== */
-.mc-panel{
-  background:var(--panel);
-  border:4px solid var(--border);
-  box-shadow:
-    inset -4px -4px 0 rgba(0,0,0,.4),
-    inset 4px 4px 0 rgba(255,255,255,.05);
-}
-
-/* ===== FORCE PANEL COLOR ===== */
-.category-group,
-.category-group > div,
-.category-group button,
-.api-item,
-.api-item button,
-#endpoint-content,
-#endpoint-content > div{
-  background:transparent !important;
-  border-color:var(--border) !important;
-  color:var(--text) !important;
-}
-.category-group button:hover,
-.api-item button:hover{
-  background:rgba(0,0,0,.2) !important;
-}
-
-/* ===== INPUT ===== */
-.mc-input{
-  background:var(--input);
-  border:3px solid var(--border);
-  color:var(--text);
-}
-.mc-input:focus{
+.search-input:focus {
   outline: none;
   border-color: var(--accent);
 }
 
-/* ===== BUTTON ===== */
-.mc-btn{
-  background:#3a7d3a;
-  border:3px solid #2b5d2b;
-  box-shadow:
-    inset -3px -3px 0 #1f3f1f,
-    inset 3px 3px 0 #5fa75f;
-  font-size:10px;
-  padding:8px 14px;
-  color:#fff;
+/* ===== CATEGORY ===== */
+.category-group {
+  margin-bottom: 0.5rem;
+}
+
+.category-header {
+  width: 100%;
+  padding: 0.75rem 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: var(--panel);
+  border: 1px solid var(--border);
+  color: var(--text);
   cursor: pointer;
 }
-.mc-btn:active{
-  transform: translateY(2px);
-  box-shadow:
-    inset 3px 3px 0 #1f3f1f,
-    inset -3px -3px 0 #5fa75f;
+.category-header:hover {
+  background: var(--hover);
 }
 
-/* ===== CLEAR BUTTON ===== */
-.mc-btn-clear{
-  background:#555;
-  border:3px solid #333;
-  color:#fff;
-  font-size:10px;
-  padding:8px 14px;
+.category-title {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  font-weight: bold;
+  font-size: 0.875rem;
+}
+
+.category-count {
+  color: var(--text-secondary);
+  font-size: 0.75rem;
+  margin-left: 0.5rem;
+}
+
+/* ===== ENDPOINT ===== */
+.endpoint-item {
+  border-top: 1px solid var(--border);
+}
+
+.endpoint-header {
+  width: 100%;
+  padding: 0.75rem 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: var(--panel);
+  color: var(--text);
   cursor: pointer;
 }
+.endpoint-header:hover {
+  background: var(--hover);
+}
 
-/* ===== CURL BUTTON ===== */
-.mc-btn-curl{
-  background:#7d3a7d;
-  border:3px solid #5d2b5d;
-  box-shadow:
-    inset -3px -3px 0 #3f1f3f,
-    inset 3px 3px 0 #9f5f9f;
-  font-size:10px;
-  padding:4px 10px;
-  color:#fff;
+.method-badge {
+  display: inline-block;
+  padding: 0.25rem 0.75rem;
+  background: #2563eb;
+  border: 1px solid #1e40af;
+  color: white;
+  font-size: 0.75rem;
+  font-weight: 600;
+  margin-right: 0.75rem;
+}
+
+.endpoint-info {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  flex: 1;
+}
+
+.endpoint-path {
+  font-weight: 600;
+  font-size: 0.875rem;
+  font-family: 'Ubuntu Mono', monospace;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.endpoint-meta {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-top: 0.25rem;
+}
+
+.endpoint-name {
+  color: var(--text-secondary);
+  font-size: 0.75rem;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.status-badge {
+  padding: 0.125rem 0.5rem;
+  font-size: 0.625rem;
+  border-radius: 9999px;
+}
+.status-ready { background: rgba(16, 185, 129, 0.2); color: #10b981; }
+.status-update { background: rgba(245, 158, 11, 0.2); color: #f59e0b; }
+.status-error { background: rgba(239, 68, 68, 0.2); color: #ef4444; }
+
+/* ===== ENDPOINT DETAIL ===== */
+.endpoint-detail {
+  background: var(--panel);
+  padding: 1rem;
+  border-top: 1px solid var(--border);
+}
+
+.endpoint-desc {
+  color: var(--text-secondary);
+  font-size: 0.75rem;
+  line-height: 1.5;
+  margin-bottom: 0.75rem;
+}
+
+/* ===== FORM ===== */
+.form-label {
+  display: block;
+  color: var(--text-secondary);
+  font-size: 0.75rem;
+  font-weight: 500;
+  margin-bottom: 0.25rem;
+}
+
+.form-input {
+  width: 100%;
+  padding: 0.5rem 0.75rem;
+  background: var(--input);
+  border: 1px solid var(--border);
+  color: var(--text);
+  font-size: 0.875rem;
+}
+.form-input:focus {
+  outline: none;
+  border-color: var(--accent);
+}
+
+/* ===== BUTTONS ===== */
+.btn {
+  padding: 0.5rem 1rem;
+  font-size: 0.75rem;
+  font-weight: 500;
+  border: 1px solid;
   cursor: pointer;
+  transition: all 0.1s ease;
 }
-.mc-btn-curl:active{
-  transform: translateY(2px);
-  box-shadow:
-    inset 3px 3px 0 #3f1f3f,
-    inset -3px -3px 0 #9f5f9f;
+.btn:active {
+  transform: translateY(1px);
 }
 
-/* ===== COPY BUTTON ===== */
-.mc-btn-copy{
-  background:#3a5f7d;
-  border:3px solid #2b475d;
-  box-shadow:
-    inset -3px -3px 0 #1f2f3f,
-    inset 3px 3px 0 #5f7f9f;
-  font-size:10px;
-  padding:4px 10px;
-  color:#fff;
-  cursor: pointer;
+.btn-execute {
+  background: #2563eb;
+  border-color: #1e40af;
+  color: white;
 }
-.mc-btn-copy:active{
-  transform: translateY(2px);
-  box-shadow:
-    inset 3px 3px 0 #1f2f3f,
-    inset -3px -3px 0 #5f7f9f;
+.btn-execute:hover {
+  background: #1d4ed8;
 }
 
-/* ===== GET ===== */
-.method-get{
-  background:#2563eb;
-  border:3px solid #1e40af;
-  padding:3px 6px;
-  font-size:10px;
-  color:#fff;
+.btn-curl {
+  background: #7e22ce;
+  border-color: #6b21a5;
+  color: white;
+}
+.btn-curl:hover {
+  background: #6b21a5;
 }
 
-/* ===== RESPONSE ===== */
-.mc-response{
-  background:#0b0b0b;
-  border:3px solid #1f2937;
-  color:#22c55e;
+.btn-copy {
+  background: #4b5563;
+  border-color: #374151;
+  color: white;
+}
+.btn-copy:hover {
+  background: #374151;
 }
 
-/* ===== CONTRIBUTORS BACKGROUND ===== */
-.bg-bottom{
-  background:rgba(0,0,0,0.5);
-  border:4px solid var(--border);
+.btn-clear {
+  background: #4b5563;
+  border-color: #374151;
+  color: white;
+}
+.btn-clear:hover {
+  background: #374151;
+}
+
+/* ===== THEME TOGGLE ===== */
+.theme-toggle {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.toggle-switch {
   position: relative;
+  display: inline-block;
+  width: 48px;
+  height: 24px;
 }
-.bg-bottom::before {
-  content: '';
+
+.toggle-switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.toggle-slider {
   position: absolute;
+  cursor: pointer;
   top: 0;
   left: 0;
   right: 0;
   bottom: 0;
-  background: url('https://c.termai.cc/i199/f6HGr.jpg') center/cover fixed;
-  opacity: 0.3;
-  z-index: -1;
+  background-color: #2d2d2d;
+  border: 1px solid #404040;
+  transition: .2s;
+  border-radius: 24px;
 }
-.bg-bottom > * {
+
+.toggle-slider:before {
+  position: absolute;
+  content: "";
+  height: 18px;
+  width: 18px;
+  left: 3px;
+  bottom: 2px;
+  background-color: white;
+  transition: .2s;
+  border-radius: 50%;
+}
+
+input:checked + .toggle-slider {
+  background-color: #3b82f6;
+}
+
+input:checked + .toggle-slider:before {
+  transform: translateX(24px);
+}
+
+.toggle-icon {
+  font-size: 0.875rem;
+}
+
+/* ===== RESPONSE ===== */
+.response-container {
+  margin-top: 1rem;
+}
+
+.response-header {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: var(--text-secondary);
+  font-weight: bold;
+  font-size: 0.75rem;
+  margin-bottom: 0.5rem;
+}
+
+.response-content {
+  background: #1a1a1a;
+  border: 1px solid #2d2d2d;
+  color: #10b981;
+  font-size: 0.75rem;
   position: relative;
-  z-index: 1;
+}
+
+.response-pre {
+  padding: 1rem;
+  margin: 0;
+  white-space: pre-wrap;
+  word-wrap: break-word;
+  max-height: 300px;
+  overflow-y: auto;
+  font-family: 'Ubuntu Mono', monospace;
+}
+
+/* ===== CURL COMMAND ===== */
+.curl-command {
+  background: #1a1a1a;
+  border: 1px solid #2d2d2d;
+  padding: 0.5rem 0.75rem;
+  margin-top: 0.5rem;
+  font-family: 'Ubuntu Mono', monospace;
+  font-size: 0.6875rem;
+  color: #10b981;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.curl-text {
+  flex: 1;
+  word-break: break-all;
+}
+
+/* ===== TOAST NOTIFICATION ===== */
+.toast {
+  position: fixed;
+  bottom: -100px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: var(--panel);
+  border: 1px solid var(--border);
+  padding: 0.75rem 1.5rem;
+  color: var(--text);
+  font-size: 0.75rem;
+  z-index: 9999;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+  transition: bottom 0.3s ease;
+  border-radius: 0;
+  white-space: nowrap;
+}
+
+.toast.show {
+  bottom: 20px;
+}
+
+.toast.success {
+  border-left: 4px solid #10b981;
+}
+.toast.error {
+  border-left: 4px solid #ef4444;
+}
+.toast.info {
+  border-left: 4px solid #3b82f6;
 }
 
 /* ===== LOADER ===== */
 .loader {
-  border: 2px solid var(--border);
-  border-top: 2px solid var(--accent);
+  border: 2px solid #2d2d2d;
+  border-top: 2px solid #3b82f6;
   border-radius: 50%;
   width: 24px;
   height: 24px;
@@ -241,171 +437,196 @@ button, .api-item, .mc-btn, .mc-btn-curl, .mc-btn-copy {
   100% { transform: rotate(360deg); }
 }
 
-/* ===== CARD HOVER ===== */
-.api-item:hover {
-  background:rgba(0,0,0,0.1) !important;
-}
-
-/* ===== RESPONSE PRE ===== */
-pre {
-  white-space: pre-wrap;
-  word-wrap: break-word;
-  max-height: 300px;
-  overflow-y: auto;
-  font-family: 'Ubuntu Mono', monospace;
-  font-size: 12px;
-  line-height: 1.5;
-  margin: 0;
-}
-
 /* ===== NO RESULTS ===== */
-#noResults {
+.no-results {
   text-align: center;
-  padding: 40px 20px;
-  color: var(--text);
-  opacity: 0.7;
-  font-size: 12px;
+  padding: 2.5rem 1.25rem;
+  color: var(--text-secondary);
+  font-size: 0.75rem;
 }
 
-/* ===== CURL COMMAND ===== */
-.curl-command {
-  background:rgba(0,0,0,0.7);
-  border:2px solid var(--border);
-  padding:6px 10px;
-  font-family: 'Ubuntu Mono', monospace;
-  font-size: 11px;
-  color: #22c55e;
-  margin-top: 8px;
-  word-break: break-all;
+/* ===== FOOTER ===== */
+.footer {
+  margin-top: 2.5rem;
+  text-align: center;
+  font-size: 0.75rem;
+  color: var(--text-secondary);
 }
 
-/* ===== TOAST NOTIFICATION ===== */
-.toast {
-  position: fixed;
-  bottom: 20px;
-  right: 20px;
+/* ===== CONTRIBUTORS ===== */
+.contributors-section {
+  margin-top: 2rem;
+}
+
+.contributors-title {
+  font-family: 'Press Start 2P', monospace;
+  font-size: 0.75rem;
+  text-align: center;
+  color: var(--text-secondary);
+  margin-bottom: 1.5rem;
+}
+
+.contributor-card {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 1rem;
   background: var(--panel);
-  border: 3px solid var(--border);
-  padding: 8px 16px;
-  color: var(--text);
-  font-size: 12px;
-  z-index: 9999;
-  animation: fadeIn 0.2s ease;
+  border: 1px solid var(--border);
 }
-@keyframes fadeIn {
-  from { opacity: 0; }
-  to { opacity: 1; }
+
+.contributor-avatar {
+  width: 3.5rem;
+  height: 3.5rem;
+  border: 1px solid var(--border);
+}
+
+.contributor-name {
+  font-size: 0.75rem;
+  font-weight: bold;
+}
+
+.contributor-role {
+  font-size: 0.625rem;
+  color: var(--text-secondary);
+}
+
+.contributor-links {
+  display: flex;
+  gap: 0.75rem;
+  margin-left: auto;
+}
+
+.contributor-links a {
+  color: var(--text-secondary);
+  font-size: 1rem;
+}
+.contributor-links a:hover {
+  color: var(--text);
 }
 </style>
 </head>
 
-<body class="font-mono">
+<body>
 
 <!-- Toast Notification -->
-<div id="toast" class="toast hidden"></div>
+<div id="toast" class="toast"></div>
 
 <!-- ================= MAIN ================= -->
-<div class="max-w-2xl mx-auto px-6 py-10 mc-panel">
+<div class="container-custom mc-panel">
 
-<!-- HEADER -->
+<!-- HEADER with Toggle Switch -->
 <div class="flex justify-between items-center mb-6">
-  <span class="font-mc text-xs">⚡ MANZXY API</span>
-  <div class="flex gap-2">
-    <button onclick="setTheme('dark')" class="mc-btn">🌙 DARK</button>
-    <button onclick="setTheme('light')" class="mc-btn">☀️ LIGHT</button>
+  <span class="header-title">⚡ MANZXY API</span>
+  <div class="theme-toggle">
+    <span class="toggle-icon">🌙</span>
+    <label class="toggle-switch">
+      <input type="checkbox" id="themeToggle" onchange="toggleTheme()">
+      <span class="toggle-slider"></span>
+    </label>
+    <span class="toggle-icon">☀️</span>
   </div>
 </div>
 
 <!-- SEARCH -->
-<input id="searchInput"
- class="w-full mc-input text-xs mb-6 px-4 py-3"
- placeholder="🔍 Search by path, name, or description..."
- autocomplete="off">
+<input type="text" id="searchInput" class="search-input" placeholder="Search by path, name, or description...">
 
 <!-- API LIST -->
-<div id="apiList" class="space-y-3"></div>
+<div id="apiList" class="space-y-1"></div>
 
 <!-- NO RESULTS MESSAGE -->
-<div id="noResults" class="hidden">
+<div id="noResults" class="no-results hidden">
   <span class="material-icons text-4xl mb-2">search_off</span>
   <p>No endpoints found matching your search</p>
 </div>
 
-<footer class="mt-10 text-center text-xs opacity-60">
+<!-- FOOTER -->
+<div class="footer">
 © 2025 Manzxy • <span id="endpoint-count">0</span> endpoints available
-</footer>
+</div>
 
 </div>
 
 <!-- ================= CONTRIBUTORS ================= -->
-<div class="max-w-2xl mx-auto px-6 pb-16 mc-panel bg-bottom">
+<div class="container-custom mc-panel contributors-section">
 
-<h2 class="font-mc text-xs text-center opacity-80 mb-6">
-👥 CONTRIBUTORS
-</h2>
+<div class="contributors-title">👥 CONTRIBUTORS</div>
 
-<div class="space-y-4">
-
-<div class="mc-panel flex items-center gap-4 p-4">
-  <img src="https://c.termai.cc/i151/YU4EKRg.jpg" class="w-14 h-14 rounded border-2 border-[var(--border)]">
-  <div class="flex-1">
-    <div class="text-xs font-bold">Manzxy</div>
-    <div class="text-[10px] opacity-70">Lead Developer</div>
+<div class="contributor-card">
+  <img src="https://c.termai.cc/i151/YU4EKRg.jpg" class="contributor-avatar">
+  <div>
+    <div class="contributor-name">Manzxy</div>
+    <div class="contributor-role">Lead Developer</div>
   </div>
-  <a href="https://t.me/manzxyyx" class="hover:opacity-80" target="_blank"><i class="fab fa-telegram text-lg"></i></a>
-  <a href="https://github.com/manzxy" class="hover:opacity-80" target="_blank"><i class="fab fa-github text-lg"></i></a>
+  <div class="contributor-links">
+    <a href="https://t.me/manzxyyx" target="_blank"><i class="fab fa-telegram"></i></a>
+    <a href="https://github.com/manzxy" target="_blank"><i class="fab fa-github"></i></a>
+  </div>
 </div>
 
 </div>
-</div>
 
-<!-- ================= SCRIPT ================= -->
 <script>
-// Toast notification function
-function showToast(message, duration = 2000) {
+// Toast notification with slide animation
+function showToast(message, type = 'info', duration = 3000) {
   const toast = document.getElementById('toast');
   toast.textContent = message;
-  toast.classList.remove('hidden');
+  toast.className = `toast ${type}`;
+  
+  // Trigger reflow
+  void toast.offsetWidth;
+  
+  toast.classList.add('show');
   
   setTimeout(() => {
-    toast.classList.add('hidden');
+    toast.classList.remove('show');
   }, duration);
 }
 
-// Copy to clipboard function
+// Theme toggle
+function toggleTheme() {
+  const isChecked = document.getElementById('themeToggle').checked;
+  if (isChecked) {
+    document.body.classList.add('light');
+    localStorage.setItem('theme', 'light');
+    showToast('🌞 Light mode activated', 'info');
+  } else {
+    document.body.classList.remove('light');
+    localStorage.setItem('theme', 'dark');
+    showToast('🌙 Dark mode activated', 'info');
+  }
+}
+
+// Initialize theme
+(function initTheme() {
+  const savedTheme = localStorage.getItem('theme') || 'dark';
+  if (savedTheme === 'light') {
+    document.body.classList.add('light');
+    document.getElementById('themeToggle').checked = true;
+  }
+})();
+
+// Copy to clipboard
 async function copyToClipboard(text) {
   try {
     await navigator.clipboard.writeText(text);
-    showToast('✅ Copied!');
+    showToast('✅ Copied to clipboard!', 'success');
   } catch (err) {
-    showToast('❌ Failed');
+    showToast('❌ Failed to copy', 'error');
   }
 }
 
 // Generate curl command
 function generateCurlCommand(method, path, params) {
   let curlCmd = `curl -X ${method} `;
-  
   if (params && Object.keys(params).length > 0) {
     const paramString = new URLSearchParams(params).toString();
     curlCmd += `"${path}?${paramString}"`;
   } else {
     curlCmd += `"${path}"`;
   }
-  
   return curlCmd;
 }
-
-// Theme management
-function setTheme(mode){
-  document.body.classList.toggle('light', mode === 'light')
-  localStorage.setItem('theme', mode)
-}
-
-// Initialize theme
-(function initTheme() {
-  setTheme(localStorage.getItem('theme') || 'dark')
-})();
 
 function toggleCategory(index) {
   const category = document.getElementById(`category-${index}`);
@@ -442,35 +663,33 @@ function showCurl(catIndex, endpointIndex, method, path) {
   
   const curlCmd = generateCurlCommand(method, path, params);
   
-  // Create or update curl display
   let curlDiv = document.getElementById(`curl-${catIndex}-${endpointIndex}`);
   if (!curlDiv) {
     curlDiv = document.createElement('div');
     curlDiv.id = `curl-${catIndex}-${endpointIndex}`;
-    curlDiv.className = 'curl-command flex justify-between items-center gap-2';
+    curlDiv.className = 'curl-command';
     
     const curlText = document.createElement('span');
-    curlText.className = 'flex-1 font-mono text-[10px]';
+    curlText.className = 'curl-text';
     curlText.textContent = curlCmd;
     
     const copyBtn = document.createElement('button');
-    copyBtn.className = 'mc-btn-copy text-[8px] px-2 py-1';
-    copyBtn.innerHTML = '📋 COPY';
+    copyBtn.className = 'btn btn-copy text-[8px] px-2 py-1';
+    copyBtn.innerHTML = '📋';
     copyBtn.onclick = () => copyToClipboard(curlCmd);
     
     curlDiv.appendChild(curlText);
     curlDiv.appendChild(copyBtn);
     
-    // Insert after form
     const form_element = document.getElementById(`form-${catIndex}-${endpointIndex}`);
     form_element.parentNode.insertBefore(curlDiv, form_element.nextSibling);
   } else {
-    curlDiv.querySelector('span').textContent = curlCmd;
+    curlDiv.querySelector('.curl-text').textContent = curlCmd;
     curlDiv.querySelector('button').onclick = () => copyToClipboard(curlCmd);
   }
 }
 
-async function executeRequest(event, catIndex, endpointIndex, method, path, produces) {
+async function executeRequest(event, catIndex, endpointIndex, method, path) {
   event.preventDefault();
   const form = document.getElementById(`form-${catIndex}-${endpointIndex}`);
   const responseDiv = document.getElementById(`response-${catIndex}-${endpointIndex}`);
@@ -490,11 +709,11 @@ async function executeRequest(event, catIndex, endpointIndex, method, path, prod
 
   const fullPath = `${path}?${params.toString()}`;
   
-  // Show curl command
   showCurl(catIndex, endpointIndex, method, path, paramsObj);
   
   responseDiv.classList.remove('hidden');
   responseContent.innerHTML = '<div class="loader"></div>';
+  showToast('🚀 Executing request...', 'info');
 
   try {
     const response = await fetch(fullPath);
@@ -503,27 +722,33 @@ async function executeRequest(event, catIndex, endpointIndex, method, path, prod
     let resultHtml = '';
     let resultText = '';
     
+    if (!response.ok) {
+      throw new Error(`HTTP ${response.status}`);
+    }
+    
     if (contentType && contentType.includes("application/json")) {
       const data = await response.json();
       resultText = JSON.stringify(data, null, 2);
-      resultHtml = `<pre class="mc-response p-4">${resultText}</pre>`;
+      resultHtml = `<pre class="response-pre">${resultText}</pre>`;
+      showToast('✅ Request successful', 'success');
     } else if (contentType && contentType.startsWith("image/")) {
       const blob = await response.blob();
       const imageUrl = URL.createObjectURL(blob);
-      resultHtml = `<img src="${imageUrl}" class="max-w-full h-auto border-2 border-[var(--border)]">`;
+      resultHtml = `<img src="${imageUrl}" class="max-w-full h-auto">`;
       resultText = '[IMAGE DATA]';
+      showToast('✅ Image loaded', 'success');
     } else {
       const text = await response.text();
       resultText = text;
-      resultHtml = `<pre class="mc-response p-4">${text}</pre>`;
+      resultHtml = `<pre class="response-pre">${text}</pre>`;
+      showToast('✅ Request successful', 'success');
     }
     
-    // Add copy button to response
     responseContent.innerHTML = `
-      <div class="relative">
-        <div class="absolute top-2 right-2 z-10">
-          <button onclick='copyToClipboard(${JSON.stringify(resultText)})' class="mc-btn-copy text-[8px] px-2 py-1">
-            📋 COPY
+      <div style="position: relative;">
+        <div style="position: absolute; top: 0.5rem; right: 0.5rem;">
+          <button onclick='copyToClipboard(${JSON.stringify(resultText)})' class="btn btn-copy text-[8px] px-2 py-1">
+            📋
           </button>
         </div>
         ${resultHtml}
@@ -531,7 +756,8 @@ async function executeRequest(event, catIndex, endpointIndex, method, path, prod
     `;
     
   } catch (error) {
-    responseContent.innerHTML = `<pre class="mc-response p-4 text-red-400">${error}</pre>`;
+    responseContent.innerHTML = `<pre class="response-pre" style="color: #ef4444;">Error: ${error.message}</pre>`;
+    showToast('❌ Request failed', 'error');
   }
   clearButton.classList.remove('hidden');
 }
@@ -549,6 +775,8 @@ function clearResponse(catIndex, endpointIndex) {
   if (curlDiv) {
     curlDiv.remove();
   }
+  
+  showToast('🧹 Response cleared', 'info');
 }
 
 async function loadApis() {
@@ -566,124 +794,103 @@ async function loadApis() {
       totalEndpoints += category.items.length;
       
       html += `
-      <div class="category-group" data-category="${category.name}">
-          <div class="mb-2">
-              <div class="bg-gray-800 border border-gray-700">
-                  <button onclick="toggleCategory(${catIndex})" class="w-full px-4 py-3 text-left flex items-center justify-between hover:bg-gray-700">
-                      <h2 class="font-bold flex items-center">
-                          <span class="material-icons text-lg mr-3 text-gray-400">folder</span>
-                          <span class="truncate max-w-xs text-sm">${category.name}</span>
-                          <span class="ml-2 text-xs text-gray-500">(${category.items.length})</span>
-                      </h2>
-                      <span class="material-icons" id="category-icon-${catIndex}">expand_more</span>
-                  </button>
-                  
-                  <div id="category-${catIndex}" class="hidden">`;
+      <div class="category-group">
+        <button onclick="toggleCategory(${catIndex})" class="category-header">
+          <div class="category-title">
+            <span class="material-icons">folder</span>
+            <span>${category.name}</span>
+            <span class="category-count">(${category.items.length})</span>
+          </div>
+          <span class="material-icons" id="category-icon-${catIndex}">expand_more</span>
+        </button>
+        <div id="category-${catIndex}" class="hidden">`;
       
       category.items.forEach((item, endpointIndex) => {
         const method = 'GET';
         const pathParts = item.path.split('?');
         const path = pathParts[0];
-        const queryParams = new URLSearchParams(pathParts[1] || '');
-
-        const statusColors = {
-          'ready': 'bg-green-500/20 text-green-400',
-          'update': 'bg-yellow-500/20 text-yellow-400',
-          'error': 'bg-red-500/20 text-red-400'
-        };
-        const statusClass = statusColors[item.status] || 'bg-gray-600';
+        
+        let statusClass = '';
+        if (item.status === 'ready') statusClass = 'status-ready';
+        else if (item.status === 'update') statusClass = 'status-update';
+        else if (item.status === 'error') statusClass = 'status-error';
 
         html += `
-              <div class="border-t border-gray-700 api-item" 
-                   data-method="${method}"
-                   data-path="${path}"
-                   data-alias="${item.name}"
-                   data-description="${item.desc}"
-                   data-category="${category.name}">
-                  <button onclick="toggleEndpoint(${catIndex}, ${endpointIndex})" class="w-full px-4 py-3 text-left flex items-center justify-between hover:bg-gray-700">
-                      <div class="flex items-center min-w-0 flex-1">
-                          <span class="inline-block px-3 py-1 text-xs font-semibold text-white mr-3 flex-shrink-0 bg-blue-600 border-2 border-blue-800">
-                              ${method}
-                          </span>
-                          <div class="flex flex-col min-w-0 flex-1">
-                              <span class="font-semibold truncate max-w-[90%] font-mono text-sm" title="${path}">${path}</span>
-                              <div class="flex items-center gap-2 mt-1">
-                                  <span class="text-xs text-gray-400 truncate max-w-[90%]" title="${item.name}">${item.name}</span>
-                                  <span class="px-2 py-0.5 text-xs rounded-full ${statusClass}">${item.status || 'ready'}</span>
-                              </div>
-                          </div>
-                      </div>
-                      <span class="material-icons" id="endpoint-icon-${catIndex}-${endpointIndex}">expand_more</span>
-                  </button>
-                  
-                  <div id="endpoint-${catIndex}-${endpointIndex}" class="hidden bg-gray-800 p-4 border-t border-gray-700">
-                      <div class="mb-3">
-                          <div class="text-gray-400 text-xs leading-relaxed">${item.desc}</div>
-                      </div>`;
-                      
+          <div class="endpoint-item">
+            <button onclick="toggleEndpoint(${catIndex}, ${endpointIndex})" class="endpoint-header">
+              <div style="display: flex; align-items: center; min-width: 0; flex: 1;">
+                <span class="method-badge">${method}</span>
+                <div class="endpoint-info">
+                  <span class="endpoint-path" title="${path}">${path}</span>
+                  <div class="endpoint-meta">
+                    <span class="endpoint-name" title="${item.name}">${item.name}</span>
+                    <span class="status-badge ${statusClass}">${item.status || 'ready'}</span>
+                  </div>
+                </div>
+              </div>
+              <span class="material-icons" id="endpoint-icon-${catIndex}-${endpointIndex}">expand_more</span>
+            </button>
+            
+            <div id="endpoint-${catIndex}-${endpointIndex}" class="endpoint-detail hidden">
+              <div class="endpoint-desc">${item.desc}</div>`;
+        
         if (item.status === 'ready') {
           html += `
-                      <div>
-                          <div class="text-gray-300 font-bold text-xs mb-2 flex items-center">
-                              <span class="material-icons text-sm mr-1">play_arrow</span>
-                              TRY IT OUT
-                          </div>
-                          <div>
-                              <form id="form-${catIndex}-${endpointIndex}" onsubmit="executeRequest(event, ${catIndex}, ${endpointIndex}, '${method}', '${path}', 'application/json')">
-                                  <div class="mb-4 space-y-3">`;
-                                  
+            <div>
+              <div style="display: flex; align-items: center; gap: 0.25rem; color: var(--text-secondary); font-weight: bold; font-size: 0.75rem; margin-bottom: 0.5rem;">
+                <span class="material-icons" style="font-size: 1rem;">play_arrow</span>
+                <span>TRY IT OUT</span>
+              </div>
+              <form id="form-${catIndex}-${endpointIndex}" onsubmit="executeRequest(event, ${catIndex}, ${endpointIndex}, '${method}', '${path}')">
+                <div style="margin-bottom: 1rem; display: flex; flex-direction: column; gap: 0.75rem;">`;
+          
           if (item.params) {
             Object.keys(item.params).forEach(paramName => {
-              const isRequired = !queryParams.has(paramName) || queryParams.get(paramName) === '';
-              html += `<div>
-                          <label class="block text-xs font-medium text-slate-400 mb-1">${paramName} ${isRequired ? '<span class="text-red-500">*</span>' : ''}</label>
-                          <input type="text" name="${paramName}" class="w-full px-3 py-2 border border-gray-600 text-sm focus:outline-none focus:border-blue-500 bg-gray-700" placeholder="${item.params[paramName]}" ${isRequired ? 'required' : ''}>
-                        </div>`;
+              html += `
+                <div>
+                  <label class="form-label">${paramName}</label>
+                  <input type="text" name="${paramName}" class="form-input" placeholder="${item.params[paramName]}">
+                </div>`;
             });
           }
           
           html += `
-                                  </div>
-                                  <div class="flex flex-wrap gap-2">
-                                      <button type="submit" class="bg-blue-600 hover:bg-blue-500 text-white px-6 py-2 text-xs font-medium border-2 border-blue-800">
-                                          Execute
-                                      </button>
-                                      <button type="button" onclick="showCurl(${catIndex}, ${endpointIndex}, '${method}', '${path}')" class="mc-btn-curl">
-                                          🔗 CURL
-                                      </button>
-                                      <button type="button" id="clear-${catIndex}-${endpointIndex}" onclick="clearResponse(${catIndex}, ${endpointIndex})" class="hidden bg-gray-700 border border-gray-600 text-slate-300 px-6 py-2 text-xs font-medium">
-                                          Clear
-                                      </button>
-                                  </div>
-                              </form>
-                          </div>
-                      </div>`;
+                </div>
+                <div style="display: flex; flex-wrap: wrap; gap: 0.5rem;">
+                  <button type="submit" class="btn btn-execute">Execute</button>
+                  <button type="button" onclick="showCurl(${catIndex}, ${endpointIndex}, '${method}', '${path}')" class="btn btn-curl">CURL</button>
+                  <button type="button" id="clear-${catIndex}-${endpointIndex}" onclick="clearResponse(${catIndex}, ${endpointIndex})" class="btn btn-clear hidden">Clear</button>
+                </div>
+              </form>
+            </div>`;
         } else {
-          html += `<div class="text-yellow-400 text-xs p-3 bg-yellow-500/20 border border-yellow-500/30">⚠️ Endpoint ini tidak dapat diuji coba saat ini.</div>`;
+          html += `<div style="color: #f59e0b; font-size: 0.75rem; padding: 0.75rem; background: rgba(245, 158, 11, 0.1); border: 1px solid rgba(245, 158, 11, 0.2);">⚠️ Endpoint ini tidak dapat diuji coba saat ini.</div>`;
         }
 
         html += `
-                      <div id="response-${catIndex}-${endpointIndex}" class="hidden mt-4">
-                          <div class="text-gray-300 font-bold text-xs mb-2 flex items-center">
-                              <span class="material-icons text-sm mr-1">code</span>
-                              RESPONSE
-                          </div>
-                          <div class="bg-gray-900 text-white text-xs border border-gray-700">
-                              <div class="max-h-80 overflow-auto" id="response-content-${catIndex}-${endpointIndex}"></div>
-                          </div>
-                      </div>
-                  </div>
-              </div>`;
+              <div id="response-${catIndex}-${endpointIndex}" class="response-container hidden">
+                <div class="response-header">
+                  <span class="material-icons" style="font-size: 1rem;">code</span>
+                  <span>RESPONSE</span>
+                </div>
+                <div class="response-content">
+                  <div id="response-content-${catIndex}-${endpointIndex}" style="max-height: 300px; overflow-y: auto;"></div>
+                </div>
+              </div>
+            </div>
+          </div>`;
       });
       
-      html += `</div></div></div>`;
+      html += `</div></div>`;
     });
     
     apiList.innerHTML = html;
     if (endpointCountSpan) endpointCountSpan.textContent = totalEndpoints;
+    showToast(`📚 Loaded ${totalEndpoints} endpoints`, 'info');
     
   } catch (error) {
-    apiList.innerHTML = '<div class="text-red-500 text-center p-4 border border-red-500/30">❌ Failed to load API data. Please refresh.</div>';
+    apiList.innerHTML = '<div style="color: #ef4444; text-align: center; padding: 1rem; border: 1px solid rgba(239, 68, 68, 0.3);">❌ Failed to load API data. Please refresh.</div>';
+    showToast('❌ Failed to load API data', 'error');
     console.error('Error loading API data:', error);
   }
 }
@@ -696,21 +903,16 @@ document.addEventListener('DOMContentLoaded', () => {
   if (searchInput) {
     searchInput.addEventListener('input', function() {
       const searchTerm = this.value.toLowerCase().trim();
-      const apiItems = document.querySelectorAll('.api-item');
+      const apiItems = document.querySelectorAll('.endpoint-item');
       const categories = document.querySelectorAll('.category-group');
       const noResults = document.getElementById('noResults');
       let visibleCount = 0;
 
       apiItems.forEach(item => {
-        const path = (item.dataset.path || '').toLowerCase();
-        const alias = (item.dataset.alias || '').toLowerCase();
-        const description = (item.dataset.description || '').toLowerCase();
-        const category = (item.dataset.category || '').toLowerCase();
+        const path = (item.querySelector('.endpoint-path')?.textContent || '').toLowerCase();
+        const name = (item.querySelector('.endpoint-name')?.textContent || '').toLowerCase();
         
-        const matches = path.includes(searchTerm) || 
-                       alias.includes(searchTerm) || 
-                       description.includes(searchTerm) ||
-                       category.includes(searchTerm);
+        const matches = path.includes(searchTerm) || name.includes(searchTerm);
         
         if (matches || searchTerm === '') {
           item.style.display = '';
@@ -721,11 +923,17 @@ document.addEventListener('DOMContentLoaded', () => {
       });
 
       categories.forEach(category => {
-        const visibleItems = category.querySelectorAll('.api-item[style=""]');
+        const visibleItems = category.querySelectorAll('.endpoint-item[style=""]');
         category.style.display = visibleItems.length > 0 ? '' : 'none';
       });
 
-      noResults.style.display = visibleCount === 0 && searchTerm !== '' ? 'block' : 'none';
+      if (noResults) {
+        noResults.style.display = visibleCount === 0 && searchTerm !== '' ? 'block' : 'none';
+      }
+      
+      if (searchTerm !== '') {
+        showToast(`🔍 Found ${visibleCount} results`, 'info');
+      }
     });
   }
 });
