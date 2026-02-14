@@ -31,24 +31,22 @@ tailwind.config = {
 /* ===== THEME VAR ===== */
 :root{
   --bg:#1b1b1b;
-  --panel:rgba(42, 42, 42, 0.85);
+  --panel:rgba(42, 42, 42, 0.95);
   --border:#3f3f3f;
   --text:#e5e7eb;
-  --input:rgba(30, 30, 30, 0.9);
+  --input:rgba(30, 30, 30, 0.95);
   --accent:#3b82f6;
-  --accent-hover:#2563eb;
   --success:#22c55e;
   --warning:#eab308;
   --error:#ef4444;
 }
 body.light{
   --bg:#e5e7eb;
-  --panel:rgba(243, 244, 246, 0.85);
+  --panel:rgba(243, 244, 246, 0.95);
   --border:#cbd5e1;
   --text:#111827;
-  --input:rgba(255, 255, 255, 0.9);
+  --input:rgba(255, 255, 255, 0.95);
   --accent:#3b82f6;
-  --accent-hover:#2563eb;
   --success:#16a34a;
   --warning:#ca8a04;
   --error:#dc2626;
@@ -59,12 +57,11 @@ html,body{
   margin:0;
   padding:0;
   min-height:100vh;
-  transition:background-color 0.3s ease, color 0.3s ease;
 }
 
-/* Anime Background */
+/* Simple Anime Background - No blur effects */
 body {
-  background: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)),
+  background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)),
               url('https://c.termai.cc/i199/f6HGr.jpg');
   background-size: cover;
   background-position: center;
@@ -74,7 +71,7 @@ body {
 }
 
 body.light {
-  background: linear-gradient(rgba(255, 255, 255, 0.7), rgba(255, 255, 255, 0.7)),
+  background: linear-gradient(rgba(255, 255, 255, 0.8), rgba(255, 255, 255, 0.8)),
               url('https://c.termai.cc/i199/f6HGr.jpg');
   background-size: cover;
   background-position: center;
@@ -82,9 +79,9 @@ body.light {
   background-repeat: no-repeat;
 }
 
-/* Smooth transitions */
-* {
-  transition: background-color 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+/* Minimal transitions - only for interactive elements */
+button, .api-item, .mc-btn, .mc-btn-curl, .mc-btn-copy {
+  transition: all 0.1s ease;
 }
 
 /* ===== BLOCK ===== */
@@ -94,8 +91,6 @@ body.light {
   box-shadow:
     inset -4px -4px 0 rgba(0,0,0,.4),
     inset 4px 4px 0 rgba(255,255,255,.05);
-  transition: all 0.3s ease;
-  backdrop-filter: blur(8px);
 }
 
 /* ===== FORCE PANEL COLOR ===== */
@@ -112,8 +107,7 @@ body.light {
 }
 .category-group button:hover,
 .api-item button:hover{
-  background:rgba(0,0,0,.3) !important;
-  transform: translateY(-1px);
+  background:rgba(0,0,0,.2) !important;
 }
 
 /* ===== INPUT ===== */
@@ -121,13 +115,10 @@ body.light {
   background:var(--input);
   border:3px solid var(--border);
   color:var(--text);
-  transition: all 0.2s ease;
-  backdrop-filter: blur(4px);
 }
 .mc-input:focus{
   outline: none;
   border-color: var(--accent);
-  box-shadow: 0 0 0 2px rgba(59,130,246,0.2);
 }
 
 /* ===== BUTTON ===== */
@@ -140,15 +131,10 @@ body.light {
   font-size:10px;
   padding:8px 14px;
   color:#fff;
-  transition: all 0.1s ease;
   cursor: pointer;
 }
-.mc-btn:hover{
-  transform: translateY(-2px);
-  filter: brightness(1.1);
-}
 .mc-btn:active{
-  transform: translateY(0);
+  transform: translateY(2px);
   box-shadow:
     inset 3px 3px 0 #1f3f1f,
     inset -3px -3px 0 #5fa75f;
@@ -161,12 +147,7 @@ body.light {
   color:#fff;
   font-size:10px;
   padding:8px 14px;
-  transition: all 0.1s ease;
   cursor: pointer;
-}
-.mc-btn-clear:hover{
-  background:#666;
-  border-color:#444;
 }
 
 /* ===== CURL BUTTON ===== */
@@ -179,15 +160,10 @@ body.light {
   font-size:10px;
   padding:4px 10px;
   color:#fff;
-  transition: all 0.1s ease;
   cursor: pointer;
 }
-.mc-btn-curl:hover{
-  transform: translateY(-1px);
-  filter: brightness(1.1);
-}
 .mc-btn-curl:active{
-  transform: translateY(0);
+  transform: translateY(2px);
   box-shadow:
     inset 3px 3px 0 #3f1f3f,
     inset -3px -3px 0 #9f5f9f;
@@ -203,15 +179,10 @@ body.light {
   font-size:10px;
   padding:4px 10px;
   color:#fff;
-  transition: all 0.1s ease;
   cursor: pointer;
 }
-.mc-btn-copy:hover{
-  transform: translateY(-1px);
-  filter: brightness(1.1);
-}
 .mc-btn-copy:active{
-  transform: translateY(0);
+  transform: translateY(2px);
   box-shadow:
     inset 3px 3px 0 #1f2f3f,
     inset -3px -3px 0 #5f7f9f;
@@ -228,21 +199,16 @@ body.light {
 
 /* ===== RESPONSE ===== */
 .mc-response{
-  background:rgba(11, 11, 11, 0.9);
+  background:#0b0b0b;
   border:3px solid #1f2937;
   color:#22c55e;
-  transition: all 0.3s ease;
-  backdrop-filter: blur(4px);
-  position: relative;
 }
 
 /* ===== CONTRIBUTORS BACKGROUND ===== */
 .bg-bottom{
-  background:rgba(0,0,0,0.3);
-  backdrop-filter: blur(8px);
+  background:rgba(0,0,0,0.5);
   border:4px solid var(--border);
   position: relative;
-  overflow: hidden;
 }
 .bg-bottom::before {
   content: '';
@@ -252,7 +218,7 @@ body.light {
   right: 0;
   bottom: 0;
   background: url('https://c.termai.cc/i199/f6HGr.jpg') center/cover fixed;
-  filter: blur(8px);
+  opacity: 0.3;
   z-index: -1;
 }
 .bg-bottom > * {
@@ -267,7 +233,7 @@ body.light {
   border-radius: 50%;
   width: 24px;
   height: 24px;
-  animation: spin 1s linear infinite;
+  animation: spin 0.8s linear infinite;
   margin: 10px auto;
 }
 @keyframes spin {
@@ -276,20 +242,8 @@ body.light {
 }
 
 /* ===== CARD HOVER ===== */
-.api-item {
-  transition: all 0.2s ease;
-}
 .api-item:hover {
-  transform: translateX(4px);
-}
-
-/* ===== BADGES ===== */
-.status-badge {
-  display: inline-block;
-  padding: 2px 8px;
-  border-radius: 12px;
-  font-size: 10px;
-  font-weight: 600;
+  background:rgba(0,0,0,0.1) !important;
 }
 
 /* ===== RESPONSE PRE ===== */
@@ -315,16 +269,14 @@ pre {
 
 /* ===== CURL COMMAND ===== */
 .curl-command {
-  background:rgba(0,0,0,0.5);
+  background:rgba(0,0,0,0.7);
   border:2px solid var(--border);
-  padding:8px 12px;
+  padding:6px 10px;
   font-family: 'Ubuntu Mono', monospace;
   font-size: 11px;
   color: #22c55e;
-  border-radius: 0;
   margin-top: 8px;
   word-break: break-all;
-  backdrop-filter: blur(4px);
 }
 
 /* ===== TOAST NOTIFICATION ===== */
@@ -334,22 +286,15 @@ pre {
   right: 20px;
   background: var(--panel);
   border: 3px solid var(--border);
-  padding: 10px 20px;
+  padding: 8px 16px;
   color: var(--text);
   font-size: 12px;
   z-index: 9999;
-  animation: slideIn 0.3s ease;
-  backdrop-filter: blur(8px);
+  animation: fadeIn 0.2s ease;
 }
-@keyframes slideIn {
-  from {
-    transform: translateX(100%);
-    opacity: 0;
-  }
-  to {
-    transform: translateX(0);
-    opacity: 1;
-  }
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
 }
 </style>
 </head>
@@ -364,7 +309,7 @@ pre {
 
 <!-- HEADER -->
 <div class="flex justify-between items-center mb-6">
-  <span class="font-mc text-xs hover:opacity-80 transition-opacity">⚡ MANZXY API</span>
+  <span class="font-mc text-xs">⚡ MANZXY API</span>
   <div class="flex gap-2">
     <button onclick="setTheme('dark')" class="mc-btn">🌙 DARK</button>
     <button onclick="setTheme('light')" class="mc-btn">☀️ LIGHT</button>
@@ -386,7 +331,7 @@ pre {
   <p>No endpoints found matching your search</p>
 </div>
 
-<footer class="mt-10 text-center text-xs opacity-60 hover:opacity-100 transition-opacity">
+<footer class="mt-10 text-center text-xs opacity-60">
 © 2025 Manzxy • <span id="endpoint-count">0</span> endpoints available
 </footer>
 
@@ -395,20 +340,20 @@ pre {
 <!-- ================= CONTRIBUTORS ================= -->
 <div class="max-w-2xl mx-auto px-6 pb-16 mc-panel bg-bottom">
 
-<h2 class="font-mc text-xs text-center opacity-80 mb-6 hover:opacity-100 transition-opacity">
+<h2 class="font-mc text-xs text-center opacity-80 mb-6">
 👥 CONTRIBUTORS
 </h2>
 
 <div class="space-y-4">
 
-<div class="mc-panel flex items-center gap-4 p-4 hover:translate-x-2 transition-transform" style="background:rgba(42,42,42,0.7) !important; backdrop-filter:blur(8px);">
+<div class="mc-panel flex items-center gap-4 p-4">
   <img src="https://c.termai.cc/i151/YU4EKRg.jpg" class="w-14 h-14 rounded border-2 border-[var(--border)]">
   <div class="flex-1">
     <div class="text-xs font-bold">Manzxy</div>
     <div class="text-[10px] opacity-70">Lead Developer</div>
   </div>
-  <a href="https://t.me/manzxyyx" class="hover:scale-110 transition-transform" target="_blank"><i class="fab fa-telegram text-lg"></i></a>
-  <a href="https://github.com/manzxy" class="hover:scale-110 transition-transform" target="_blank"><i class="fab fa-github text-lg"></i></a>
+  <a href="https://t.me/manzxyyx" class="hover:opacity-80" target="_blank"><i class="fab fa-telegram text-lg"></i></a>
+  <a href="https://github.com/manzxy" class="hover:opacity-80" target="_blank"><i class="fab fa-github text-lg"></i></a>
 </div>
 
 </div>
@@ -417,7 +362,7 @@ pre {
 <!-- ================= SCRIPT ================= -->
 <script>
 // Toast notification function
-function showToast(message, duration = 3000) {
+function showToast(message, duration = 2000) {
   const toast = document.getElementById('toast');
   toast.textContent = message;
   toast.classList.remove('hidden');
@@ -431,9 +376,9 @@ function showToast(message, duration = 3000) {
 async function copyToClipboard(text) {
   try {
     await navigator.clipboard.writeText(text);
-    showToast('✅ Copied to clipboard!');
+    showToast('✅ Copied!');
   } catch (err) {
-    showToast('❌ Failed to copy');
+    showToast('❌ Failed');
   }
 }
 
@@ -578,7 +523,7 @@ async function executeRequest(event, catIndex, endpointIndex, method, path, prod
       <div class="relative">
         <div class="absolute top-2 right-2 z-10">
           <button onclick='copyToClipboard(${JSON.stringify(resultText)})' class="mc-btn-copy text-[8px] px-2 py-1">
-            📋 COPY RESPONSE
+            📋 COPY
           </button>
         </div>
         ${resultHtml}
@@ -623,14 +568,14 @@ async function loadApis() {
       html += `
       <div class="category-group" data-category="${category.name}">
           <div class="mb-2">
-              <div class="bg-gray-800 border border-gray-700" style="background:rgba(31,41,55,0.5) !important; backdrop-filter:blur(4px);">
-                  <button onclick="toggleCategory(${catIndex})" class="w-full px-4 py-3 text-left flex items-center justify-between hover:bg-gray-700 transition-all duration-150">
+              <div class="bg-gray-800 border border-gray-700">
+                  <button onclick="toggleCategory(${catIndex})" class="w-full px-4 py-3 text-left flex items-center justify-between hover:bg-gray-700">
                       <h2 class="font-bold flex items-center">
                           <span class="material-icons text-lg mr-3 text-gray-400">folder</span>
                           <span class="truncate max-w-xs text-sm">${category.name}</span>
                           <span class="ml-2 text-xs text-gray-500">(${category.items.length})</span>
                       </h2>
-                      <span class="material-icons transition-transform duration-150" id="category-icon-${catIndex}">expand_more</span>
+                      <span class="material-icons" id="category-icon-${catIndex}">expand_more</span>
                   </button>
                   
                   <div id="category-${catIndex}" class="hidden">`;
@@ -642,11 +587,11 @@ async function loadApis() {
         const queryParams = new URLSearchParams(pathParts[1] || '');
 
         const statusColors = {
-          'ready': 'bg-green-500/20 text-green-400 border-green-500/30',
-          'update': 'bg-yellow-500/20 text-yellow-400 border-yellow-500/30',
-          'error': 'bg-red-500/20 text-red-400 border-red-500/30'
+          'ready': 'bg-green-500/20 text-green-400',
+          'update': 'bg-yellow-500/20 text-yellow-400',
+          'error': 'bg-red-500/20 text-red-400'
         };
-        const statusClass = statusColors[item.status] || 'bg-gray-600/20 text-gray-400 border-gray-500/30';
+        const statusClass = statusColors[item.status] || 'bg-gray-600';
 
         html += `
               <div class="border-t border-gray-700 api-item" 
@@ -655,7 +600,7 @@ async function loadApis() {
                    data-alias="${item.name}"
                    data-description="${item.desc}"
                    data-category="${category.name}">
-                  <button onclick="toggleEndpoint(${catIndex}, ${endpointIndex})" class="w-full px-4 py-3 text-left flex items-center justify-between hover:bg-gray-700 transition-all duration-150">
+                  <button onclick="toggleEndpoint(${catIndex}, ${endpointIndex})" class="w-full px-4 py-3 text-left flex items-center justify-between hover:bg-gray-700">
                       <div class="flex items-center min-w-0 flex-1">
                           <span class="inline-block px-3 py-1 text-xs font-semibold text-white mr-3 flex-shrink-0 bg-blue-600 border-2 border-blue-800">
                               ${method}
@@ -664,14 +609,14 @@ async function loadApis() {
                               <span class="font-semibold truncate max-w-[90%] font-mono text-sm" title="${path}">${path}</span>
                               <div class="flex items-center gap-2 mt-1">
                                   <span class="text-xs text-gray-400 truncate max-w-[90%]" title="${item.name}">${item.name}</span>
-                                  <span class="px-2 py-0.5 text-xs rounded-full border ${statusClass}">${item.status || 'ready'}</span>
+                                  <span class="px-2 py-0.5 text-xs rounded-full ${statusClass}">${item.status || 'ready'}</span>
                               </div>
                           </div>
                       </div>
-                      <span class="material-icons transition-transform duration-150 flex-shrink-0" id="endpoint-icon-${catIndex}-${endpointIndex}">expand_more</span>
+                      <span class="material-icons" id="endpoint-icon-${catIndex}-${endpointIndex}">expand_more</span>
                   </button>
                   
-                  <div id="endpoint-${catIndex}-${endpointIndex}" class="hidden bg-gray-800 p-4 border-t border-gray-700" style="background:rgba(31,41,55,0.5) !important; backdrop-filter:blur(4px);">
+                  <div id="endpoint-${catIndex}-${endpointIndex}" class="hidden bg-gray-800 p-4 border-t border-gray-700">
                       <div class="mb-3">
                           <div class="text-gray-400 text-xs leading-relaxed">${item.desc}</div>
                       </div>`;
@@ -692,7 +637,7 @@ async function loadApis() {
               const isRequired = !queryParams.has(paramName) || queryParams.get(paramName) === '';
               html += `<div>
                           <label class="block text-xs font-medium text-slate-400 mb-1">${paramName} ${isRequired ? '<span class="text-red-500">*</span>' : ''}</label>
-                          <input type="text" name="${paramName}" class="w-full px-3 py-2 border border-gray-600 text-sm focus:outline-none focus:border-blue-500 bg-gray-700 placeholder:text-slate-500 rounded" style="background:rgba(55,65,81,0.7) !important;" placeholder="${item.params[paramName]}" ${isRequired ? 'required' : ''}>
+                          <input type="text" name="${paramName}" class="w-full px-3 py-2 border border-gray-600 text-sm focus:outline-none focus:border-blue-500 bg-gray-700" placeholder="${item.params[paramName]}" ${isRequired ? 'required' : ''}>
                         </div>`;
             });
           }
@@ -700,13 +645,13 @@ async function loadApis() {
           html += `
                                   </div>
                                   <div class="flex flex-wrap gap-2">
-                                      <button type="submit" class="bg-blue-600 hover:bg-blue-500 font-semibold text-white px-6 py-2 text-xs font-medium transition-all duration-150 border-2 border-blue-800 hover:border-blue-700">
+                                      <button type="submit" class="bg-blue-600 hover:bg-blue-500 text-white px-6 py-2 text-xs font-medium border-2 border-blue-800">
                                           Execute
                                       </button>
                                       <button type="button" onclick="showCurl(${catIndex}, ${endpointIndex}, '${method}', '${path}')" class="mc-btn-curl">
                                           🔗 CURL
                                       </button>
-                                      <button type="button" id="clear-${catIndex}-${endpointIndex}" onclick="clearResponse(${catIndex}, ${endpointIndex})" class="hidden bg-gray-700 border border-gray-600 hover:border-gray-500 font-semibold text-slate-300 px-6 py-2 text-xs font-medium transition-all duration-150">
+                                      <button type="button" id="clear-${catIndex}-${endpointIndex}" onclick="clearResponse(${catIndex}, ${endpointIndex})" class="hidden bg-gray-700 border border-gray-600 text-slate-300 px-6 py-2 text-xs font-medium">
                                           Clear
                                       </button>
                                   </div>
@@ -714,7 +659,7 @@ async function loadApis() {
                           </div>
                       </div>`;
         } else {
-          html += `<div class="text-yellow-400 text-xs p-3 bg-yellow-500/20 border border-yellow-500/30 rounded">⚠️ Endpoint ini tidak dapat diuji coba saat ini.</div>`;
+          html += `<div class="text-yellow-400 text-xs p-3 bg-yellow-500/20 border border-yellow-500/30">⚠️ Endpoint ini tidak dapat diuji coba saat ini.</div>`;
         }
 
         html += `
@@ -723,7 +668,7 @@ async function loadApis() {
                               <span class="material-icons text-sm mr-1">code</span>
                               RESPONSE
                           </div>
-                          <div class="bg-gray-900 text-white text-xs border border-gray-700 rounded" style="background:rgba(17,24,39,0.7) !important; backdrop-filter:blur(4px);">
+                          <div class="bg-gray-900 text-white text-xs border border-gray-700">
                               <div class="max-h-80 overflow-auto" id="response-content-${catIndex}-${endpointIndex}"></div>
                           </div>
                       </div>
@@ -738,7 +683,7 @@ async function loadApis() {
     if (endpointCountSpan) endpointCountSpan.textContent = totalEndpoints;
     
   } catch (error) {
-    apiList.innerHTML = '<div class="text-red-500 text-center p-4 border border-red-500/30 rounded" style="background:rgba(31,41,55,0.5); backdrop-filter:blur(4px);">❌ Failed to load API data. Please refresh.</div>';
+    apiList.innerHTML = '<div class="text-red-500 text-center p-4 border border-red-500/30">❌ Failed to load API data. Please refresh.</div>';
     console.error('Error loading API data:', error);
   }
 }
