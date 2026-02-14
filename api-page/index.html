@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Manzxy APIs - Stabilized</title>
+<title>Manzxy APIs - Anime Style</title>
 <link rel="icon" href="/assets/icon.png">
 
 <script src="https://cdn.tailwindcss.com"></script>
@@ -31,10 +31,10 @@ tailwind.config = {
 /* ===== THEME VAR ===== */
 :root{
   --bg:#1b1b1b;
-  --panel:#2a2a2a;
+  --panel:rgba(42, 42, 42, 0.85);
   --border:#3f3f3f;
   --text:#e5e7eb;
-  --input:#1e1e1e;
+  --input:rgba(30, 30, 30, 0.9);
   --accent:#3b82f6;
   --accent-hover:#2563eb;
   --success:#22c55e;
@@ -43,10 +43,10 @@ tailwind.config = {
 }
 body.light{
   --bg:#e5e7eb;
-  --panel:#f3f4f6;
+  --panel:rgba(243, 244, 246, 0.85);
   --border:#cbd5e1;
   --text:#111827;
-  --input:#ffffff;
+  --input:rgba(255, 255, 255, 0.9);
   --accent:#3b82f6;
   --accent-hover:#2563eb;
   --success:#16a34a;
@@ -58,10 +58,28 @@ body.light{
 html,body{
   margin:0;
   padding:0;
-  background:var(--bg);
-  color:var(--text);
   min-height:100vh;
   transition:background-color 0.3s ease, color 0.3s ease;
+}
+
+/* Anime Background */
+body {
+  background: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)),
+              url('https://c.termai.cc/i199/f6HGr.jpg');
+  background-size: cover;
+  background-position: center;
+  background-attachment: fixed;
+  background-repeat: no-repeat;
+  color: var(--text);
+}
+
+body.light {
+  background: linear-gradient(rgba(255, 255, 255, 0.7), rgba(255, 255, 255, 0.7)),
+              url('https://c.termai.cc/i199/f6HGr.jpg');
+  background-size: cover;
+  background-position: center;
+  background-attachment: fixed;
+  background-repeat: no-repeat;
 }
 
 /* Smooth transitions */
@@ -77,6 +95,7 @@ html,body{
     inset -4px -4px 0 rgba(0,0,0,.4),
     inset 4px 4px 0 rgba(255,255,255,.05);
   transition: all 0.3s ease;
+  backdrop-filter: blur(8px);
 }
 
 /* ===== FORCE PANEL COLOR ===== */
@@ -87,13 +106,13 @@ html,body{
 .api-item button,
 #endpoint-content,
 #endpoint-content > div{
-  background:var(--panel) !important;
+  background:transparent !important;
   border-color:var(--border) !important;
   color:var(--text) !important;
 }
 .category-group button:hover,
 .api-item button:hover{
-  background:rgba(0,0,0,.2) !important;
+  background:rgba(0,0,0,.3) !important;
   transform: translateY(-1px);
 }
 
@@ -103,6 +122,7 @@ html,body{
   border:3px solid var(--border);
   color:var(--text);
   transition: all 0.2s ease;
+  backdrop-filter: blur(4px);
 }
 .mc-input:focus{
   outline: none;
@@ -149,6 +169,54 @@ html,body{
   border-color:#444;
 }
 
+/* ===== CURL BUTTON ===== */
+.mc-btn-curl{
+  background:#7d3a7d;
+  border:3px solid #5d2b5d;
+  box-shadow:
+    inset -3px -3px 0 #3f1f3f,
+    inset 3px 3px 0 #9f5f9f;
+  font-size:10px;
+  padding:4px 10px;
+  color:#fff;
+  transition: all 0.1s ease;
+  cursor: pointer;
+}
+.mc-btn-curl:hover{
+  transform: translateY(-1px);
+  filter: brightness(1.1);
+}
+.mc-btn-curl:active{
+  transform: translateY(0);
+  box-shadow:
+    inset 3px 3px 0 #3f1f3f,
+    inset -3px -3px 0 #9f5f9f;
+}
+
+/* ===== COPY BUTTON ===== */
+.mc-btn-copy{
+  background:#3a5f7d;
+  border:3px solid #2b475d;
+  box-shadow:
+    inset -3px -3px 0 #1f2f3f,
+    inset 3px 3px 0 #5f7f9f;
+  font-size:10px;
+  padding:4px 10px;
+  color:#fff;
+  transition: all 0.1s ease;
+  cursor: pointer;
+}
+.mc-btn-copy:hover{
+  transform: translateY(-1px);
+  filter: brightness(1.1);
+}
+.mc-btn-copy:active{
+  transform: translateY(0);
+  box-shadow:
+    inset 3px 3px 0 #1f2f3f,
+    inset -3px -3px 0 #5f7f9f;
+}
+
 /* ===== GET ===== */
 .method-get{
   background:#2563eb;
@@ -160,19 +228,21 @@ html,body{
 
 /* ===== RESPONSE ===== */
 .mc-response{
-  background:#0b0b0b;
+  background:rgba(11, 11, 11, 0.9);
   border:3px solid #1f2937;
   color:#22c55e;
   transition: all 0.3s ease;
+  backdrop-filter: blur(4px);
+  position: relative;
 }
 
 /* ===== CONTRIBUTORS BACKGROUND ===== */
 .bg-bottom{
-  background-image:url("https://c.termai.cc/i199/f6HGr.jpg");
-  background-size:cover;
-  background-position:center;
-  background-repeat:no-repeat;
+  background:rgba(0,0,0,0.3);
+  backdrop-filter: blur(8px);
+  border:4px solid var(--border);
   position: relative;
+  overflow: hidden;
 }
 .bg-bottom::before {
   content: '';
@@ -181,8 +251,9 @@ html,body{
   left: 0;
   right: 0;
   bottom: 0;
-  background: rgba(0,0,0,0.5);
-  pointer-events: none;
+  background: url('https://c.termai.cc/i199/f6HGr.jpg') center/cover fixed;
+  filter: blur(8px);
+  z-index: -1;
 }
 .bg-bottom > * {
   position: relative;
@@ -241,10 +312,52 @@ pre {
   opacity: 0.7;
   font-size: 12px;
 }
+
+/* ===== CURL COMMAND ===== */
+.curl-command {
+  background:rgba(0,0,0,0.5);
+  border:2px solid var(--border);
+  padding:8px 12px;
+  font-family: 'Ubuntu Mono', monospace;
+  font-size: 11px;
+  color: #22c55e;
+  border-radius: 0;
+  margin-top: 8px;
+  word-break: break-all;
+  backdrop-filter: blur(4px);
+}
+
+/* ===== TOAST NOTIFICATION ===== */
+.toast {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  background: var(--panel);
+  border: 3px solid var(--border);
+  padding: 10px 20px;
+  color: var(--text);
+  font-size: 12px;
+  z-index: 9999;
+  animation: slideIn 0.3s ease;
+  backdrop-filter: blur(8px);
+}
+@keyframes slideIn {
+  from {
+    transform: translateX(100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
 </style>
 </head>
 
 <body class="font-mono">
+
+<!-- Toast Notification -->
+<div id="toast" class="toast hidden"></div>
 
 <!-- ================= MAIN ================= -->
 <div class="max-w-2xl mx-auto px-6 py-10 mc-panel">
@@ -288,7 +401,7 @@ pre {
 
 <div class="space-y-4">
 
-<div class="mc-panel flex items-center gap-4 p-4 hover:translate-x-2 transition-transform">
+<div class="mc-panel flex items-center gap-4 p-4 hover:translate-x-2 transition-transform" style="background:rgba(42,42,42,0.7) !important; backdrop-filter:blur(8px);">
   <img src="https://c.termai.cc/i151/YU4EKRg.jpg" class="w-14 h-14 rounded border-2 border-[var(--border)]">
   <div class="flex-1">
     <div class="text-xs font-bold">Manzxy</div>
@@ -303,6 +416,41 @@ pre {
 
 <!-- ================= SCRIPT ================= -->
 <script>
+// Toast notification function
+function showToast(message, duration = 3000) {
+  const toast = document.getElementById('toast');
+  toast.textContent = message;
+  toast.classList.remove('hidden');
+  
+  setTimeout(() => {
+    toast.classList.add('hidden');
+  }, duration);
+}
+
+// Copy to clipboard function
+async function copyToClipboard(text) {
+  try {
+    await navigator.clipboard.writeText(text);
+    showToast('✅ Copied to clipboard!');
+  } catch (err) {
+    showToast('❌ Failed to copy');
+  }
+}
+
+// Generate curl command
+function generateCurlCommand(method, path, params) {
+  let curlCmd = `curl -X ${method} `;
+  
+  if (params && Object.keys(params).length > 0) {
+    const paramString = new URLSearchParams(params).toString();
+    curlCmd += `"${path}?${paramString}"`;
+  } else {
+    curlCmd += `"${path}"`;
+  }
+  
+  return curlCmd;
+}
+
 // Theme management
 function setTheme(mode){
   document.body.classList.toggle('light', mode === 'light')
@@ -338,6 +486,45 @@ function toggleEndpoint(catIndex, endpointIndex) {
   }
 }
 
+function showCurl(catIndex, endpointIndex, method, path) {
+  const form = document.getElementById(`form-${catIndex}-${endpointIndex}`);
+  const formData = new FormData(form);
+  const params = {};
+  
+  for (const [key, value] of formData.entries()) {
+    if (value) params[key] = value;
+  }
+  
+  const curlCmd = generateCurlCommand(method, path, params);
+  
+  // Create or update curl display
+  let curlDiv = document.getElementById(`curl-${catIndex}-${endpointIndex}`);
+  if (!curlDiv) {
+    curlDiv = document.createElement('div');
+    curlDiv.id = `curl-${catIndex}-${endpointIndex}`;
+    curlDiv.className = 'curl-command flex justify-between items-center gap-2';
+    
+    const curlText = document.createElement('span');
+    curlText.className = 'flex-1 font-mono text-[10px]';
+    curlText.textContent = curlCmd;
+    
+    const copyBtn = document.createElement('button');
+    copyBtn.className = 'mc-btn-copy text-[8px] px-2 py-1';
+    copyBtn.innerHTML = '📋 COPY';
+    copyBtn.onclick = () => copyToClipboard(curlCmd);
+    
+    curlDiv.appendChild(curlText);
+    curlDiv.appendChild(copyBtn);
+    
+    // Insert after form
+    const form_element = document.getElementById(`form-${catIndex}-${endpointIndex}`);
+    form_element.parentNode.insertBefore(curlDiv, form_element.nextSibling);
+  } else {
+    curlDiv.querySelector('span').textContent = curlCmd;
+    curlDiv.querySelector('button').onclick = () => copyToClipboard(curlCmd);
+  }
+}
+
 async function executeRequest(event, catIndex, endpointIndex, method, path, produces) {
   event.preventDefault();
   const form = document.getElementById(`form-${catIndex}-${endpointIndex}`);
@@ -347,28 +534,57 @@ async function executeRequest(event, catIndex, endpointIndex, method, path, prod
   
   const formData = new FormData(form);
   const params = new URLSearchParams();
+  const paramsObj = {};
+  
   for (const [key, value] of formData.entries()) {
-    if (value) params.append(key, value);
+    if (value) {
+      params.append(key, value);
+      paramsObj[key] = value;
+    }
   }
 
   const fullPath = `${path}?${params.toString()}`;
+  
+  // Show curl command
+  showCurl(catIndex, endpointIndex, method, path, paramsObj);
+  
   responseDiv.classList.remove('hidden');
   responseContent.innerHTML = '<div class="loader"></div>';
 
   try {
     const response = await fetch(fullPath);
     const contentType = response.headers.get("content-type");
+    
+    let resultHtml = '';
+    let resultText = '';
+    
     if (contentType && contentType.includes("application/json")) {
       const data = await response.json();
-      responseContent.innerHTML = `<pre class="mc-response p-4">${JSON.stringify(data,null,2)}</pre>`;
+      resultText = JSON.stringify(data, null, 2);
+      resultHtml = `<pre class="mc-response p-4">${resultText}</pre>`;
     } else if (contentType && contentType.startsWith("image/")) {
       const blob = await response.blob();
       const imageUrl = URL.createObjectURL(blob);
-      responseContent.innerHTML = `<img src="${imageUrl}" class="max-w-full h-auto border-2 border-[var(--border)]">`;
+      resultHtml = `<img src="${imageUrl}" class="max-w-full h-auto border-2 border-[var(--border)]">`;
+      resultText = '[IMAGE DATA]';
     } else {
       const text = await response.text();
-      responseContent.innerHTML = `<pre class="mc-response p-4">${text}</pre>`;
+      resultText = text;
+      resultHtml = `<pre class="mc-response p-4">${text}</pre>`;
     }
+    
+    // Add copy button to response
+    responseContent.innerHTML = `
+      <div class="relative">
+        <div class="absolute top-2 right-2 z-10">
+          <button onclick='copyToClipboard(${JSON.stringify(resultText)})' class="mc-btn-copy text-[8px] px-2 py-1">
+            📋 COPY RESPONSE
+          </button>
+        </div>
+        ${resultHtml}
+      </div>
+    `;
+    
   } catch (error) {
     responseContent.innerHTML = `<pre class="mc-response p-4 text-red-400">${error}</pre>`;
   }
@@ -379,9 +595,15 @@ function clearResponse(catIndex, endpointIndex) {
   const responseDiv = document.getElementById(`response-${catIndex}-${endpointIndex}`);
   const responseContent = document.getElementById(`response-content-${catIndex}-${endpointIndex}`);
   const clearButton = document.getElementById(`clear-${catIndex}-${endpointIndex}`);
+  const curlDiv = document.getElementById(`curl-${catIndex}-${endpointIndex}`);
+  
   responseContent.innerHTML = '';
   responseDiv.classList.add('hidden');
   clearButton.classList.add('hidden');
+  
+  if (curlDiv) {
+    curlDiv.remove();
+  }
 }
 
 async function loadApis() {
@@ -401,7 +623,7 @@ async function loadApis() {
       html += `
       <div class="category-group" data-category="${category.name}">
           <div class="mb-2">
-              <div class="bg-gray-800 border border-gray-700">
+              <div class="bg-gray-800 border border-gray-700" style="background:rgba(31,41,55,0.5) !important; backdrop-filter:blur(4px);">
                   <button onclick="toggleCategory(${catIndex})" class="w-full px-4 py-3 text-left flex items-center justify-between hover:bg-gray-700 transition-all duration-150">
                       <h2 class="font-bold flex items-center">
                           <span class="material-icons text-lg mr-3 text-gray-400">folder</span>
@@ -449,7 +671,7 @@ async function loadApis() {
                       <span class="material-icons transition-transform duration-150 flex-shrink-0" id="endpoint-icon-${catIndex}-${endpointIndex}">expand_more</span>
                   </button>
                   
-                  <div id="endpoint-${catIndex}-${endpointIndex}" class="hidden bg-gray-800 p-4 border-t border-gray-700">
+                  <div id="endpoint-${catIndex}-${endpointIndex}" class="hidden bg-gray-800 p-4 border-t border-gray-700" style="background:rgba(31,41,55,0.5) !important; backdrop-filter:blur(4px);">
                       <div class="mb-3">
                           <div class="text-gray-400 text-xs leading-relaxed">${item.desc}</div>
                       </div>`;
@@ -470,16 +692,19 @@ async function loadApis() {
               const isRequired = !queryParams.has(paramName) || queryParams.get(paramName) === '';
               html += `<div>
                           <label class="block text-xs font-medium text-slate-400 mb-1">${paramName} ${isRequired ? '<span class="text-red-500">*</span>' : ''}</label>
-                          <input type="text" name="${paramName}" class="w-full px-3 py-2 border border-gray-600 text-sm focus:outline-none focus:border-blue-500 bg-gray-700 placeholder:text-slate-500 rounded" placeholder="${item.params[paramName]}" ${isRequired ? 'required' : ''}>
+                          <input type="text" name="${paramName}" class="w-full px-3 py-2 border border-gray-600 text-sm focus:outline-none focus:border-blue-500 bg-gray-700 placeholder:text-slate-500 rounded" style="background:rgba(55,65,81,0.7) !important;" placeholder="${item.params[paramName]}" ${isRequired ? 'required' : ''}>
                         </div>`;
             });
           }
           
           html += `
                                   </div>
-                                  <div class="flex gap-2">
+                                  <div class="flex flex-wrap gap-2">
                                       <button type="submit" class="bg-blue-600 hover:bg-blue-500 font-semibold text-white px-6 py-2 text-xs font-medium transition-all duration-150 border-2 border-blue-800 hover:border-blue-700">
                                           Execute
+                                      </button>
+                                      <button type="button" onclick="showCurl(${catIndex}, ${endpointIndex}, '${method}', '${path}')" class="mc-btn-curl">
+                                          🔗 CURL
                                       </button>
                                       <button type="button" id="clear-${catIndex}-${endpointIndex}" onclick="clearResponse(${catIndex}, ${endpointIndex})" class="hidden bg-gray-700 border border-gray-600 hover:border-gray-500 font-semibold text-slate-300 px-6 py-2 text-xs font-medium transition-all duration-150">
                                           Clear
@@ -498,7 +723,7 @@ async function loadApis() {
                               <span class="material-icons text-sm mr-1">code</span>
                               RESPONSE
                           </div>
-                          <div class="bg-gray-900 text-white text-xs border border-gray-700 rounded">
+                          <div class="bg-gray-900 text-white text-xs border border-gray-700 rounded" style="background:rgba(17,24,39,0.7) !important; backdrop-filter:blur(4px);">
                               <div class="max-h-80 overflow-auto" id="response-content-${catIndex}-${endpointIndex}"></div>
                           </div>
                       </div>
@@ -513,7 +738,7 @@ async function loadApis() {
     if (endpointCountSpan) endpointCountSpan.textContent = totalEndpoints;
     
   } catch (error) {
-    apiList.innerHTML = '<div class="text-red-500 text-center p-4 border border-red-500/30 rounded">❌ Failed to load API data. Please refresh.</div>';
+    apiList.innerHTML = '<div class="text-red-500 text-center p-4 border border-red-500/30 rounded" style="background:rgba(31,41,55,0.5); backdrop-filter:blur(4px);">❌ Failed to load API data. Please refresh.</div>';
     console.error('Error loading API data:', error);
   }
 }
