@@ -196,31 +196,34 @@ input:checked + .toggle-slider:before {
   display: flex;
   align-items: center;
   gap: 0.5rem;
-  margin-bottom: 1rem;
+  padding: 0.75rem 1rem;
+  border-bottom: 1px solid var(--border);
   color: var(--text-secondary);
   font-weight: 600;
   font-size: 0.875rem;
 }
 
 .notifications-list {
-  display: flex;
-  flex-direction: column;
-  gap: 0.5rem;
+  padding: 0.5rem;
+  min-height: 60px;
 }
 
 .notification-item {
   display: flex;
   align-items: flex-start;
   gap: 1rem;
-  padding: 1rem;
-  background: var(--panel);
-  border: 1px solid var(--border);
-  border-radius: 6px;
+  padding: 0.75rem;
+  border-radius: 4px;
   font-size: 0.875rem;
+  border-bottom: 1px solid var(--border);
+}
+
+.notification-item:last-child {
+  border-bottom: none;
 }
 
 .notification-item.unread {
-  border-left: 4px solid var(--accent);
+  background: rgba(47, 129, 247, 0.1);
 }
 
 .notification-content {
@@ -254,9 +257,15 @@ input:checked + .toggle-slider:before {
   white-space: nowrap;
 }
 
+.notification-error {
+  padding: 1rem;
+  text-align: center;
+  color: var(--error);
+}
+
 /* ===== CATEGORY ===== */
 .category-group {
-  margin-bottom: 0.5rem;
+  margin-bottom: 1rem;
 }
 
 .category-header {
@@ -271,7 +280,7 @@ input:checked + .toggle-slider:before {
   color: var(--text);
   cursor: pointer;
   font-size: 0.875rem;
-  font-weight: 500;
+  font-weight: 600;
 }
 
 .category-header:hover {
@@ -290,11 +299,6 @@ input:checked + .toggle-slider:before {
   margin-left: 0.5rem;
 }
 
-.category-check {
-  color: var(--success);
-  font-size: 1rem;
-}
-
 /* ===== ENDPOINT ===== */
 .endpoint-item {
   border: 1px solid var(--border);
@@ -302,14 +306,8 @@ input:checked + .toggle-slider:before {
   background: var(--panel);
 }
 
-.endpoint-item:first-child {
-  border-top-left-radius: 6px;
-  border-top-right-radius: 6px;
-}
-
-.endpoint-item:last-child {
-  border-bottom-left-radius: 6px;
-  border-bottom-right-radius: 6px;
+.endpoint-item:first-of-type {
+  border-top: 1px solid var(--border);
 }
 
 .endpoint-header {
@@ -348,19 +346,10 @@ input:checked + .toggle-slider:before {
   font-weight: 600;
   color: var(--text);
   margin-bottom: 0.25rem;
-}
-
-.endpoint-path {
-  font-family: 'SF Mono', 'Monaco', 'Inconsolata', 'Fira Code', monospace;
-  font-size: 0.8125rem;
-  color: var(--accent);
-  text-decoration: none;
-  display: inline-block;
-  margin-bottom: 0.25rem;
-}
-
-.endpoint-path:hover {
-  text-decoration: underline;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  flex-wrap: wrap;
 }
 
 .endpoint-status {
@@ -371,7 +360,20 @@ input:checked + .toggle-slider:before {
   font-size: 0.6875rem;
   font-weight: 500;
   border-radius: 12px;
-  margin-left: 0.5rem;
+}
+
+.endpoint-path {
+  font-family: 'SF Mono', 'Monaco', 'Inconsolata', 'Fira Code', monospace;
+  font-size: 0.8125rem;
+  color: var(--accent);
+  text-decoration: none;
+  display: inline-block;
+  margin-bottom: 0.25rem;
+  word-break: break-all;
+}
+
+.endpoint-path:hover {
+  text-decoration: underline;
 }
 
 .endpoint-desc {
@@ -484,11 +486,11 @@ input:checked + .toggle-slider:before {
   font-family: 'SF Mono', 'Monaco', 'Inconsolata', 'Fira Code', monospace;
   font-size: 0.8125rem;
   color: #79c0ff;
+  word-break: break-all;
 }
 
 .curl-text {
   flex: 1;
-  word-break: break-all;
   white-space: pre-wrap;
 }
 
@@ -497,6 +499,10 @@ input:checked + .toggle-slider:before {
   font-size: 0.75rem;
   margin-top: 0.25rem;
   word-break: break-all;
+  padding: 0.25rem 0.5rem;
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: 4px;
 }
 
 /* ===== RESPONSE ===== */
@@ -559,7 +565,7 @@ input:checked + .toggle-slider:before {
   width: 24px;
   height: 24px;
   animation: spin 0.8s linear infinite;
-  margin: 2rem auto;
+  margin: 1rem auto;
 }
 @keyframes spin {
   0% { transform: rotate(0deg); }
@@ -781,14 +787,19 @@ async function loadNotifications() {
   
   try {
     const response = await fetch('/api-page/notifications.json');
+    
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+    
     const notifications = await response.json();
     
     if (!notifications || notifications.length === 0) {
-      notificationsList.innerHTML = '<div style="padding: 1rem; text-align: center; color: var(--text-muted);">Tidak ada notifikasi</div>';
+      notificationsList.innerHTML = '<div class="notification-item">Tidak ada notifikasi</div>';
       return;
     }
     
-    // Sort by date descending
+    // Sort by date descending (newest first)
     notifications.sort((a, b) => new Date(b.date) - new Date(a.date));
     
     let html = '';
@@ -801,15 +812,22 @@ async function loadNotifications() {
             <div class="notification-message">${notif.message}</div>
             <div class="notification-date">${formatDate(notif.date)}</div>
           </div>
-          ${isUnread ? '<div class="notification-badge">Baru</div>' : ''}
+          ${isUnread ? '<span class="notification-badge">Baru</span>' : ''}
         </div>
       `;
     });
     
     notificationsList.innerHTML = html;
+    
   } catch (error) {
     console.error('Error loading notifications:', error);
-    notificationsList.innerHTML = '<div style="padding: 1rem; text-align: center; color: var(--error);">❌ Gagal memuat notifikasi</div>';
+    notificationsList.innerHTML = `
+      <div class="notification-error">
+        <span class="material-icons" style="font-size: 2rem; color: var(--error);">error</span>
+        <p>❌ Gagal memuat notifikasi</p>
+        <p style="font-size: 0.75rem; margin-top: 0.5rem;">${error.message}</p>
+      </div>
+    `;
   }
 }
 
@@ -914,7 +932,7 @@ async function executeRequest(event, catIndex, endpointIndex, method, path) {
     let resultText = '';
     
     if (!response.ok) {
-      throw new Error(`HTTP ${response.status}`);
+      throw new Error(`HTTP ${response.status} - ${response.statusText}`);
     }
     
     if (contentType && contentType.includes("application/json")) {
@@ -940,7 +958,19 @@ async function executeRequest(event, catIndex, endpointIndex, method, path) {
     `;
     
   } catch (error) {
-    responseContent.innerHTML = `<pre class="response-pre" style="color: var(--error);">Error: ${error.message}</pre>`;
+    responseContent.innerHTML = `
+      <pre class="response-pre" style="color: var(--error);">
+Error: ${error.message}
+
+URL: ${fullPath}
+
+Possible causes:
+• CORS policy (if running locally)
+• API server down
+• Network issue
+• Invalid endpoint
+      </pre>
+    `;
   }
   clearButton.classList.remove('hidden');
 }
@@ -961,13 +991,18 @@ function clearResponse(catIndex, endpointIndex) {
   }
 }
 
-// Load APIs
+// Load APIs from /assets/settings.json
 async function loadApis() {
   const apiList = document.getElementById('apiList');
   const endpointCountSpan = document.getElementById('endpoint-count');
   
   try {
     const response = await fetch('/assets/settings.json');
+    
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+    
     const data = await response.json();
     
     let html = '';
@@ -983,7 +1018,6 @@ async function loadApis() {
               <span class="material-icons">folder</span>
               <span>${category.name}</span>
               <span class="category-count">(${category.items.length})</span>
-              <span class="category-check">✓</span>
             </div>
             <span class="material-icons" id="category-icon-${catIndex}">expand_more</span>
           </button>
@@ -1003,55 +1037,48 @@ async function loadApis() {
                   ${item.name}
                   <span class="endpoint-status">${item.status || 'ready'}</span>
                 </div>
-                <a href="https://api.manzxy.my.id${path}" target="_blank" class="endpoint-path" onclick="event.stopPropagation()">${path}</a>
+                <span class="endpoint-path">${path}</span>
                 <div class="endpoint-desc">${item.desc}</div>
               </div>
               <span class="material-icons" id="endpoint-icon-${catIndex}-${endpointIndex}">expand_more</span>
             </button>
             
-            <div id="endpoint-${catIndex}-${endpointIndex}" class="endpoint-detail hidden">`;
+            <div id="endpoint-${catIndex}-${endpointIndex}" class="endpoint-detail hidden">
+              <div class="detail-title">
+                <span class="material-icons">play_arrow</span>
+                <span>TRY IT OUT</span>
+              </div>
+              <form id="form-${catIndex}-${endpointIndex}" onsubmit="executeRequest(event, ${catIndex}, ${endpointIndex}, '${method}', '${path}')">`;
         
-        if (item.status === 'ready') {
-          html += `
-            <div class="detail-title">
-              <span class="material-icons">play_arrow</span>
-              <span>TRY IT OUT</span>
-            </div>
-            <form id="form-${catIndex}-${endpointIndex}" onsubmit="executeRequest(event, ${catIndex}, ${endpointIndex}, '${method}', '${path}')">`;
-          
-          if (item.params) {
-            Object.keys(item.params).forEach(paramName => {
-              html += `
+        if (item.params) {
+          Object.keys(item.params).forEach(paramName => {
+            html += `
                 <div class="form-group">
                   <label class="form-label">${paramName}</label>
                   <input type="text" name="${paramName}" class="form-input" placeholder="${item.params[paramName]}">
                 </div>`;
-            });
-          }
-          
-          html += `
-              <div class="btn-group">
-                <button type="submit" class="btn btn-primary">Execute</button>
-                <button type="button" class="btn btn-secondary" onclick="showCurl(${catIndex}, ${endpointIndex}, '${method}', '${path}')">CURL</button>
-                <button type="button" id="clear-${catIndex}-${endpointIndex}" class="btn btn-secondary hidden" onclick="clearResponse(${catIndex}, ${endpointIndex})">Clear</button>
-              </div>
-            </form>`;
-        } else {
-          html += `<div style="color: var(--warning); padding: 1rem; background: rgba(210, 153, 34, 0.1); border-radius: 6px;">⚠️ Endpoint ini tidak dapat diuji coba saat ini.</div>`;
+          });
         }
-
+        
         html += `
-            <div id="response-${catIndex}-${endpointIndex}" class="response-container hidden">
-              <div class="response-header">
-                <span class="material-icons">code</span>
-                <span>RESPONSE</span>
-              </div>
-              <div class="response-content">
-                <div id="response-content-${catIndex}-${endpointIndex}"></div>
+                <div class="btn-group">
+                  <button type="submit" class="btn btn-primary">Execute</button>
+                  <button type="button" class="btn btn-secondary" onclick="showCurl(${catIndex}, ${endpointIndex}, '${method}', '${path}')">CURL</button>
+                  <button type="button" id="clear-${catIndex}-${endpointIndex}" class="btn btn-secondary hidden" onclick="clearResponse(${catIndex}, ${endpointIndex})">Clear</button>
+                </div>
+              </form>
+
+              <div id="response-${catIndex}-${endpointIndex}" class="response-container hidden">
+                <div class="response-header">
+                  <span class="material-icons">code</span>
+                  <span>RESPONSE</span>
+                </div>
+                <div class="response-content">
+                  <div id="response-content-${catIndex}-${endpointIndex}"></div>
+                </div>
               </div>
             </div>
-          </div>
-        </div>`;
+          </div>`;
       });
       
       html += `</div></div>`;
@@ -1061,8 +1088,15 @@ async function loadApis() {
     if (endpointCountSpan) endpointCountSpan.textContent = totalEndpoints;
     
   } catch (error) {
-    apiList.innerHTML = '<div style="color: var(--error); text-align: center; padding: 2rem; border: 1px solid var(--border); border-radius: 6px;">❌ Failed to load API data. Please refresh.</div>';
     console.error('Error loading API data:', error);
+    apiList.innerHTML = `
+      <div class="panel" style="padding: 2rem; text-align: center; color: var(--error);">
+        <span class="material-icons" style="font-size: 3rem;">error</span>
+        <p style="margin-top: 1rem;">❌ Failed to load API data</p>
+        <p style="font-size: 0.75rem; margin-top: 0.5rem;">${error.message}</p>
+        <p style="font-size: 0.75rem; margin-top: 1rem;">Pastikan file /assets/settings.json tersedia</p>
+      </div>
+    `;
   }
 }
 
