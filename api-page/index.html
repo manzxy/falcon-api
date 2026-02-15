@@ -124,6 +124,83 @@ body.light {
   z-index: 1;
 }
 
+/* ===== MENU BUTTON ===== */
+.menu-button {
+  position: fixed;
+  top: 20px;
+  left: 20px;
+  z-index: 10000;
+  width: 45px;
+  height: 45px;
+  border-radius: 50%;
+  background: var(--panel);
+  border: 1px solid var(--border);
+  color: var(--text);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+
+.menu-button:hover {
+  transform: scale(1.1);
+  background: var(--hover);
+}
+
+.menu-dropdown {
+  position: fixed;
+  top: 75px;
+  left: 20px;
+  z-index: 10000;
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  min-width: 180px;
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+  transition: all 0.2s ease;
+}
+
+.menu-dropdown.hidden {
+  opacity: 0;
+  transform: translateY(-10px);
+  pointer-events: none;
+}
+
+.menu-item {
+  padding: 12px 16px;
+  color: var(--text);
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  transition: all 0.2s ease;
+  border-bottom: 1px solid var(--border);
+}
+
+.menu-item:last-child {
+  border-bottom: none;
+}
+
+.menu-item:hover {
+  background: var(--hover);
+  padding-left: 20px;
+}
+
+.menu-item.active {
+  color: var(--accent);
+  background: var(--hover);
+}
+
+.menu-item .material-icons {
+  font-size: 1.2rem;
+}
+
 /* ===== PANEL with glass morphism ===== */
 .panel {
   background: var(--panel);
@@ -146,6 +223,7 @@ body.light {
   padding: 1rem 1.5rem;
   backdrop-filter: blur(var(--blur-amount));
   -webkit-backdrop-filter: blur(var(--blur-amount));
+  margin-left: 60px; /* Space for menu button */
 }
 
 .header-title {
@@ -220,6 +298,7 @@ input:checked + .toggle-slider:before {
 /* ===== SEARCH ===== */
 .search-container {
   margin-bottom: 1.5rem;
+  margin-left: 60px;
 }
 
 .search-input {
@@ -357,6 +436,7 @@ input:checked + .toggle-slider:before {
 /* ===== NOTIFICATIONS ===== */
 .notifications-section {
   margin-bottom: 2rem;
+  margin-left: 60px;
   backdrop-filter: blur(var(--blur-amount));
   -webkit-backdrop-filter: blur(var(--blur-amount));
 }
@@ -430,6 +510,7 @@ input:checked + .toggle-slider:before {
 /* ===== CATEGORY ===== */
 .category-group {
   margin-bottom: 1rem;
+  margin-left: 60px;
 }
 
 .category-header {
@@ -809,6 +890,7 @@ body.light .response-pre {
   border-radius: 6px;
   backdrop-filter: blur(var(--blur-amount));
   -webkit-backdrop-filter: blur(var(--blur-amount));
+  margin-left: 60px;
 }
 
 /* ===== FOOTER ===== */
@@ -819,11 +901,13 @@ body.light .response-pre {
   text-align: center;
   color: var(--text-muted);
   font-size: 0.8125rem;
+  margin-left: 60px;
 }
 
 /* ===== CONTRIBUTORS ===== */
 .contributors-section {
   margin-top: 2rem;
+  margin-left: 60px;
 }
 
 .contributors-title {
@@ -909,6 +993,31 @@ body.light .response-pre {
 
 <body>
 
+<!-- Menu Button (Titik Tiga) -->
+<div class="menu-button" id="menuButton" onclick="toggleMenu()">
+  <span class="material-icons">menu</span>
+</div>
+
+<!-- Menu Dropdown -->
+<div class="menu-dropdown hidden" id="menuDropdown">
+  <a href="index.html" class="menu-item active">
+    <span class="material-icons">api</span>
+    API Documentation
+  </a>
+  <a href="snippet.html" class="menu-item">
+    <span class="material-icons">code</span>
+    Code Snippets
+  </a>
+  <a href="#" class="menu-item">
+    <span class="material-icons">settings</span>
+    Settings
+  </a>
+  <a href="#" class="menu-item">
+    <span class="material-icons">help</span>
+    Help
+  </a>
+</div>
+
 <!-- Floating Music Player -->
 <div class="music-player" id="musicPlayer">
   <button class="player-button" id="playPauseBtn">
@@ -921,7 +1030,7 @@ body.light .response-pre {
   <div class="player-progress" id="progressContainer">
     <div class="player-progress-bar" id="progressBar"></div>
   </div>
-  <div class="player-time" id="timeDisplay">0:00 / 5.26</div>
+  <div class="player-time" id="timeDisplay">0:00 / 0:00</div>
   <div class="player-volume">
     <span class="material-icons" style="font-size: 1rem;">volume_up</span>
     <div class="volume-slider" id="volumeSlider">
@@ -989,6 +1098,22 @@ body.light .response-pre {
 </audio>
 
 <script>
+// Menu toggle
+function toggleMenu() {
+  const dropdown = document.getElementById('menuDropdown');
+  dropdown.classList.toggle('hidden');
+}
+
+// Close menu when clicking outside
+document.addEventListener('click', function(event) {
+  const menuButton = document.getElementById('menuButton');
+  const dropdown = document.getElementById('menuDropdown');
+  
+  if (!menuButton.contains(event.target) && !dropdown.contains(event.target)) {
+    dropdown.classList.add('hidden');
+  }
+});
+
 // Audio player state
 let audioPlayer = document.getElementById('audioPlayer');
 let playPauseBtn = document.getElementById('playPauseBtn');
@@ -1083,8 +1208,11 @@ function toggleTheme() {
   }
 })();
 
+// Play button click handler
+playPauseBtn.addEventListener('click', togglePlay);
+
 // Copy to clipboard with notification
-async function copyToClipboard(text, type = 'info') {
+async function copyToClipboard(text) {
   try {
     await navigator.clipboard.writeText(text);
     
@@ -1537,7 +1665,7 @@ document.addEventListener('DOMContentLoaded', () => {
         if (noResults) {
           noResults.style.display = visibleCount === 0 && searchTerm !== '' ? 'block' : 'none';
         }
-      }, 200); // Delay 200ms untuk optimasi
+      }, 200);
     });
   }
 });
