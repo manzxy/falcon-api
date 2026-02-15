@@ -139,6 +139,52 @@
       ]
     },
     {
+      "name": "Game",
+      "items": [
+        {
+          "name": "Tebak Gambar",
+          "desc": "Game tebak gambar dari level 1-3. Bisa filter per level.",
+          "path": "/game/tebakgambar?level=",
+          "status": "ready",
+          "params": {
+            "level": "Nomor level (1, 2, atau 3) - opsional"
+          }
+        },
+        {
+          "name": "Tebak Gambar All",
+          "desc": "Semua soal tebak gambar tanpa filter.",
+          "path": "/game/tebakgambar",
+          "status": "ready"
+        }
+      ]
+    },
+    {
+      "name": "DSNJ (Doujin)",
+      "items": [
+        {
+          "name": "Search DSNJ",
+          "desc": "Mencari konten DSNJ berdasarkan kata kunci.",
+          "path": "/dsnj/search?q=",
+          "status": "ready",
+          "params": {
+            "q": "Kata kunci pencarian"
+          }
+        },
+        {
+          "name": "DSNJ Terbaru",
+          "desc": "Menampilkan konten DSNJ terbaru.",
+          "path": "/dsnj/latest",
+          "status": "ready"
+        },
+        {
+          "name": "Random DSNJ",
+          "desc": "Menampilkan konten DSNJ secara acak.",
+          "path": "/dsnj/random",
+          "status": "ready"
+        }
+      ]
+    },
+    {
       "name": "Random",
       "items": [
         {
@@ -205,4 +251,4 @@
       ]
     }
   ]
-        }
+}
