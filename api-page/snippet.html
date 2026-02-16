@@ -1295,7 +1295,7 @@ function handleGoogleCredential(response) {
 }
 
 // ==================== GITHUB OAUTH ====================
-const GITHUB_CLIENT_ID = 'Ov23li9R3b8M6G3jJF4t'; // Ganti dengan Client ID Anda
+const GITHUB_CLIENT_ID = 'Ov23ctRnIkJzTTgFJUZn'; // Ganti dengan Client ID Anda
 const GITHUB_REDIRECT_URI = window.location.origin + '/api-page/github-callback.html';
 
 function loginWithGithub() {
@@ -1334,7 +1334,7 @@ async function handleGithubCallback(code) {
     
     try {
         // Ganti dengan endpoint server Anda
-        const response = await fetch('https://api.manzxy.my.id/auth/github', {
+        const response = await fetch('https://manzxy.my.id/auth/github', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ code })
