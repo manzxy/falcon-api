@@ -145,6 +145,26 @@ app.use('/', express.static(path.join(__dirname, 'api-page')));
 app.use('/assets', express.static(path.join(__dirname, 'assets')));
 
 // =========================
+// CUSTOM ROUTE FOR SNIPPET
+// =========================
+// Serve snippet.html at /snippet
+app.get('/snippet', (req, res) => {
+    const snippetPath = path.join(__dirname, 'api-page', 'snippet.html');
+    
+    // Check if file exists
+    if (fs.existsSync(snippetPath)) {
+        res.sendFile(snippetPath);
+    } else {
+        res.status(404).send('Snippet page not found');
+    }
+});
+
+// Also handle /snippet.html redirect to /snippet
+app.get('/snippet.html', (req, res) => {
+    res.redirect('/snippet');
+});
+
+// =========================
 // LOAD ROUTES
 // =========================
 let totalRoutes = 0;
@@ -194,10 +214,24 @@ app.get('/api/info', (req, res) => {
 // =========================
 // ERROR HANDLER
 // =========================
-app.use((req, res) => res.status(404).sendFile(process.cwd() + "/api-page/404.html"));
+app.use((req, res) => {
+    const notFoundPath = path.join(__dirname, 'api-page', '404.html');
+    if (fs.existsSync(notFoundPath)) {
+        res.status(404).sendFile(notFoundPath);
+    } else {
+        res.status(404).send('404 - Page Not Found');
+    }
+});
+
 app.use((err, req, res, next) => {
     queueLog({ method: req.method, status: 500, url: req.originalUrl, duration: 0, error: err.message });
-    res.status(500).sendFile(process.cwd() + "/api-page/500.html");
+    
+    const errorPath = path.join(__dirname, 'api-page', '500.html');
+    if (fs.existsSync(errorPath)) {
+        res.status(500).sendFile(errorPath);
+    } else {
+        res.status(500).send('500 - Internal Server Error');
+    }
 });
 
 // =========================
@@ -205,6 +239,7 @@ app.use((err, req, res, next) => {
 // =========================
 app.listen(PORT, () => {
     console.log(chalk.green(`🚀 Server running on port ${PORT}`));
+    console.log(chalk.blue(`📝 Snippet page: http://localhost:${PORT}/snippet`));
 });
 
 module.exports = app;
@@ -217,4 +252,4 @@ function runtime(sec) {
     const m = Math.floor((sec % 3600) / 60);
     const s = Math.floor(sec % 60);
     return `${h}h ${m}m ${s}s`;
-        }
+}
