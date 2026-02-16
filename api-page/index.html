@@ -223,7 +223,7 @@ body.light {
   padding: 1rem 1.5rem;
   backdrop-filter: blur(var(--blur-amount));
   -webkit-backdrop-filter: blur(var(--blur-amount));
-  margin-left: 60px; /* Space for menu button */
+  margin-left: 60px;
 }
 
 .header-title {
@@ -1004,7 +1004,7 @@ body.light .response-pre {
     <span class="material-icons">api</span>
     API Documentation
   </a>
-  <a href="snippet.html" class="menu-item">
+  <a href="/api-page/snippet.html" class="menu-item">
     <span class="material-icons">code</span>
     Code Snippets
   </a>
@@ -1090,7 +1090,7 @@ body.light .response-pre {
 </audio>
 
 <script>
-// Menu toggle
+// ==================== MENU ====================
 function toggleMenu() {
   const dropdown = document.getElementById('menuDropdown');
   dropdown.classList.toggle('hidden');
@@ -1106,7 +1106,7 @@ document.addEventListener('click', function(event) {
   }
 });
 
-// Audio player state
+// ==================== MUSIC PLAYER ====================
 let audioPlayer = document.getElementById('audioPlayer');
 let playPauseBtn = document.getElementById('playPauseBtn');
 let progressBar = document.getElementById('progressBar');
@@ -1116,7 +1116,6 @@ let volumeSlider = document.getElementById('volumeSlider');
 let volumeFill = document.getElementById('volumeFill');
 let isPlaying = false;
 
-// Format time
 function formatTime(seconds) {
   if (isNaN(seconds)) return '0:00';
   const mins = Math.floor(seconds / 60);
@@ -1124,7 +1123,6 @@ function formatTime(seconds) {
   return `${mins}:${secs.toString().padStart(2, '0')}`;
 }
 
-// Update progress bar
 function updateProgress() {
   if (audioPlayer.duration) {
     const percent = (audioPlayer.currentTime / audioPlayer.duration) * 100;
@@ -1133,7 +1131,6 @@ function updateProgress() {
   }
 }
 
-// Toggle play/pause
 function togglePlay() {
   if (isPlaying) {
     audioPlayer.pause();
@@ -1147,7 +1144,6 @@ function togglePlay() {
   isPlaying = !isPlaying;
 }
 
-// Handle progress bar click
 progressContainer.addEventListener('click', (e) => {
   const width = progressContainer.clientWidth;
   const clickX = e.offsetX;
@@ -1157,7 +1153,6 @@ progressContainer.addEventListener('click', (e) => {
   }
 });
 
-// Handle volume
 volumeSlider.addEventListener('click', (e) => {
   const width = volumeSlider.clientWidth;
   const clickX = e.offsetX;
@@ -1166,7 +1161,6 @@ volumeSlider.addEventListener('click', (e) => {
   volumeFill.style.width = `${volume * 100}%`;
 });
 
-// Audio events
 audioPlayer.addEventListener('timeupdate', updateProgress);
 audioPlayer.addEventListener('loadedmetadata', () => {
   timeDisplay.textContent = `0:00 / ${formatTime(audioPlayer.duration)}`;
@@ -1179,7 +1173,9 @@ audioPlayer.addEventListener('ended', () => {
   timeDisplay.textContent = `0:00 / ${formatTime(audioPlayer.duration)}`;
 });
 
-// Theme toggle
+playPauseBtn.addEventListener('click', togglePlay);
+
+// ==================== THEME ====================
 function toggleTheme() {
   const isChecked = document.getElementById('themeToggle').checked;
   if (isChecked) {
@@ -1191,7 +1187,6 @@ function toggleTheme() {
   }
 }
 
-// Initialize theme
 (function initTheme() {
   const savedTheme = localStorage.getItem('theme') || 'dark';
   if (savedTheme === 'light') {
@@ -1200,15 +1195,11 @@ function toggleTheme() {
   }
 })();
 
-// Play button click handler
-playPauseBtn.addEventListener('click', togglePlay);
-
-// Copy to clipboard with notification
+// ==================== UTILITIES ====================
 async function copyToClipboard(text) {
   try {
     await navigator.clipboard.writeText(text);
     
-    // Show temporary notification
     const toast = document.createElement('div');
     toast.style.position = 'fixed';
     toast.style.bottom = '80px';
@@ -1239,21 +1230,18 @@ async function copyToClipboard(text) {
   }
 }
 
-// Generate curl command with full URL
 function generateCurlCommand(method, path, params, baseUrl = 'https://manzxy.my.id') {
   let fullUrl = baseUrl + path;
   if (params && Object.keys(params).length > 0) {
     const paramString = new URLSearchParams(params).toString();
     fullUrl += '?' + paramString;
   }
-  
   return {
     command: `curl -X ${method} "${fullUrl}"`,
     url: fullUrl
   };
 }
 
-// Format date
 function formatDate(dateString) {
   const date = new Date(dateString);
   return date.toLocaleDateString('id-ID', { 
@@ -1263,7 +1251,7 @@ function formatDate(dateString) {
   });
 }
 
-// Category toggle
+// ==================== UI FUNCTIONS ====================
 function toggleCategory(index) {
   const category = document.getElementById(`category-${index}`);
   const icon = document.getElementById(`category-icon-${index}`);
@@ -1276,7 +1264,6 @@ function toggleCategory(index) {
   }
 }
 
-// Endpoint toggle
 function toggleEndpoint(catIndex, endpointIndex) {
   const endpoint = document.getElementById(`endpoint-${catIndex}-${endpointIndex}`);
   const icon = document.getElementById(`endpoint-icon-${catIndex}-${endpointIndex}`);
@@ -1289,7 +1276,6 @@ function toggleEndpoint(catIndex, endpointIndex) {
   }
 }
 
-// Show curl command with copy buttons
 function showCurl(catIndex, endpointIndex, method, path) {
   const form = document.getElementById(`form-${catIndex}-${endpointIndex}`);
   const formData = new FormData(form);
@@ -1334,7 +1320,6 @@ function showCurl(catIndex, endpointIndex, method, path) {
   }
 }
 
-// Execute request
 async function executeRequest(event, catIndex, endpointIndex, method, path) {
   event.preventDefault();
   const form = document.getElementById(`form-${catIndex}-${endpointIndex}`);
@@ -1356,7 +1341,6 @@ async function executeRequest(event, catIndex, endpointIndex, method, path) {
   const baseUrl = 'https://manzxy.my.id';
   const fullPath = `${baseUrl}${path}?${params.toString()}`;
   
-  // Show curl command
   showCurl(catIndex, endpointIndex, method, path, paramsObj);
   
   responseDiv.classList.remove('hidden');
@@ -1406,7 +1390,6 @@ async function executeRequest(event, catIndex, endpointIndex, method, path) {
   clearButton.classList.remove('hidden');
 }
 
-// Clear response
 function clearResponse(catIndex, endpointIndex) {
   const responseDiv = document.getElementById(`response-${catIndex}-${endpointIndex}`);
   const responseContent = document.getElementById(`response-content-${catIndex}-${endpointIndex}`);
@@ -1422,7 +1405,7 @@ function clearResponse(catIndex, endpointIndex) {
   }
 }
 
-// Load all data from settings.json
+// ==================== LOAD DATA FROM SETTINGS.JSON ====================
 async function loadSettings() {
   const apiList = document.getElementById('apiList');
   const endpointCountSpan = document.getElementById('endpoint-count');
@@ -1440,13 +1423,21 @@ async function loadSettings() {
     
     // Tampilkan total endpoints
     let totalEndpoints = 0;
-    data.categories.forEach(category => {
-      totalEndpoints += category.items.length;
-    });
+    if (data.categories && Array.isArray(data.categories)) {
+      data.categories.forEach(category => {
+        if (category.items && Array.isArray(category.items)) {
+          totalEndpoints += category.items.length;
+        }
+      });
+    }
     if (endpointCountSpan) endpointCountSpan.textContent = totalEndpoints;
     
-    // Render categories
-    renderCategories(data.categories);
+    // Render categories (SEMUA DATA ENDPOINT DARI SINI)
+    if (data.categories && Array.isArray(data.categories)) {
+      renderCategories(data.categories);
+    } else {
+      apiList.innerHTML = '<div class="panel" style="padding: 2rem; text-align: center;">No API endpoints available</div>';
+    }
     
     // Render notifications jika ada
     if (data.notifications && data.notifications.length > 0) {
@@ -1459,7 +1450,6 @@ async function loadSettings() {
       renderContributors(data.contributors);
       contributorsSection.style.display = 'block';
     } else {
-      // Default contributor
       renderContributors([{
         name: "Manzxy",
         role: "Lead Developer",
@@ -1475,8 +1465,9 @@ async function loadSettings() {
     apiList.innerHTML = `
       <div class="panel" style="padding: 2rem; text-align: center; color: var(--error);">
         <span class="material-icons" style="font-size: 3rem;">error</span>
-        <p style="margin-top: 1rem;">❌ Gagal memuat data</p>
+        <p style="margin-top: 1rem;">❌ Gagal memuat data dari settings.json</p>
         <p style="font-size: 0.75rem; margin-top: 0.5rem;">${error.message}</p>
+        <p style="font-size: 0.75rem; margin-top: 1rem;">Pastikan file /assets/settings.json tersedia</p>
       </div>
     `;
   }
@@ -1569,7 +1560,6 @@ function renderCategories(categories) {
 function renderNotifications(notifications) {
   const notificationsList = document.getElementById('notificationsList');
   
-  // Sort by date descending (newest first)
   const sorted = [...notifications].sort((a, b) => new Date(b.date) - new Date(a.date));
   
   let html = '';
@@ -1614,18 +1604,15 @@ function renderContributors(contributors) {
   contributorsList.innerHTML = html;
 }
 
-// Search functionality dengan optimasi
+// ==================== SEARCH ====================
 let searchTimeout;
 document.addEventListener('DOMContentLoaded', () => {
   loadSettings();
-  
-  // Play button click handler
   playPauseBtn.addEventListener('click', togglePlay);
   
   const searchInput = document.getElementById('searchInput');
   if (searchInput) {
     searchInput.addEventListener('input', function() {
-      // Debounce untuk performa
       clearTimeout(searchTimeout);
       searchTimeout = setTimeout(() => {
         const searchTerm = this.value.toLowerCase().trim();
