@@ -223,7 +223,7 @@ body.light {
   padding: 1rem 1.5rem;
   backdrop-filter: blur(var(--blur-amount));
   -webkit-backdrop-filter: blur(var(--blur-amount));
-  margin-left: 60px;
+  margin-left: 60px; /* Space for menu button */
 }
 
 .header-title {
@@ -1000,11 +1000,11 @@ body.light .response-pre {
 
 <!-- Menu Dropdown -->
 <div class="menu-dropdown hidden" id="menuDropdown">
-  <a href="index.html" class="menu-item active">
+  <a href="/" class="menu-item active">
     <span class="material-icons">api</span>
     API Documentation
   </a>
-  <a href="/api-page/snippet.html" class="menu-item">
+  <a href="/snippet" class="menu-item">
     <span class="material-icons">code</span>
     Code Snippets
   </a>
@@ -1432,7 +1432,7 @@ async function loadSettings() {
     }
     if (endpointCountSpan) endpointCountSpan.textContent = totalEndpoints;
     
-    // Render categories (SEMUA DATA ENDPOINT DARI SINI)
+    // Render categories
     if (data.categories && Array.isArray(data.categories)) {
       renderCategories(data.categories);
     } else {
