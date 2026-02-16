@@ -108,8 +108,18 @@ app.use(cors());
 // LOAD SETTINGS
 // =========================
 const settingsPath = path.join(__dirname, './assets/settings.json');
-const settings = JSON.parse(fs.readFileSync(settingsPath));
-global.apikey = settings.apiSettings.apikey;
+let settings;
+try {
+    settings = JSON.parse(fs.readFileSync(settingsPath));
+    console.log(chalk.green('✅ Settings loaded successfully'));
+} catch (error) {
+    console.error(chalk.red('❌ Failed to load settings.json:'), error.message);
+    settings = {
+        apiSettings: { creator: 'Manzxy', apikey: '' },
+        version: '1.0.0'
+    };
+}
+global.apikey = settings.apiSettings?.apikey || '';
 global.totalreq = 0;
 
 // =========================
@@ -124,7 +134,7 @@ app.use((req, res, next) => {
 
     res.json = function (data) {
         return oldJson.call(this, {
-            creator: settings.apiSettings.creator,
+            creator: settings.apiSettings?.creator || 'Manzxy',
             ...data
         });
     };
@@ -139,7 +149,7 @@ app.use((req, res, next) => {
 });
 
 // =========================
-// STATIC
+// STATIC FILES
 // =========================
 app.use('/', express.static(path.join(__dirname, 'api-page')));
 app.use('/assets', express.static(path.join(__dirname, 'assets')));
@@ -151,35 +161,97 @@ app.use('/assets', express.static(path.join(__dirname, 'assets')));
 app.get('/snippet', (req, res) => {
     const snippetPath = path.join(__dirname, 'api-page', 'snippet.html');
     
-    // Check if file exists
     if (fs.existsSync(snippetPath)) {
         res.sendFile(snippetPath);
     } else {
-        res.status(404).send('Snippet page not found');
+        res.status(404).send('Snippet page not found. Please ensure api-page/snippet.html exists');
     }
 });
 
-// Also handle /snippet.html redirect to /snippet
+// Redirect /snippet.html to /snippet
 app.get('/snippet.html', (req, res) => {
     res.redirect('/snippet');
 });
 
+// Also serve at /snippets (plural) for convenience
+app.get('/snippets', (req, res) => {
+    res.redirect('/snippet');
+});
+
 // =========================
-// LOAD ROUTES
+// MOCK OAUTH ENDPOINTS (FIX FOR 404 ERROR)
+// =========================
+// GitHub OAuth mock endpoint
+app.post('/auth/github', (req, res) => {
+    const { code } = req.body;
+    console.log(chalk.blue(`🔑 GitHub OAuth callback with code: ${code}`));
+    
+    // Mock response
+    const mockData = {
+        id: 12345678,
+        login: 'github_user_' + Date.now().toString().slice(-4),
+        name: 'GitHub User',
+        email: 'user@github.com',
+        avatar_url: 'https://avatars.githubusercontent.com/u/583231?v=4',
+        bio: 'GitHub user from OAuth login'
+    };
+    
+    res.json(mockData);
+});
+
+// Google OAuth mock endpoint
+app.post('/auth/google', (req, res) => {
+    const { credential } = req.body;
+    console.log(chalk.blue(`🔑 Google OAuth callback with credential`));
+    
+    // Mock response
+    const mockData = {
+        id: 'google_12345',
+        name: 'Google User',
+        email: 'user@gmail.com',
+        picture: 'https://lh3.googleusercontent.com/a-/default-user',
+        given_name: 'Google',
+        family_name: 'User'
+    };
+    
+    res.json(mockData);
+});
+
+// Fallback for any other auth endpoints
+app.post('/auth/*', (req, res) => {
+    console.log(chalk.yellow(`⚠️ Auth endpoint hit: ${req.path}`));
+    res.json({
+        id: 'mock_' + Date.now(),
+        login: 'mock_user',
+        name: 'Mock User',
+        email: 'mock@example.com',
+        avatar_url: 'https://c.termai.cc/i151/YU4EKRg.jpg'
+    });
+});
+
+// =========================
+// LOAD API ROUTES
 // =========================
 let totalRoutes = 0;
 const apiFolder = path.join(__dirname, './src/api');
-fs.readdirSync(apiFolder).forEach(dir => {
-    const dirPath = path.join(apiFolder, dir);
-    if (fs.statSync(dirPath).isDirectory()) {
-        fs.readdirSync(dirPath).forEach(file => {
-            if (file.endsWith('.js')) {
-                require(path.join(dirPath, file))(app);
-                totalRoutes++;
-            }
-        });
-    }
-});
+if (fs.existsSync(apiFolder)) {
+    fs.readdirSync(apiFolder).forEach(dir => {
+        const dirPath = path.join(apiFolder, dir);
+        if (fs.statSync(dirPath).isDirectory()) {
+            fs.readdirSync(dirPath).forEach(file => {
+                if (file.endsWith('.js')) {
+                    try {
+                        require(path.join(dirPath, file))(app);
+                        totalRoutes++;
+                        console.log(chalk.green(`  ✅ Loaded route: ${dir}/${file}`));
+                    } catch (error) {
+                        console.error(chalk.red(`❌ Failed to load route ${file}:`), error.message);
+                    }
+                }
+            });
+        }
+    });
+}
 
 // =========================
 // API DASHBOARD
@@ -201,7 +273,7 @@ app.get('/api/info', (req, res) => {
     res.json({
         success: true,
         result: {
-            name: settings.apiSettings.creator,
+            name: settings.apiSettings?.creator || 'Manzxy',
             version: settings.version || "1.0.0",
             totalRoutes,
             serverTime: new Date().toISOString(),
@@ -219,18 +291,26 @@ app.use((req, res) => {
     if (fs.existsSync(notFoundPath)) {
         res.status(404).sendFile(notFoundPath);
     } else {
-        res.status(404).send('404 - Page Not Found');
+        res.status(404).json({ 
+            error: 'Not Found',
+            message: `Cannot ${req.method} ${req.path}`,
+            tip: 'Try checking the URL or ensure the file exists'
+        });
     }
 });
 
 app.use((err, req, res, next) => {
     queueLog({ method: req.method, status: 500, url: req.originalUrl, duration: 0, error: err.message });
+    console.error(chalk.red('❌ Server error:'), err);
     
     const errorPath = path.join(__dirname, 'api-page', '500.html');
     if (fs.existsSync(errorPath)) {
         res.status(500).sendFile(errorPath);
     } else {
-        res.status(500).send('500 - Internal Server Error');
+        res.status(500).json({ 
+            error: 'Internal Server Error',
+            message: err.message 
+        });
     }
 });
 
@@ -238,8 +318,25 @@ app.use((err, req, res, next) => {
 // RUN SERVER
 // =========================
 app.listen(PORT, () => {
-    console.log(chalk.green(`🚀 Server running on port ${PORT}`));
-    console.log(chalk.blue(`📝 Snippet page: http://localhost:${PORT}/snippet`));
+    console.log(chalk.green('\n🚀 ========================================'));
+    console.log(chalk.green(`🚀  Server running on port ${PORT}`));
+    console.log(chalk.green('🚀 ========================================\n'));
+    
+    console.log(chalk.cyan('📌 Available endpoints:'));
+    console.log(chalk.white(`   📊 API Status:    http://localhost:${PORT}/api/status`));
+    console.log(chalk.white(`   📝 Snippets:      http://localhost:${PORT}/snippet`));
+    console.log(chalk.white(`   🔑 Auth (mock):   http://localhost:${PORT}/auth/github`));
+    console.log(chalk.white(`   🔑 Auth (mock):   http://localhost:${PORT}/auth/google`));
+    
+    console.log(chalk.cyan('\n📁 Static folders:'));
+    console.log(chalk.white(`   📂 / (root)       → api-page/`));
+    console.log(chalk.white(`   📂 /assets        → assets/`));
+    
+    console.log(chalk.yellow('\n🌐 Public URLs:'));
+    console.log(chalk.white(`   🔗 https://manzxy.my.id`));
+    console.log(chalk.white(`   🔗 https://manzxy.my.id/snippet`));
+    
+    console.log(chalk.green('\n✅ Server ready!'));
 });
 
 module.exports = app;
