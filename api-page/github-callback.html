@@ -2,27 +2,109 @@
 <html>
 <head>
     <title>GitHub Auth Callback</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
+            background: #0d1117;
+            color: #e6edf3;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            text-align: center;
+        }
+        .container {
+            background: #161b22;
+            border: 1px solid #30363d;
+            border-radius: 8px;
+            padding: 2rem;
+            max-width: 400px;
+        }
+        .success { color: #3fb950; }
+        .error { color: #f85149; }
+        .spinner {
+            border: 3px solid #30363d;
+            border-top: 3px solid #2f81f7;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+            margin: 20px auto;
+        }
+        @keyframes spin { 
+            0% { transform: rotate(0deg); } 
+            100% { transform: rotate(360deg); } 
+        }
+    </style>
 </head>
 <body>
+    <div class="container">
+        <h2>GitHub Authentication</h2>
+        <div class="spinner"></div>
+        <p>Processing login...</p>
+    </div>
+
     <script>
-        const urlParams = new URLSearchParams(window.location.search);
-        const code = urlParams.get('code');
-        
-        if (code) {
-            // Kirim code ke parent window
-            window.opener.postMessage({ 
-                type: 'github-auth', 
-                code: code 
-            }, window.location.origin);
-            
-            // Tampilkan pesan sukses
-            document.body.innerHTML = '<h3>Authentication successful! You can close this window.</h3>';
-            
-            // Tutup window setelah 2 detik
-            setTimeout(() => window.close(), 2000);
-        } else {
-            document.body.innerHTML = '<h3>Authentication failed!</h3>';
-        }
+        (function() {
+            try {
+                const urlParams = new URLSearchParams(window.location.search);
+                const code = urlParams.get('code');
+                const error = urlParams.get('error');
+                
+                if (error) {
+                    document.body.innerHTML = `
+                        <div class="container">
+                            <h2 class="error">❌ Authentication Failed</h2>
+                            <p>${error}</p>
+                            <p>You can close this window and try again.</p>
+                        </div>
+                    `;
+                    return;
+                }
+                
+                if (code) {
+                    // Kirim code ke parent window
+                    if (window.opener) {
+                        window.opener.postMessage({ 
+                            type: 'github-auth', 
+                            code: code 
+                        }, window.location.origin);
+                        
+                        document.body.innerHTML = `
+                            <div class="container">
+                                <h2 class="success">✅ Authentication Successful!</h2>
+                                <p>You can close this window now.</p>
+                            </div>
+                        `;
+                        
+                        // Tutup window setelah 2 detik
+                        setTimeout(() => window.close(), 2000);
+                    } else {
+                        document.body.innerHTML = `
+                            <div class="container">
+                                <h2 class="error">❌ Error</h2>
+                                <p>No opener window found. Please try logging in again.</p>
+                            </div>
+                        `;
+                    }
+                } else {
+                    document.body.innerHTML = `
+                        <div class="container">
+                            <h2 class="error">❌ No Authorization Code</h2>
+                            <p>GitHub did not return an authorization code.</p>
+                        </div>
+                    `;
+                }
+            } catch (e) {
+                document.body.innerHTML = `
+                    <div class="container">
+                        <h2 class="error">❌ Error</h2>
+                        <p>${e.message}</p>
+                    </div>
+                `;
+            }
+        })();
     </script>
 </body>
 </html>
