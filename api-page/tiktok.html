@@ -27,13 +27,12 @@
             --info-border: #eee;
             --preview-bg: #fafafa;
             --preview-border: #eee;
-            --btn-download-bg: #f0f0f0;
-            --btn-download-border: #ddd;
-            --btn-download-hover: #e5e5e5;
-            --btn-preview-bg: #e3f2fd;
-            --btn-preview-border: #90caf9;
-            --btn-preview-text: #1976d2;
-            --btn-preview-hover: #bbdefb;
+            --btn-download-bg: #4CAF50;
+            --btn-download-hover: #45a049;
+            --btn-download-text: white;
+            --btn-preview-bg: #2196F3;
+            --btn-preview-hover: #1976D2;
+            --btn-preview-text: white;
             --error-bg: #fff2f2;
             --error-text: #d32f2f;
             --modal-bg: white;
@@ -60,13 +59,12 @@
             --info-border: #404040;
             --preview-bg: #363636;
             --preview-border: #404040;
-            --btn-download-bg: #404040;
-            --btn-download-border: #505050;
-            --btn-download-hover: #4a4a4a;
-            --btn-preview-bg: #1e3a5f;
-            --btn-preview-border: #2a4a7a;
-            --btn-preview-text: #90caf9;
-            --btn-preview-hover: #2a4a7a;
+            --btn-download-bg: #2e7d32;
+            --btn-download-hover: #1b5e20;
+            --btn-download-text: white;
+            --btn-preview-bg: #1565c0;
+            --btn-preview-hover: #0d47a1;
+            --btn-preview-text: white;
             --error-bg: #442222;
             --error-text: #ff8a8a;
             --modal-bg: #2d2d2d;
@@ -372,74 +370,66 @@
             width: 100%;
             border-radius: 6px;
             background: #000;
-            margin-bottom: 10px;
         }
 
-        .slider-container {
-            position: relative;
-            margin: 15px 0;
-        }
-
-        .slider {
-            display: flex;
-            overflow-x: auto;
-            gap: 10px;
-            padding: 5px;
-            scrollbar-width: thin;
-        }
-
-        .slider img {
-            height: 120px;
-            border-radius: 6px;
-            cursor: pointer;
-        }
-
+        /* ===== DOWNLOAD SECTION ===== */
         .download-section {
-            margin-top: 15px;
+            margin-top: 20px;
+            padding: 15px;
+            background: var(--info-bg);
+            border-radius: 8px;
+            border: 1px solid var(--border-color);
         }
 
         .download-title {
-            font-size: 14px;
+            font-size: 15px;
             font-weight: 600;
             color: var(--text-primary);
-            margin-bottom: 10px;
-            padding-top: 10px;
-            border-top: 1px solid var(--border-color);
+            margin-bottom: 15px;
+            padding-bottom: 8px;
+            border-bottom: 1px solid var(--border-color);
         }
 
         .download-buttons {
             display: flex;
             flex-wrap: wrap;
-            gap: 8px;
+            gap: 12px;
         }
 
         .download-btn {
             display: inline-flex;
             align-items: center;
-            gap: 5px;
-            padding: 8px 15px;
+            justify-content: center;
+            gap: 8px;
+            padding: 12px 24px;
             background: var(--btn-download-bg);
-            border: 1px solid var(--btn-download-border);
-            border-radius: 4px;
-            color: var(--text-primary);
+            color: var(--btn-download-text);
+            border: none;
+            border-radius: 6px;
+            font-size: 14px;
+            font-weight: 600;
             text-decoration: none;
-            font-size: 13px;
-            transition: 0.2s;
             cursor: pointer;
+            transition: 0.2s;
+            flex: 1 1 auto;
+            min-width: 140px;
         }
 
         .download-btn:hover {
             background: var(--btn-download-hover);
+            transform: translateY(-2px);
         }
 
         .download-btn.preview-btn {
             background: var(--btn-preview-bg);
-            border-color: var(--btn-preview-border);
-            color: var(--btn-preview-text);
         }
 
         .download-btn.preview-btn:hover {
             background: var(--btn-preview-hover);
+        }
+
+        .download-btn i {
+            font-size: 16px;
         }
 
         /* ===== MODAL PREVIEW ===== */
@@ -562,7 +552,7 @@
                 <div class="step-number">3</div>
                 <div class="step-text">
                     <strong>Download</strong>
-                    Pilih video/audio & preview
+                    Klik tombol hijau untuk download
                 </div>
             </div>
         </div>
@@ -597,7 +587,7 @@
 
         <!-- FOOTER -->
         <div class="footer">
-            © 2026 Manzxy
+            © 2026 Manzxy • Scraped from CodeVerse
         </div>
     </div>
 
@@ -681,8 +671,26 @@
                 return n;
             };
 
-            // Info dasar
-            let html = `
+            // Mulai membangun HTML
+            let html = '';
+
+            // Preview video otomatis (jika ada)
+            if (data.type === 'video') {
+                const previewVideo = data.videos?.nowm?.[0] || data.videos?.wm?.[0];
+                if (previewVideo) {
+                    html += `
+                        <div class="preview-section">
+                            <div class="preview-title">📺 Preview Video</div>
+                            <video class="video-preview" controls>
+                                <source src="${previewVideo}" type="video/mp4">
+                            </video>
+                        </div>
+                    `;
+                }
+            }
+
+            // Info box
+            html += `
                 <div class="info-box">
                     <div class="info-row">
                         <span class="info-label">Author</span>
@@ -719,140 +727,86 @@
 
             html += `</div>`;
 
-            // Untuk tipe video - tampilkan preview
-            if (data.type === 'video') {
-                const previewVideo = data.videos?.nowm?.[0] || data.videos?.wm?.[0];
-                
-                if (previewVideo) {
-                    html += `
-                        <div class="preview-section">
-                            <div class="preview-title">📺 Preview Video</div>
-                            <video class="video-preview" controls>
-                                <source src="${previewVideo}" type="video/mp4">
-                            </video>
-                        </div>
-                    `;
-                }
-            }
-
-            // Untuk tipe photo (slide)
-            if (data.type === 'photo' && data.images?.length > 0) {
-                html += `
-                    <div class="preview-section">
-                        <div class="preview-title">🖼️ Preview Gambar</div>
-                        <div class="slider-container">
-                            <div class="slider">
-                `;
-                
-                data.images.forEach((imgUrl, i) => {
-                    html += `<img src="${imgUrl}" onclick="previewImage('${imgUrl}')" title="Klik untuk preview">`;
-                });
-                
-                html += `</div></div></div>`;
-            }
-
-            // Bagian download
-            html += `<div class="download-section">`;
-
+            // ===== TOMBOL DOWNLOAD =====
             // Video tanpa watermark
             if (data.videos?.nowm?.length > 0) {
-                html += `<div class="download-title">📹 Video Tanpa Watermark</div>`;
-                html += `<div class="download-buttons">`;
+                html += `
+                    <div class="download-section">
+                        <div class="download-title">📹 Video Tanpa Watermark</div>
+                        <div class="download-buttons">
+                `;
                 
                 data.videos.nowm.forEach((url, i) => {
                     html += `
-                        <a href="${url}" class="download-btn" download>Download ${i+1}</a>
-                        <button class="download-btn preview-btn" onclick="previewVideo('${url}')">Preview</button>
+                        <a href="${url}" class="download-btn" download>
+                            ⬇️ Download Video ${data.videos.nowm.length > 1 ? i+1 : ''}
+                        </a>
                     `;
                 });
                 
-                html += `</div>`;
+                html += `</div></div>`;
             }
 
             // Video dengan watermark
             if (data.videos?.wm?.length > 0) {
-                html += `<div class="download-title">💧 Video Dengan Watermark</div>`;
-                html += `<div class="download-buttons">`;
+                html += `
+                    <div class="download-section">
+                        <div class="download-title">💧 Video Dengan Watermark</div>
+                        <div class="download-buttons">
+                `;
                 
                 data.videos.wm.forEach((url, i) => {
                     html += `
-                        <a href="${url}" class="download-btn" download>Download ${i+1}</a>
-                        <button class="download-btn preview-btn" onclick="previewVideo('${url}')">Preview</button>
+                        <a href="${url}" class="download-btn" download>
+                            ⬇️ Download Video ${data.videos.wm.length > 1 ? i+1 : ''}
+                        </a>
                     `;
                 });
                 
-                html += `</div>`;
+                html += `</div></div>`;
             }
 
             // Audio MP3
             if (data.audio?.length > 0) {
-                html += `<div class="download-title">🎵 Audio MP3</div>`;
-                html += `<div class="download-buttons">`;
+                html += `
+                    <div class="download-section">
+                        <div class="download-title">🎵 Audio MP3</div>
+                        <div class="download-buttons">
+                `;
                 
                 data.audio.forEach((url, i) => {
                     html += `
-                        <a href="${url}" class="download-btn" download>Download ${i+1}</a>
-                        <button class="download-btn preview-btn" onclick="previewAudio('${url}')">Preview</button>
+                        <a href="${url}" class="download-btn" download>
+                            ⬇️ Download Audio ${data.audio.length > 1 ? i+1 : ''}
+                        </a>
                     `;
                 });
                 
-                html += `</div>`;
+                html += `</div></div>`;
             }
 
             // Gambar
             if (data.images?.length > 0) {
-                html += `<div class="download-title">🖼️ Gambar</div>`;
-                html += `<div class="download-buttons">`;
+                html += `
+                    <div class="download-section">
+                        <div class="download-title">🖼️ Gambar</div>
+                        <div class="download-buttons">
+                `;
                 
                 data.images.forEach((url, i) => {
                     html += `
-                        <a href="${url}" class="download-btn" download>Download ${i+1}</a>
-                        <button class="download-btn preview-btn" onclick="previewImage('${url}')">Preview</button>
+                        <a href="${url}" class="download-btn" download>
+                            ⬇️ Download Gambar ${i+1}
+                        </a>
                     `;
                 });
                 
-                html += `</div>`;
+                html += `</div></div>`;
             }
-
-            html += `</div>`;
 
             container.innerHTML = html;
             document.getElementById('loading').classList.remove('active');
             container.classList.add('active');
-        }
-
-        // ===== FUNGSI PREVIEW =====
-        function previewVideo(url) {
-            document.getElementById('modalTitle').innerText = 'Preview Video';
-            document.getElementById('modalContent').innerHTML = `
-                <video class="modal-video" controls autoplay>
-                    <source src="${url}" type="video/mp4">
-                </video>
-            `;
-            document.getElementById('previewModal').classList.add('active');
-        }
-
-        function previewAudio(url) {
-            document.getElementById('modalTitle').innerText = 'Preview Audio';
-            document.getElementById('modalContent').innerHTML = `
-                <audio controls autoplay style="width:100%">
-                    <source src="${url}" type="audio/mpeg">
-                </audio>
-            `;
-            document.getElementById('previewModal').classList.add('active');
-        }
-
-        function previewImage(url) {
-            document.getElementById('modalTitle').innerText = 'Preview Gambar';
-            document.getElementById('modalContent').innerHTML = `
-                <img src="${url}" class="modal-image">
-            `;
-            document.getElementById('previewModal').classList.add('active');
-        }
-
-        function closeModal() {
-            document.getElementById('previewModal').classList.remove('active');
-            document.getElementById('modalContent').innerHTML = '';
         }
 
         function escapeHTML(str) {
