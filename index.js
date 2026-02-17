@@ -155,38 +155,119 @@ app.use('/', express.static(path.join(__dirname, 'api-page')));
 app.use('/assets', express.static(path.join(__dirname, 'assets')));
 
 // =========================
-// CUSTOM ROUTE FOR SNIPPET
+// CUSTOM ROUTES
 // =========================
-// Serve snippet.html at /snippet
-app.get('/snippet', (req, res) => {
-    const snippetPath = path.join(__dirname, 'api-page', 'snippet.html');
-    
-    if (fs.existsSync(snippetPath)) {
-        res.sendFile(snippetPath);
+
+// Route untuk halaman utama
+app.get('/', (req, res) => {
+    const indexPath = path.join(__dirname, 'api-page', 'index.html');
+    if (fs.existsSync(indexPath)) {
+        res.sendFile(indexPath);
     } else {
-        res.status(404).send('Snippet page not found. Please ensure api-page/snippet.html exists');
+        res.send('Welcome to Manzxy API Server');
     }
 });
 
-// Redirect /snippet.html to /snippet
-app.get('/snippet.html', (req, res) => {
-    res.redirect('/snippet');
-});
-
-// Also serve at /snippets (plural) for convenience
-app.get('/snippets', (req, res) => {
-    res.redirect('/snippet');
+// Route untuk snippet page
+app.get('/snippet', (req, res) => {
+    const snippetPath = path.join(__dirname, 'api-page', 'snippet.html');
+    if (fs.existsSync(snippetPath)) {
+        res.sendFile(snippetPath);
+    } else {
+        res.status(404).send('Snippet page not found');
+    }
 });
 
 // =========================
-// MOCK OAUTH ENDPOINTS (FIX FOR 404 ERROR)
+// ROUTE BARU: TikTok Downloader
 // =========================
-// GitHub OAuth mock endpoint
+// Halaman TikTok Downloader
+app.get('/tiktok', (req, res) => {
+    const tiktokPath = path.join(__dirname, 'api-page', 'tiktok-downloader.html');
+    
+    if (fs.existsSync(tiktokPath)) {
+        res.sendFile(tiktokPath);
+    } else {
+        // Jika file belum ada, buat response sederhana
+        res.send(`
+            <!DOCTYPE html>
+            <html>
+            <head>
+                <title>TikTok Downloader</title>
+                <meta http-equiv="refresh" content="3;url=/tiktok-downloader">
+                <style>
+                    body { font-family: Arial; text-align: center; padding: 50px; background: #0b0b0b; color: white; }
+                </style>
+            </head>
+            <body>
+                <h2>⏳ Redirecting...</h2>
+                <p>Jika tidak otomatis redirect, <a href="/tiktok-downloader">klik disini</a></p>
+            </body>
+            </html>
+        `);
+    }
+});
+
+// Redirect alternatif
+app.get('/tiktok-downloader', (req, res) => {
+    res.redirect('/tiktok');
+});
+
+app.get('/download-tiktok', (req, res) => {
+    res.redirect('/tiktok');
+});
+
+// =========================
+// API PROXY untuk TikTok Downloader (opsional)
+// =========================
+// Endpoint proxy untuk menghindari CORS
+app.get('/api/tiktok', async (req, res) => {
+    try {
+        const { url } = req.query;
+        if (!url) {
+            return res.status(400).json({ error: 'URL parameter required' });
+        }
+
+        // Pilihan API yang tersedia
+        const apiList = [
+            `https://api.siputzx.my.id/api/d/tiktok?url=${encodeURIComponent(url)}`,
+            `https://www.tikwm.com/api/?url=${encodeURIComponent(url)}`,
+            `https://api.tikmate.io/api/convert?url=${encodeURIComponent(url)}`
+        ];
+
+        // Coba API satu per satu
+        for (const apiUrl of apiList) {
+            try {
+                const response = await axios.get(apiUrl, { timeout: 8000 });
+                if (response.data) {
+                    return res.json({
+                        success: true,
+                        data: response.data,
+                        from: apiUrl.split('/')[2]
+                    });
+                }
+            } catch (e) {
+                console.log(`API ${apiUrl} failed:`, e.message);
+                continue;
+            }
+        }
+
+        throw new Error('All APIs failed');
+    } catch (error) {
+        res.status(500).json({ 
+            success: false, 
+            error: error.message 
+        });
+    }
+});
+
+// =========================
+// MOCK OAUTH ENDPOINTS
+// =========================
 app.post('/auth/github', (req, res) => {
     const { code } = req.body;
     console.log(chalk.blue(`🔑 GitHub OAuth callback with code: ${code}`));
     
-    // Mock response
     const mockData = {
         id: 12345678,
         login: 'github_user_' + Date.now().toString().slice(-4),
@@ -199,12 +280,10 @@ app.post('/auth/github', (req, res) => {
     res.json(mockData);
 });
 
-// Google OAuth mock endpoint
 app.post('/auth/google', (req, res) => {
     const { credential } = req.body;
-    console.log(chalk.blue(`🔑 Google OAuth callback with credential`));
+    console.log(chalk.blue(`🔑 Google OAuth callback`));
     
-    // Mock response
     const mockData = {
         id: 'google_12345',
         name: 'Google User',
@@ -215,18 +294,6 @@ app.post('/auth/google', (req, res) => {
     };
     
     res.json(mockData);
-});
-
-// Fallback for any other auth endpoints
-app.post('/auth/*', (req, res) => {
-    console.log(chalk.yellow(`⚠️ Auth endpoint hit: ${req.path}`));
-    res.json({
-        id: 'mock_' + Date.now(),
-        login: 'mock_user',
-        name: 'Mock User',
-        email: 'mock@example.com',
-        avatar_url: 'https://c.termai.cc/i151/YU4EKRg.jpg'
-    });
 });
 
 // =========================
@@ -294,7 +361,14 @@ app.use((req, res) => {
         res.status(404).json({ 
             error: 'Not Found',
             message: `Cannot ${req.method} ${req.path}`,
-            tip: 'Try checking the URL or ensure the file exists'
+            availableRoutes: [
+                '/',
+                '/snippet',
+                '/tiktok',
+                '/api/status',
+                '/api/info',
+                '/api/tiktok?url=...'
+            ]
         });
     }
 });
@@ -319,24 +393,26 @@ app.use((err, req, res, next) => {
 // =========================
 app.listen(PORT, () => {
     console.log(chalk.green('\n🚀 ========================================'));
-    console.log(chalk.green(`🚀  Server running on port ${PORT}`));
+    console.log(chalk.green(`🚀  Manzxy API Server running on port ${PORT}`));
     console.log(chalk.green('🚀 ========================================\n'));
     
-    console.log(chalk.cyan('📌 Available endpoints:'));
-    console.log(chalk.white(`   📊 API Status:    http://localhost:${PORT}/api/status`));
-    console.log(chalk.white(`   📝 Snippets:      http://localhost:${PORT}/snippet`));
-    console.log(chalk.white(`   🔑 Auth (mock):   http://localhost:${PORT}/auth/github`));
-    console.log(chalk.white(`   🔑 Auth (mock):   http://localhost:${PORT}/auth/google`));
+    console.log(chalk.cyan('📌 Available Routes:'));
+    console.log(chalk.white(`   📄 Home:           http://localhost:${PORT}`));
+    console.log(chalk.white(`   📝 Snippets:       http://localhost:${PORT}/snippet`));
+    console.log(chalk.white(`   🎵 TikTok Downloader: http://localhost:${PORT}/tiktok`));
+    console.log(chalk.white(`   📊 API Status:     http://localhost:${PORT}/api/status`));
+    console.log(chalk.white(`   🔗 TikTok API:     http://localhost:${PORT}/api/tiktok?url=URL`));
     
-    console.log(chalk.cyan('\n📁 Static folders:'));
-    console.log(chalk.white(`   📂 / (root)       → api-page/`));
-    console.log(chalk.white(`   📂 /assets        → assets/`));
+    console.log(chalk.cyan('\n📁 Static Folders:'));
+    console.log(chalk.white(`   📂 / (root)        → api-page/`));
+    console.log(chalk.white(`   📂 /assets         → assets/`));
     
     console.log(chalk.yellow('\n🌐 Public URLs:'));
     console.log(chalk.white(`   🔗 https://manzxy.my.id`));
     console.log(chalk.white(`   🔗 https://manzxy.my.id/snippet`));
+    console.log(chalk.white(`   🔗 https://manzxy.my.id/tiktok`));
     
-    console.log(chalk.green('\n✅ Server ready!'));
+    console.log(chalk.green('\n✅ Server ready! 🚀\n'));
 });
 
 module.exports = app;
