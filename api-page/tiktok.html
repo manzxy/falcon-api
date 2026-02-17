@@ -9,11 +9,78 @@
             margin: 0;
             padding: 0;
             box-sizing: border-box;
+            transition: background-color 0.3s, color 0.3s, border-color 0.3s;
+        }
+
+        /* ===== LIGHT THEME (DEFAULT) ===== */
+        :root {
+            --bg-color: #f5f5f5;
+            --container-bg: white;
+            --text-primary: #333;
+            --text-secondary: #666;
+            --text-muted: #888;
+            --border-color: #eee;
+            --input-border: #ddd;
+            --button-bg: #f72585;
+            --button-hover: #d61f6e;
+            --info-bg: #fafafa;
+            --info-border: #eee;
+            --preview-bg: #fafafa;
+            --preview-border: #eee;
+            --btn-download-bg: #f0f0f0;
+            --btn-download-border: #ddd;
+            --btn-download-hover: #e5e5e5;
+            --btn-preview-bg: #e3f2fd;
+            --btn-preview-border: #90caf9;
+            --btn-preview-text: #1976d2;
+            --btn-preview-hover: #bbdefb;
+            --error-bg: #fff2f2;
+            --error-text: #d32f2f;
+            --modal-bg: white;
+            --modal-overlay: rgba(0,0,0,0.8);
+            --spinner-border: #f3f3f3;
+            --spinner-top: #f72585;
+            --step-bg: #f0f0f0;
+            --step-number-bg: #f72585;
+            --step-number-text: white;
+        }
+
+        /* ===== DARK THEME ===== */
+        body.dark {
+            --bg-color: #1a1a1a;
+            --container-bg: #2d2d2d;
+            --text-primary: #e0e0e0;
+            --text-secondary: #b0b0b0;
+            --text-muted: #888;
+            --border-color: #404040;
+            --input-border: #404040;
+            --button-bg: #f72585;
+            --button-hover: #d61f6e;
+            --info-bg: #363636;
+            --info-border: #404040;
+            --preview-bg: #363636;
+            --preview-border: #404040;
+            --btn-download-bg: #404040;
+            --btn-download-border: #505050;
+            --btn-download-hover: #4a4a4a;
+            --btn-preview-bg: #1e3a5f;
+            --btn-preview-border: #2a4a7a;
+            --btn-preview-text: #90caf9;
+            --btn-preview-hover: #2a4a7a;
+            --error-bg: #442222;
+            --error-text: #ff8a8a;
+            --modal-bg: #2d2d2d;
+            --modal-overlay: rgba(0,0,0,0.9);
+            --spinner-border: #404040;
+            --spinner-top: #f72585;
+            --step-bg: #363636;
+            --step-number-bg: #f72585;
+            --step-number-text: white;
         }
 
         body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
-            background: linear-gradient(145deg, #0b0b0b 0%, #1a1a2e 100%);
+            font-family: Arial, Helvetica, sans-serif;
+            background: var(--bg-color);
             min-height: 100vh;
             display: flex;
             justify-content: center;
@@ -24,102 +91,197 @@
         .container {
             max-width: 800px;
             width: 100%;
-            background: rgba(20, 20, 30, 0.95);
-            backdrop-filter: blur(12px);
-            border-radius: 32px;
-            padding: 30px;
-            box-shadow: 0 30px 60px rgba(0, 0, 0, 0.6);
-            border: 1px solid rgba(255, 255, 255, 0.05);
+            background: var(--container-bg);
+            border-radius: 10px;
+            padding: 25px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
         }
 
-        h1 {
-            text-align: center;
-            margin-bottom: 10px;
-            font-weight: 700;
-            font-size: 2.2rem;
-            background: linear-gradient(45deg, #f72585, #b5179e, #7209b7, #560bad);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
+        /* ===== HEADER ===== */
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid var(--border-color);
         }
 
-        .subtitle {
-            text-align: center;
-            color: rgba(255, 255, 255, 0.6);
-            margin-bottom: 20px;
-            font-size: 0.95rem;
+        .title-section h1 {
+            font-size: 24px;
+            font-weight: 600;
+            color: var(--text-primary);
         }
 
-        .badge {
-            background: linear-gradient(45deg, #f72585, #b5179e);
-            color: white;
-            padding: 8px 16px;
-            border-radius: 30px;
-            font-size: 0.8rem;
+        .title-section .subtitle {
+            color: var(--text-secondary);
+            font-size: 14px;
+            margin-top: 5px;
+        }
+
+        /* ===== THEME TOGGLE ===== */
+        .theme-toggle {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .toggle-switch {
+            position: relative;
             display: inline-block;
-            margin-bottom: 20px;
+            width: 60px;
+            height: 30px;
         }
 
+        .toggle-switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+
+        .toggle-slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #ccc;
+            transition: .3s;
+            border-radius: 30px;
+        }
+
+        .toggle-slider:before {
+            position: absolute;
+            content: "";
+            height: 24px;
+            width: 24px;
+            left: 3px;
+            bottom: 3px;
+            background-color: white;
+            transition: .3s;
+            border-radius: 50%;
+        }
+
+        input:checked + .toggle-slider {
+            background-color: #f72585;
+        }
+
+        input:checked + .toggle-slider:before {
+            transform: translateX(30px);
+        }
+
+        .toggle-icon {
+            font-size: 18px;
+        }
+
+        /* ===== STEPS UNTUK USER ===== */
+        .steps {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 25px;
+            padding: 15px;
+            background: var(--step-bg);
+            border-radius: 8px;
+            border: 1px solid var(--border-color);
+        }
+
+        .step {
+            flex: 1;
+            text-align: center;
+            position: relative;
+        }
+
+        .step:not(:last-child):after {
+            content: "→";
+            position: absolute;
+            right: -10px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--text-muted);
+            font-size: 20px;
+        }
+
+        .step-number {
+            width: 30px;
+            height: 30px;
+            background: var(--step-number-bg);
+            color: var(--step-number-text);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 8px;
+            font-weight: bold;
+        }
+
+        .step-text {
+            color: var(--text-secondary);
+            font-size: 13px;
+        }
+
+        .step-text strong {
+            color: var(--text-primary);
+            display: block;
+            margin-bottom: 3px;
+        }
+
+        /* ===== INPUT ===== */
         .input-group {
             display: flex;
-            gap: 12px;
-            margin-bottom: 20px;
-            background: rgba(255, 255, 255, 0.03);
-            padding: 8px;
-            border-radius: 60px;
-            border: 1px solid rgba(255, 255, 255, 0.1);
+            gap: 10px;
+            margin-bottom: 15px;
         }
 
         .input-group input {
             flex: 1;
-            padding: 16px 22px;
-            border: none;
-            background: transparent;
-            color: #fff;
-            font-size: 16px;
+            padding: 12px 15px;
+            border: 1px solid var(--input-border);
+            border-radius: 6px;
+            font-size: 14px;
             outline: none;
-            border-radius: 60px;
+            background: var(--container-bg);
+            color: var(--text-primary);
         }
 
-        .input-group input::placeholder {
-            color: rgba(255, 255, 255, 0.4);
+        .input-group input:focus {
+            border-color: #f72585;
         }
 
         .input-group button {
-            padding: 12px 32px;
-            background: linear-gradient(45deg, #f72585, #b5179e);
+            padding: 12px 25px;
+            background: var(--button-bg);
             color: white;
             border: none;
-            border-radius: 60px;
-            font-size: 16px;
+            border-radius: 6px;
+            font-size: 14px;
             font-weight: 600;
             cursor: pointer;
-            transition: 0.2s;
         }
 
         .input-group button:hover {
-            transform: scale(1.02);
-            background: linear-gradient(45deg, #ff4d9e, #c925b0);
+            background: var(--button-hover);
         }
 
+        /* ===== CONTOH LINK ===== */
         .example-links {
-            text-align: center;
+            color: var(--text-muted);
+            font-size: 13px;
             margin-bottom: 20px;
-            color: rgba(255, 255, 255, 0.5);
-            font-size: 0.85rem;
         }
 
         .example-links span {
-            cursor: pointer;
             color: #f72585;
+            cursor: pointer;
             text-decoration: underline;
-            margin: 0 5px;
+            margin: 0 3px;
         }
 
+        /* ===== LOADING ===== */
         .loading {
             display: none;
             text-align: center;
-            padding: 40px;
+            padding: 30px;
         }
 
         .loading.active {
@@ -127,13 +289,13 @@
         }
 
         .spinner {
-            width: 48px;
-            height: 48px;
-            border: 4px solid rgba(255, 255, 255, 0.1);
-            border-top: 4px solid #f72585;
+            border: 3px solid var(--spinner-border);
+            border-top: 3px solid var(--spinner-top);
             border-radius: 50%;
+            width: 30px;
+            height: 30px;
             animation: spin 0.8s linear infinite;
-            margin: 0 auto 20px;
+            margin: 0 auto 10px;
         }
 
         @keyframes spin {
@@ -141,178 +303,219 @@
             100% { transform: rotate(360deg); }
         }
 
+        /* ===== ERROR ===== */
         .error {
             display: none;
             text-align: center;
-            padding: 30px;
-            background: rgba(220, 20, 60, 0.1);
-            border-radius: 20px;
-            color: #ff6b6b;
-            margin-top: 20px;
+            padding: 20px;
+            background: var(--error-bg);
+            color: var(--error-text);
+            border-radius: 6px;
+            margin-top: 15px;
+            font-size: 14px;
         }
 
         .error.active {
             display: block;
         }
 
+        /* ===== HASIL ===== */
         .result {
             display: none;
-            margin-top: 30px;
+            margin-top: 20px;
         }
 
         .result.active {
             display: block;
         }
 
-        .video-card {
-            background: rgba(0, 0, 0, 0.4);
-            border-radius: 24px;
-            padding: 24px;
-            border: 1px solid rgba(255, 255, 255, 0.05);
-        }
-
-        .profile {
-            display: flex;
-            align-items: center;
-            gap: 16px;
+        .info-box {
+            background: var(--info-bg);
+            border-radius: 8px;
+            padding: 15px;
             margin-bottom: 20px;
+            border: 1px solid var(--info-border);
         }
 
-        .avatar {
-            width: 56px;
-            height: 56px;
-            border-radius: 50%;
-            background: linear-gradient(45deg, #f72585, #560bad);
+        .info-row {
             display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 24px;
-            color: white;
-            font-weight: bold;
+            margin-bottom: 8px;
+            font-size: 14px;
         }
 
-        .user-info {
-            flex: 1;
+        .info-label {
+            width: 80px;
+            color: var(--text-secondary);
         }
 
-        .username {
-            color: white;
-            font-weight: 600;
-            font-size: 1.2rem;
-            margin-bottom: 4px;
+        .info-value {
+            color: var(--text-primary);
+            font-weight: 500;
         }
 
-        .duration {
-            color: rgba(255, 255, 255, 0.5);
-            font-size: 0.85rem;
-        }
-
-        .stats {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 10px;
+        .preview-section {
             margin-bottom: 20px;
             padding: 15px;
-            background: rgba(0, 0, 0, 0.3);
-            border-radius: 16px;
+            background: var(--preview-bg);
+            border-radius: 8px;
+            border: 1px solid var(--preview-border);
         }
 
-        .stat-item {
-            background: rgba(255, 255, 255, 0.05);
-            padding: 6px 12px;
-            border-radius: 20px;
-            font-size: 0.85rem;
-            color: rgba(255, 255, 255, 0.9);
+        .preview-title {
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 10px;
         }
 
-        .stat-item strong {
-            color: #f72585;
-            margin-right: 5px;
+        .video-preview {
+            width: 100%;
+            border-radius: 6px;
+            background: #000;
+            margin-bottom: 10px;
         }
 
-        .section {
-            background: rgba(255, 255, 255, 0.02);
-            border-radius: 20px;
-            padding: 20px;
-            border: 1px solid rgba(255, 255, 255, 0.05);
-            margin-bottom: 15px;
+        .slider-container {
+            position: relative;
+            margin: 15px 0;
         }
 
-        .section-title {
-            color: rgba(255, 255, 255, 0.6);
-            text-transform: uppercase;
-            font-size: 0.8rem;
-            letter-spacing: 1px;
-            margin-bottom: 15px;
+        .slider {
             display: flex;
-            align-items: center;
-            gap: 8px;
+            overflow-x: auto;
+            gap: 10px;
+            padding: 5px;
+            scrollbar-width: thin;
         }
 
-        .buttons {
+        .slider img {
+            height: 120px;
+            border-radius: 6px;
+            cursor: pointer;
+        }
+
+        .download-section {
+            margin-top: 15px;
+        }
+
+        .download-title {
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 10px;
+            padding-top: 10px;
+            border-top: 1px solid var(--border-color);
+        }
+
+        .download-buttons {
             display: flex;
             flex-wrap: wrap;
-            gap: 12px;
+            gap: 8px;
         }
 
-        .btn {
-            flex: 1 1 auto;
-            min-width: 120px;
-            padding: 12px 18px;
-            background: rgba(255, 255, 255, 0.03);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 40px;
-            color: white;
-            text-decoration: none;
-            font-weight: 500;
-            display: flex;
+        .download-btn {
+            display: inline-flex;
             align-items: center;
-            justify-content: center;
-            gap: 8px;
+            gap: 5px;
+            padding: 8px 15px;
+            background: var(--btn-download-bg);
+            border: 1px solid var(--btn-download-border);
+            border-radius: 4px;
+            color: var(--text-primary);
+            text-decoration: none;
+            font-size: 13px;
             transition: 0.2s;
             cursor: pointer;
         }
 
-        .btn:hover {
-            background: rgba(255, 255, 255, 0.1);
-            border-color: #f72585;
-            transform: translateY(-2px);
+        .download-btn:hover {
+            background: var(--btn-download-hover);
         }
 
-        .btn-audio {
-            background: rgba(76, 175, 80, 0.15);
-            border-color: rgba(76, 175, 80, 0.3);
+        .download-btn.preview-btn {
+            background: var(--btn-preview-bg);
+            border-color: var(--btn-preview-border);
+            color: var(--btn-preview-text);
         }
 
-        .btn-audio:hover {
-            background: rgba(76, 175, 80, 0.3);
-            border-color: #4caf50;
+        .download-btn.preview-btn:hover {
+            background: var(--btn-preview-hover);
         }
 
-        .images-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
-            gap: 15px;
-            margin: 20px 0;
+        /* ===== MODAL PREVIEW ===== */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: var(--modal-overlay);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
         }
 
-        .image-item {
-            border-radius: 12px;
-            overflow: hidden;
-            border: 1px solid rgba(255, 255, 255, 0.1);
+        .modal.active {
+            display: flex;
         }
 
-        .image-item img {
+        .modal-content {
+            background: var(--modal-bg);
+            border-radius: 10px;
+            padding: 20px;
+            max-width: 800px;
             width: 100%;
-            height: auto;
-            display: block;
+            max-height: 90vh;
+            overflow-y: auto;
         }
 
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .modal-title {
+            font-size: 16px;
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        .modal-close {
+            font-size: 20px;
+            cursor: pointer;
+            color: var(--text-secondary);
+        }
+
+        .modal-close:hover {
+            color: var(--text-primary);
+        }
+
+        .modal-video {
+            width: 100%;
+            max-height: 500px;
+            border-radius: 6px;
+        }
+
+        .modal-image {
+            width: 100%;
+            max-height: 500px;
+            object-fit: contain;
+        }
+
+        /* ===== FOOTER ===== */
         .footer {
             text-align: center;
-            margin-top: 30px;
-            color: rgba(255, 255, 255, 0.3);
-            font-size: 0.8rem;
+            margin-top: 25px;
+            padding-top: 15px;
+            border-top: 1px solid var(--border-color);
+            color: var(--text-muted);
+            font-size: 12px;
         }
 
         .footer a {
@@ -323,41 +526,116 @@
 </head>
 <body>
     <div class="container">
-        <h1>MANZXY TIKTOK</h1>
-        <div class="subtitle">Download Video & Audio</div>
-        
-        <div class="badge">🔍 Menggunakan Teknologi Scraping</div>
-
-        <div class="input-group">
-            <input type="text" id="urlInput" placeholder="Masukkan URL TikTok..." value="https://vt.tiktok.com/ZSa4J7JoB/">
-            <button onclick="downloadVideo()">Download</button>
+        <!-- HEADER DENGAN TOGGLE THEME -->
+        <div class="header">
+            <div class="title-section">
+                <h1>Manzxy TikTok</h1>
+                <div class="subtitle">Download video & audio TikTok gratis</div>
+            </div>
+            <div class="theme-toggle">
+                <span class="toggle-icon">☀️</span>
+                <label class="toggle-switch">
+                    <input type="checkbox" id="themeToggle" onchange="toggleTheme()">
+                    <span class="toggle-slider"></span>
+                </label>
+                <span class="toggle-icon">🌙</span>
+            </div>
         </div>
 
+        <!-- LANGKAH-LANGKAH UNTUK USER -->
+        <div class="steps">
+            <div class="step">
+                <div class="step-number">1</div>
+                <div class="step-text">
+                    <strong>Salin Link</strong>
+                    Copy URL video dari TikTok
+                </div>
+            </div>
+            <div class="step">
+                <div class="step-number">2</div>
+                <div class="step-text">
+                    <strong>Tempel di sini</strong>
+                    Paste URL ke kolom di bawah
+                </div>
+            </div>
+            <div class="step">
+                <div class="step-number">3</div>
+                <div class="step-text">
+                    <strong>Download</strong>
+                    Pilih video/audio & preview
+                </div>
+            </div>
+        </div>
+
+        <!-- INPUT URL -->
+        <div class="input-group">
+            <input type="text" id="urlInput" placeholder="Contoh: https://vt.tiktok.com/ZSjXNEnbC/" value="https://vt.tiktok.com/ZSa4J7JoB/">
+            <button onclick="fetchData()">Cari</button>
+        </div>
+
+        <!-- CONTOH LINK -->
         <div class="example-links">
-            📌 Contoh: 
+            🔗 Coba link contoh: 
             <span onclick="document.getElementById('urlInput').value='https://vt.tiktok.com/ZSa4J7JoB/'">Video 1</span>
             <span onclick="document.getElementById('urlInput').value='https://vt.tiktok.com/ZSa4J7JoC/'">Video 2</span>
             <span onclick="document.getElementById('urlInput').value='https://vt.tiktok.com/ZSa4J7JoD/'">Slide</span>
         </div>
 
+        <!-- LOADING -->
         <div class="loading" id="loading">
             <div class="spinner"></div>
-            <p style="color: rgba(255,255,255,0.6);">Memproses melalui SaveTT.cc...</p>
+            <p style="color: var(--text-secondary);">Memproses...</p>
         </div>
 
+        <!-- ERROR -->
         <div class="error" id="error">
-            <p>⚠️ Gagal mengambil data. Periksa URL atau coba lagi.</p>
+            Gagal mengambil data. Periksa URL atau coba lagi.
         </div>
 
+        <!-- HASIL -->
         <div class="result" id="result"></div>
 
+        <!-- FOOTER -->
         <div class="footer">
-            © 2026 Manzxy • Scraped from <a href="https://savett.cc" target="_blank">SaveTT.cc</a>
+            © 2026 Manzxy
+        </div>
+    </div>
+
+    <!-- MODAL PREVIEW -->
+    <div class="modal" id="previewModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <div class="modal-title" id="modalTitle">Preview</div>
+                <div class="modal-close" onclick="closeModal()">✕</div>
+            </div>
+            <div id="modalContent"></div>
         </div>
     </div>
 
     <script>
-        async function downloadVideo() {
+        // ===== THEME TOGGLE =====
+        function toggleTheme() {
+            const isChecked = document.getElementById('themeToggle').checked;
+            if (isChecked) {
+                document.body.classList.add('dark');
+                localStorage.setItem('theme', 'dark');
+            } else {
+                document.body.classList.remove('dark');
+                localStorage.setItem('theme', 'light');
+            }
+        }
+
+        // Load theme dari localStorage
+        (function loadTheme() {
+            const savedTheme = localStorage.getItem('theme');
+            if (savedTheme === 'dark') {
+                document.body.classList.add('dark');
+                document.getElementById('themeToggle').checked = true;
+            }
+        })();
+
+        // ===== FUNGSI UTAMA =====
+        async function fetchData() {
             const url = document.getElementById('urlInput').value.trim();
             
             if (!url) {
@@ -376,7 +654,6 @@
             document.getElementById('error').classList.remove('active');
 
             try {
-                // Panggil API backend kita sendiri
                 const response = await fetch(`/api/tiktok?url=${encodeURIComponent(url)}`);
                 const result = await response.json();
 
@@ -397,107 +674,185 @@
             
             // Format angka (K, M)
             const formatNumber = (num) => {
-                if (!num) return num;
+                if (!num) return '0';
                 const n = parseInt(num);
                 if (n >= 1000000) return (n/1000000).toFixed(1) + 'M';
                 if (n >= 1000) return (n/1000).toFixed(1) + 'K';
                 return n;
             };
 
-            // Buat statistik
-            let statsHtml = '';
-            const stats = [
-                { label: 'Views', value: data.views },
-                { label: 'Likes', value: data.likes },
-                { label: 'Bookmarks', value: data.bookmarks },
-                { label: 'Comments', value: data.comments },
-                { label: 'Shares', value: data.shares }
-            ];
-            
-            stats.forEach(stat => {
-                if (stat.value) {
-                    statsHtml += `<div class="stat-item"><strong>${stat.label}:</strong> ${formatNumber(stat.value)}</div>`;
-                }
-            });
+            // Info dasar
+            let html = `
+                <div class="info-box">
+                    <div class="info-row">
+                        <span class="info-label">Author</span>
+                        <span class="info-value">${escapeHTML(data.username || 'Unknown')}</span>
+                    </div>
+            `;
 
-            // Untuk tipe VIDEO
+            if (data.duration) {
+                html += `
+                    <div class="info-row">
+                        <span class="info-label">Durasi</span>
+                        <span class="info-value">${data.duration}</span>
+                    </div>
+                `;
+            }
+
+            if (data.views) {
+                html += `
+                    <div class="info-row">
+                        <span class="info-label">Views</span>
+                        <span class="info-value">${formatNumber(data.views)}</span>
+                    </div>
+                `;
+            }
+
+            if (data.likes) {
+                html += `
+                    <div class="info-row">
+                        <span class="info-label">Likes</span>
+                        <span class="info-value">${formatNumber(data.likes)}</span>
+                    </div>
+                `;
+            }
+
+            html += `</div>`;
+
+            // Untuk tipe video - tampilkan preview
             if (data.type === 'video') {
-                container.innerHTML = `
-                    <div class="video-card">
-                        <div class="profile">
-                            <div class="avatar">${(data.username || 'U').charAt(0).toUpperCase()}</div>
-                            <div class="user-info">
-                                <div class="username">${escapeHTML(data.username || 'Unknown')}</div>
-                                <div class="duration">⏱️ ${data.duration || 'Unknown'}</div>
-                            </div>
+                const previewVideo = data.videos?.nowm?.[0] || data.videos?.wm?.[0];
+                
+                if (previewVideo) {
+                    html += `
+                        <div class="preview-section">
+                            <div class="preview-title">📺 Preview Video</div>
+                            <video class="video-preview" controls>
+                                <source src="${previewVideo}" type="video/mp4">
+                            </video>
                         </div>
-
-                        ${statsHtml ? `<div class="stats">${statsHtml}</div>` : ''}
-
-                        ${data.videos.nowm.length > 0 ? `
-                        <div class="section">
-                            <div class="section-title">📹 TANPA WATERMARK</div>
-                            <div class="buttons">
-                                ${data.videos.nowm.map((url, i) => `
-                                    <a href="${url}" class="btn" target="_blank">Video ${i+1}</a>
-                                `).join('')}
-                            </div>
-                        </div>
-                        ` : ''}
-
-                        ${data.videos.wm.length > 0 ? `
-                        <div class="section">
-                            <div class="section-title">💧 DENGAN WATERMARK</div>
-                            <div class="buttons">
-                                ${data.videos.wm.map((url, i) => `
-                                    <a href="${url}" class="btn" target="_blank">Video ${i+1}</a>
-                                `).join('')}
-                            </div>
-                        </div>
-                        ` : ''}
-
-                        ${data.audio.length > 0 ? `
-                        <div class="section">
-                            <div class="section-title">🎵 AUDIO MP3</div>
-                            <div class="buttons">
-                                ${data.audio.map((url, i) => `
-                                    <a href="${url}" class="btn btn-audio" target="_blank">MP3 ${i+1}</a>
-                                `).join('')}
-                            </div>
-                        </div>
-                        ` : ''}
-                    </div>
-                `;
-            }
-            
-            // Untuk tipe PHOTO (slide)
-            else if (data.type === 'photo' && data.images.length > 0) {
-                container.innerHTML = `
-                    <div class="video-card">
-                        <div class="profile">
-                            <div class="avatar">${(data.username || 'U').charAt(0).toUpperCase()}</div>
-                            <div class="user-info">
-                                <div class="username">${escapeHTML(data.username || 'Unknown')}</div>
-                                <div class="duration">📸 ${data.images.length} foto</div>
-                            </div>
-                        </div>
-
-                        ${statsHtml ? `<div class="stats">${statsHtml}</div>` : ''}
-
-                        <div class="images-grid">
-                            ${data.images.map((url, i) => `
-                                <div class="image-item">
-                                    <img src="${url}" alt="Slide ${i+1}" loading="lazy">
-                                    <a href="${url}" class="btn" target="_blank" style="border-radius:0; padding:8px;">Download</a>
-                                </div>
-                            `).join('')}
-                        </div>
-                    </div>
-                `;
+                    `;
+                }
             }
 
+            // Untuk tipe photo (slide)
+            if (data.type === 'photo' && data.images?.length > 0) {
+                html += `
+                    <div class="preview-section">
+                        <div class="preview-title">🖼️ Preview Gambar</div>
+                        <div class="slider-container">
+                            <div class="slider">
+                `;
+                
+                data.images.forEach((imgUrl, i) => {
+                    html += `<img src="${imgUrl}" onclick="previewImage('${imgUrl}')" title="Klik untuk preview">`;
+                });
+                
+                html += `</div></div></div>`;
+            }
+
+            // Bagian download
+            html += `<div class="download-section">`;
+
+            // Video tanpa watermark
+            if (data.videos?.nowm?.length > 0) {
+                html += `<div class="download-title">📹 Video Tanpa Watermark</div>`;
+                html += `<div class="download-buttons">`;
+                
+                data.videos.nowm.forEach((url, i) => {
+                    html += `
+                        <a href="${url}" class="download-btn" download>Download ${i+1}</a>
+                        <button class="download-btn preview-btn" onclick="previewVideo('${url}')">Preview</button>
+                    `;
+                });
+                
+                html += `</div>`;
+            }
+
+            // Video dengan watermark
+            if (data.videos?.wm?.length > 0) {
+                html += `<div class="download-title">💧 Video Dengan Watermark</div>`;
+                html += `<div class="download-buttons">`;
+                
+                data.videos.wm.forEach((url, i) => {
+                    html += `
+                        <a href="${url}" class="download-btn" download>Download ${i+1}</a>
+                        <button class="download-btn preview-btn" onclick="previewVideo('${url}')">Preview</button>
+                    `;
+                });
+                
+                html += `</div>`;
+            }
+
+            // Audio MP3
+            if (data.audio?.length > 0) {
+                html += `<div class="download-title">🎵 Audio MP3</div>`;
+                html += `<div class="download-buttons">`;
+                
+                data.audio.forEach((url, i) => {
+                    html += `
+                        <a href="${url}" class="download-btn" download>Download ${i+1}</a>
+                        <button class="download-btn preview-btn" onclick="previewAudio('${url}')">Preview</button>
+                    `;
+                });
+                
+                html += `</div>`;
+            }
+
+            // Gambar
+            if (data.images?.length > 0) {
+                html += `<div class="download-title">🖼️ Gambar</div>`;
+                html += `<div class="download-buttons">`;
+                
+                data.images.forEach((url, i) => {
+                    html += `
+                        <a href="${url}" class="download-btn" download>Download ${i+1}</a>
+                        <button class="download-btn preview-btn" onclick="previewImage('${url}')">Preview</button>
+                    `;
+                });
+                
+                html += `</div>`;
+            }
+
+            html += `</div>`;
+
+            container.innerHTML = html;
             document.getElementById('loading').classList.remove('active');
             container.classList.add('active');
+        }
+
+        // ===== FUNGSI PREVIEW =====
+        function previewVideo(url) {
+            document.getElementById('modalTitle').innerText = 'Preview Video';
+            document.getElementById('modalContent').innerHTML = `
+                <video class="modal-video" controls autoplay>
+                    <source src="${url}" type="video/mp4">
+                </video>
+            `;
+            document.getElementById('previewModal').classList.add('active');
+        }
+
+        function previewAudio(url) {
+            document.getElementById('modalTitle').innerText = 'Preview Audio';
+            document.getElementById('modalContent').innerHTML = `
+                <audio controls autoplay style="width:100%">
+                    <source src="${url}" type="audio/mpeg">
+                </audio>
+            `;
+            document.getElementById('previewModal').classList.add('active');
+        }
+
+        function previewImage(url) {
+            document.getElementById('modalTitle').innerText = 'Preview Gambar';
+            document.getElementById('modalContent').innerHTML = `
+                <img src="${url}" class="modal-image">
+            `;
+            document.getElementById('previewModal').classList.add('active');
+        }
+
+        function closeModal() {
+            document.getElementById('previewModal').classList.remove('active');
+            document.getElementById('modalContent').innerHTML = '';
         }
 
         function escapeHTML(str) {
