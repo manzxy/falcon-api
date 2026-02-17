@@ -4,6 +4,7 @@ const fs = require('fs');
 const cors = require('cors');
 const path = require('path');
 const axios = require('axios');
+const cheerio = require('cheerio');
 
 require("./function.js");
 
@@ -164,7 +165,18 @@ app.get('/', (req, res) => {
     if (fs.existsSync(indexPath)) {
         res.sendFile(indexPath);
     } else {
-        res.send('Welcome to Manzxy API Server');
+        res.send(`
+            <!DOCTYPE html>
+            <html>
+            <head><title>Manzxy API</title></head>
+            <body style="font-family: Arial; text-align: center; padding: 50px;">
+                <h1>🚀 Manzxy API Server</h1>
+                <p>Server berjalan dengan baik!</p>
+                <p>📌 <a href="/snippet">Snippets</a></p>
+                <p>🎵 <a href="/tiktok">TikTok Downloader</a></p>
+            </body>
+            </html>
+        `);
     }
 });
 
@@ -179,29 +191,251 @@ app.get('/snippet', (req, res) => {
 });
 
 // =========================
-// ROUTE BARU: TikTok Downloader
+// TIKTOK SCRAPER (SaveTT.cc)
 // =========================
+
+// Headers untuk scraping
+const SAVETT_HEADERS = {
+  'Content-Type': 'application/x-www-form-urlencoded',
+  'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8',
+  'Origin': 'https://savett.cc',
+  'Referer': 'https://savett.cc/en1/download',
+  'User-Agent': 'Mozilla/5.0 (Linux; Android 10; K) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/139.0.0.0 Mobile Safari/537.36'
+};
+
+/**
+ * Mendapatkan CSRF token dan cookie dari SaveTT.cc
+ */
+async function getSavettToken() {
+  try {
+    const response = await axios.get('https://savett.cc/en1/download');
+    
+    // Ambil CSRF token dari HTML
+    const csrfMatch = response.data.match(/name="csrf_token" value="([^"]+)"/);
+    const csrf = csrfMatch ? csrfMatch[1] : null;
+    
+    // Ambil cookie dari response headers
+    const cookies = response.headers['set-cookie'];
+    const cookie = cookies ? cookies.map(c => c.split(';')[0]).join('; ') : '';
+    
+    if (!csrf) {
+      throw new Error('CSRF token tidak ditemukan');
+    }
+    
+    return { csrf, cookie };
+  } catch (error) {
+    throw new Error(`Gagal mendapatkan token: ${error.message}`);
+  }
+}
+
+/**
+ * Mengirim request download ke SaveTT.cc
+ */
+async function downloadFromSavett(url, csrf, cookie) {
+  try {
+    const formData = `csrf_token=${encodeURIComponent(csrf)}&url=${encodeURIComponent(url)}`;
+    
+    const response = await axios.post('https://savett.cc/en1/download', formData, {
+      headers: {
+        ...SAVETT_HEADERS,
+        Cookie: cookie
+      }
+    });
+    
+    return response.data;
+  } catch (error) {
+    throw new Error(`Gagal download: ${error.message}`);
+  }
+}
+
+/**
+ * Parse HTML dari SaveTT.cc menjadi data terstruktur
+ */
+function parseSavettHTML(html) {
+  const $ = cheerio.load(html);
+  
+  // Ambil username
+  const username = $('#video-info h3').first().text().trim() || 'Unknown';
+  
+  // Ambil statistik
+  const stats = [];
+  $('#video-info .my-1 span').each((_, el) => {
+    stats.push($(el).text().trim());
+  });
+  
+  // Ambil durasi
+  const durationText = $('#video-info p.text-muted').first().text();
+  const duration = durationText.replace(/Duration:/i, '').trim() || null;
+  
+  // Data awal
+  const result = {
+    username,
+    views: stats[0] || null,
+    likes: stats[1] || null,
+    bookmarks: stats[2] || null,
+    comments: stats[3] || null,
+    shares: stats[4] || null,
+    duration,
+    type: null, // 'video' atau 'photo'
+    videos: {
+      nowm: [], // tanpa watermark
+      wm: []   // dengan watermark
+    },
+    audio: [], // MP3
+    images: [] // untuk slide
+  };
+  
+  // Cek apakah ini slide (multiple images)
+  const slides = $('.carousel-item[data-data]');
+  
+  if (slides.length > 0) {
+    // Ini adalah konten foto (slide)
+    result.type = 'photo';
+    
+    slides.each((_, el) => {
+      try {
+        // Parse data-data attribute yang berisi JSON
+        const dataAttr = $(el).attr('data-data').replace(/&quot;/g, '"');
+        const jsonData = JSON.parse(dataAttr);
+        
+        if (jsonData.URL) {
+          if (Array.isArray(jsonData.URL)) {
+            jsonData.URL.forEach(url => {
+              result.images.push(url);
+            });
+          } else {
+            result.images.push(jsonData.URL);
+          }
+        }
+      } catch (e) {
+        console.log('Gagal parse slide:', e.message);
+      }
+    });
+    
+    return result;
+  }
+  
+  // Ini adalah video
+  result.type = 'video';
+  
+  // Parse semua opsi download
+  $('#formatselect option').each((_, el) => {
+    const label = $(el).text().toLowerCase();
+    const value = $(el).attr('value');
+    
+    if (!value) return;
+    
+    try {
+      // Value berisi JSON string
+      const jsonData = JSON.parse(value.replace(/&quot;/g, '"'));
+      
+      if (!jsonData.URL) return;
+      
+      const urls = Array.isArray(jsonData.URL) ? jsonData.URL : [jsonData.URL];
+      
+      // Kategorikan berdasarkan label
+      if (label.includes('mp4')) {
+        if (label.includes('watermark')) {
+          // Video dengan watermark
+          result.videos.wm.push(...urls);
+        } else {
+          // Video tanpa watermark
+          result.videos.nowm.push(...urls);
+        }
+      }
+      
+      if (label.includes('mp3')) {
+        // Audio MP3
+        result.audio.push(...urls);
+      }
+      
+    } catch (e) {
+      console.log('Gagal parse option:', e.message);
+    }
+  });
+  
+  return result;
+}
+
+// =========================
+// API ENDPOINT TIKTOK
+// =========================
+
+/**
+ * Endpoint utama untuk download TikTok
+ * URL: /api/tiktok?url=https://vt.tiktok.com/xxx
+ */
+app.get('/api/tiktok', async (req, res) => {
+  try {
+    const { url } = req.query;
+    
+    // Validasi input
+    if (!url) {
+      return res.status(400).json({
+        success: false,
+        error: 'Parameter URL diperlukan'
+      });
+    }
+    
+    if (!url.includes('tiktok.com')) {
+      return res.status(400).json({
+        success: false,
+        error: 'URL tidak valid. Harus dari tiktok.com'
+      });
+    }
+    
+    console.log(chalk.yellow(`🎯 Processing TikTok URL: ${url}`));
+    
+    // Langkah 1: Dapatkan token dan cookie
+    const { csrf, cookie } = await getSavettToken();
+    console.log(chalk.green('✅ CSRF token didapatkan'));
+    
+    // Langkah 2: Kirim request download
+    const html = await downloadFromSavett(url, csrf, cookie);
+    console.log(chalk.green('✅ Response dari SaveTT diterima'));
+    
+    // Langkah 3: Parse HTML
+    const data = parseSavettHTML(html);
+    console.log(chalk.green('✅ Data berhasil diparse'));
+    
+    // Kirim response
+    res.json({
+      success: true,
+      data,
+      from: 'savett.cc'
+    });
+    
+  } catch (error) {
+    console.error(chalk.red('❌ Error:'), error.message);
+    
+    res.status(500).json({
+      success: false,
+      error: error.message
+    });
+  }
+});
+
 // Halaman TikTok Downloader
 app.get('/tiktok', (req, res) => {
-    const tiktokPath = path.join(__dirname, 'api-page', 'tiktok-downloader.html');
+    const tiktokPath = path.join(__dirname, 'api-page', 'tiktok.html');
     
     if (fs.existsSync(tiktokPath)) {
         res.sendFile(tiktokPath);
     } else {
-        // Jika file belum ada, buat response sederhana
         res.send(`
             <!DOCTYPE html>
             <html>
             <head>
                 <title>TikTok Downloader</title>
-                <meta http-equiv="refresh" content="3;url=/tiktok-downloader">
                 <style>
                     body { font-family: Arial; text-align: center; padding: 50px; background: #0b0b0b; color: white; }
+                    a { color: #f72585; }
                 </style>
             </head>
             <body>
-                <h2>⏳ Redirecting...</h2>
-                <p>Jika tidak otomatis redirect, <a href="/tiktok-downloader">klik disini</a></p>
+                <h2>⚠️ File tiktok.html tidak ditemukan</h2>
+                <p>Pastikan file ada di folder api-page/</p>
+                <p>Kembali ke <a href="/">Beranda</a></p>
             </body>
             </html>
         `);
@@ -217,48 +451,8 @@ app.get('/download-tiktok', (req, res) => {
     res.redirect('/tiktok');
 });
 
-// =========================
-// API PROXY untuk TikTok Downloader (opsional)
-// =========================
-// Endpoint proxy untuk menghindari CORS
-app.get('/api/tiktok', async (req, res) => {
-    try {
-        const { url } = req.query;
-        if (!url) {
-            return res.status(400).json({ error: 'URL parameter required' });
-        }
-
-        // Pilihan API yang tersedia
-        const apiList = [
-            `https://api.siputzx.my.id/api/d/tiktok?url=${encodeURIComponent(url)}`,
-            `https://www.tikwm.com/api/?url=${encodeURIComponent(url)}`,
-            `https://api.tikmate.io/api/convert?url=${encodeURIComponent(url)}`
-        ];
-
-        // Coba API satu per satu
-        for (const apiUrl of apiList) {
-            try {
-                const response = await axios.get(apiUrl, { timeout: 8000 });
-                if (response.data) {
-                    return res.json({
-                        success: true,
-                        data: response.data,
-                        from: apiUrl.split('/')[2]
-                    });
-                }
-            } catch (e) {
-                console.log(`API ${apiUrl} failed:`, e.message);
-                continue;
-            }
-        }
-
-        throw new Error('All APIs failed');
-    } catch (error) {
-        res.status(500).json({ 
-            success: false, 
-            error: error.message 
-        });
-    }
+app.get('/tt', (req, res) => {
+    res.redirect('/tiktok');
 });
 
 // =========================
@@ -399,9 +593,11 @@ app.listen(PORT, () => {
     console.log(chalk.cyan('📌 Available Routes:'));
     console.log(chalk.white(`   📄 Home:           http://localhost:${PORT}`));
     console.log(chalk.white(`   📝 Snippets:       http://localhost:${PORT}/snippet`));
-    console.log(chalk.white(`   🎵 TikTok Downloader: http://localhost:${PORT}/tiktok`));
+    console.log(chalk.white(`   🎵 TikTok:         http://localhost:${PORT}/tiktok`));
     console.log(chalk.white(`   📊 API Status:     http://localhost:${PORT}/api/status`));
-    console.log(chalk.white(`   🔗 TikTok API:     http://localhost:${PORT}/api/tiktok?url=URL`));
+    
+    console.log(chalk.cyan('\n🔧 TikTok Endpoints:'));
+    console.log(chalk.white(`   🔍 Scrape (SaveTT): http://localhost:${PORT}/api/tiktok?url=URL`));
     
     console.log(chalk.cyan('\n📁 Static Folders:'));
     console.log(chalk.white(`   📂 / (root)        → api-page/`));
