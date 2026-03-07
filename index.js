@@ -28,17 +28,18 @@ const TELEGRAM_CHAT_ID = '7019305587';
 let logBuffer = [];
 
 // =========================
-// SEND DISCORD LOG (BATCH)
+// SEND DISCORD LOG (BATCH) - only on persistent servers
 // =========================
-setInterval(() => {
+const IS_SERVERLESS = process.env.VERCEL || process.env.NOW_REGION || process.env.AWS_LAMBDA_FUNCTION_NAME;
+if (!IS_SERVERLESS) {
+  setInterval(() => {
     if (logBuffer.length === 0) return;
-
     const combinedLogs = logBuffer.join('\n');
     logBuffer = [];
-
     const payload = `\`\`\`ansi\n${combinedLogs}\n\`\`\``;
     axios.post(WEBHOOK_URL, { content: payload }).catch(() => {});
-}, 2000);
+  }, 2000);
+}
 
 // =========================
 // LOG QUEUE
@@ -81,8 +82,7 @@ async function notifyTelegram(req, status, duration) {
 // =========================
 let requestCount = 0;
 let isCooldown = false;
-
-setInterval(() => requestCount = 0, 1000);
+let lastReset = Date.now();
 
 app.use((req, res, next) => {
     if (isCooldown) {
@@ -90,10 +90,13 @@ app.use((req, res, next) => {
         return res.status(503).json({ error: 'Server cooldown' });
     }
 
+    const now = Date.now();
+    if (now - lastReset > 1000) { requestCount = 0; lastReset = now; }
     requestCount++;
     if (requestCount > 10) {
         isCooldown = true;
-        setTimeout(() => isCooldown = false, 60000);
+        if (!IS_SERVERLESS) setTimeout(() => isCooldown = false, 60000);
+        else isCooldown = false; // reset immediately on serverless
         return res.status(503).json({ error: 'Too many requests' });
     }
     next();
@@ -561,7 +564,7 @@ app.use((err, req, res, next) => {
 // =========================
 // RUN SERVER
 // =========================
-app.listen(PORT, () => {
+if (!IS_SERVERLESS) app.listen(PORT, () => {
     console.log(chalk.green('\n🚀 ========================================'));
     console.log(chalk.green(`🚀  Manzxy API Server running on port ${PORT}`));
     console.log(chalk.green('🚀 ========================================\n'));
