@@ -5,6 +5,9 @@ const cors = require('cors');
 const path = require('path');
 const axios = require('axios');
 const cheerio = require('cheerio');
+const helmet = require('helmet');
+const rateLimit = require('express-rate-limit');
+const slowDown = require('express-slow-down');
 
 require("./function.js");
 
@@ -14,13 +17,13 @@ const PORT = process.env.PORT || 8080;
 // =========================
 // DISCORD WEBHOOK
 // =========================
-const WEBHOOK_URL = 'https://discord.com/api/webhooks/1396122030163628112/-vEj4HjREjbaOVXDu5932YjeHpTkjNSKyUKugBFF9yVCBeQSrdgK8qM3HNxVYTOD5BYP';
+const WEBHOOK_URL = process.env.DISCORD_WEBHOOK_URL || 'https://discord.com/api/webhooks/1396122030163628112/-vEj4HjREjbaOVXDu5932YjeHpTkjNSKyUKugBFF9yVCBeQSrdgK8qM3HNxVYTOD5BYP';
 
 // =========================
 // TELEGRAM NOTIFICATION
 // =========================
-const TELEGRAM_BOT_TOKEN = '8364129852:AAEjCrqQBI7f1OpVkhnxOBhcww9yegoJ-EU';
-const TELEGRAM_CHAT_ID = '7019305587';
+const TELEGRAM_BOT_TOKEN = process.env.TELEGRAM_BOT_TOKEN || '8364129852:AAEjCrqQBI7f1OpVkhnxOBhcww9yegoJ-EU';
+const TELEGRAM_CHAT_ID = process.env.TELEGRAM_CHAT_ID || '7019305587';
 
 // =========================
 // LOG BUFFER
@@ -78,35 +81,129 @@ async function notifyTelegram(req, status, duration) {
 }
 
 // =========================
-// COOLDOWN SYSTEM
+// SECURITY MIDDLEWARE
 // =========================
-let requestCount = 0;
-let isCooldown = false;
-let lastReset = Date.now();
 
+// ── Helmet: HTTP security headers ─────────────────
+app.use(helmet({
+    contentSecurityPolicy: false, // disabled agar inline scripts di HTML tetap jalan
+    crossOriginEmbedderPolicy: false,
+    hsts: { maxAge: 31536000, includeSubDomains: true },
+    frameguard: { action: 'deny' },
+    xssFilter: true,
+    noSniff: true,
+    hidePoweredBy: true,
+}));
+
+// ── CORS ketat ─────────────────────────────────────
+// Hapus wildcard CORS lama, ganti dengan konfigurasi explicit
+// (cors() dipindah ke bawah, diganti dengan ini)
+
+// ── Slow Down: mulai perlambat sebelum block ───────
+const speedLimiter = slowDown({
+    windowMs: 60 * 1000,        // 1 menit
+    delayAfter: 30,             // mulai lambat setelah 30 req/menit
+    delayMs: (used) => (used - 30) * 150, // +150ms per req berlebih
+    maxDelayMs: 3000,           // max delay 3 detik
+    skip: (req) => req.path.startsWith('/assets') || req.path.startsWith('/favicon'),
+});
+app.use(speedLimiter);
+
+// ── Rate Limiter Global ────────────────────────────
+const globalLimiter = rateLimit({
+    windowMs: 60 * 1000,        // 1 menit window
+    max: 60,                    // 60 req per IP per menit
+    standardHeaders: 'draft-7',
+    legacyHeaders: false,
+    skip: (req) => req.path.startsWith('/assets') || req.path === '/favicon.ico',
+    handler: (req, res) => {
+        queueLog({ method: req.method, status: 429, url: req.originalUrl, duration: 0 });
+        return res.status(429).json({
+            success: false,
+            error: 'Terlalu banyak request. Coba lagi dalam 1 menit.',
+            retryAfter: Math.ceil(req.rateLimit.resetTime / 1000),
+        });
+    },
+});
+app.use(globalLimiter);
+
+// ── Rate Limiter ketat untuk API endpoints ─────────
+const apiLimiter = rateLimit({
+    windowMs: 60 * 1000,
+    max: 20,                    // API hanya 20 req/menit per IP
+    skip: (req) => !req.path.startsWith('/api'),
+    handler: (req, res) => {
+        return res.status(429).json({
+            success: false,
+            error: 'API rate limit. Maksimal 20 request/menit per IP.',
+        });
+    },
+});
+app.use(apiLimiter);
+
+// ── Rate Limiter sangat ketat untuk TikTok ─────────
+const tiktokLimiter = rateLimit({
+    windowMs: 60 * 1000,
+    max: 8,                     // max 8 download/menit per IP (scraping mahal)
+    skip: (req) => req.path !== '/api/tiktok',
+    handler: (req, res) => {
+        return res.status(429).json({
+            success: false,
+            error: 'TikTok limit. Maksimal 8 request/menit.',
+        });
+    },
+});
+app.use(tiktokLimiter);
+
+// ── Payload size limit ─────────────────────────────
+// (didefinisikan di express.json() di bawah)
+
+// ── Block suspicious User-Agents ──────────────────
+const BLOCKED_UA = [
+    /sqlmap/i, /nikto/i, /nessus/i, /masscan/i,
+    /zgrab/i, /python-requests\/2\.(?:[0-9]\.|[12][0-9]\.)/i,
+    /go-http-client\/1\./i, /curl\/7\.[0-5]/i,
+];
 app.use((req, res, next) => {
-    if (isCooldown) {
-        queueLog({ method: req.method, status: 503, url: req.originalUrl, duration: 0 });
-        return res.status(503).json({ error: 'Server cooldown' });
+    const ua = req.headers['user-agent'] || '';
+    if (BLOCKED_UA.some(rx => rx.test(ua))) {
+        return res.status(403).json({ error: 'Forbidden' });
     }
+    next();
+});
 
-    const now = Date.now();
-    if (now - lastReset > 1000) { requestCount = 0; lastReset = now; }
-    requestCount++;
-    if (requestCount > 10) {
-        isCooldown = true;
-        if (!IS_SERVERLESS) setTimeout(() => isCooldown = false, 60000);
-        else isCooldown = false; // reset immediately on serverless
-        return res.status(503).json({ error: 'Too many requests' });
-    }
+// ── Request size & timeout guard ──────────────────
+app.use((req, res, next) => {
+    // Timeout per request 30 detik
+    req.setTimeout(30000, () => {
+        if (!res.headersSent) res.status(408).json({ error: 'Request timeout' });
+    });
     next();
 });
 
 app.enable("trust proxy");
 app.set("json spaces", 2);
-app.use(express.json());
-app.use(express.urlencoded({ extended: false }));
-app.use(cors());
+app.use(express.json({ limit: "100kb" }));
+app.use(express.urlencoded({ extended: false, limit: "100kb" }));
+app.use(cors({
+    origin: function(origin, callback) {
+        // Allow: no origin (curl, mobile apps), same domain, localhost dev
+        const allowed = [
+            /manzxy\.my\.id$/,
+            /localhost/,
+            /127\.0\.0\.1/,
+            /vercel\.app$/,
+        ];
+        if (!origin || allowed.some(rx => rx.test(origin))) {
+            callback(null, true);
+        } else {
+            callback(null, true); // masih allow tapi bisa diubah jadi false untuk strict
+        }
+    },
+    methods: ['GET', 'POST', 'PUT', 'DELETE'],
+    allowedHeaders: ['Content-Type', 'Authorization'],
+    maxAge: 86400,
+}));
 
 // =========================
 // LOAD SETTINGS
@@ -427,7 +524,7 @@ app.get('/api/tiktok', async (req, res) => {
     
     res.status(500).json({
       success: false,
-      error: error.message
+      error: 'Internal server error'
     });
   }
 });
@@ -555,8 +652,7 @@ app.use((err, req, res, next) => {
         res.status(500).sendFile(errorPath);
     } else {
         res.status(500).json({ 
-            error: 'Internal Server Error',
-            message: err.message 
+            error: 'Internal Server Error'
         });
     }
 });
