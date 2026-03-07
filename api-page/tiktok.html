@@ -1,823 +1,676 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Manzxy TikTok Downloader</title>
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            transition: background-color 0.3s, color 0.3s, border-color 0.3s;
-        }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Manzxy — TikTok Downloader</title>
+<link rel="icon" href="/assets/icon.png">
+<link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&family=Geist:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+::-webkit-scrollbar{width:5px}
+::-webkit-scrollbar-track{background:transparent}
+::-webkit-scrollbar-thumb{background:#2d3748;border-radius:10px}
+html{scroll-behavior:smooth}
 
-        /* ===== LIGHT THEME (DEFAULT) ===== */
-        :root {
-            --bg-color: #f5f5f5;
-            --container-bg: white;
-            --text-primary: #333;
-            --text-secondary: #666;
-            --text-muted: #888;
-            --border-color: #eee;
-            --input-border: #ddd;
-            --button-bg: #f72585;
-            --button-hover: #d61f6e;
-            --info-bg: #fafafa;
-            --info-border: #eee;
-            --preview-bg: #fafafa;
-            --preview-border: #eee;
-            --btn-download-bg: #4CAF50;
-            --btn-download-hover: #45a049;
-            --btn-download-text: white;
-            --btn-preview-bg: #2196F3;
-            --btn-preview-hover: #1976D2;
-            --btn-preview-text: white;
-            --error-bg: #fff2f2;
-            --error-text: #d32f2f;
-            --modal-bg: white;
-            --modal-overlay: rgba(0,0,0,0.8);
-            --spinner-border: #f3f3f3;
-            --spinner-top: #f72585;
-            --step-bg: #f0f0f0;
-            --step-number-bg: #f72585;
-            --step-number-text: white;
-        }
+:root{
+  --bg:#0a0c10;--bg2:#0f1117;--bg3:#141820;--bg4:#1a1f2e;
+  --border:#1e2433;--border2:#252d3d;
+  --text:#e8eaf0;--text2:#8892a4;--text3:#4a5568;
+  --accent:#4f8ef7;--accent2:rgba(79,142,247,.15);--accent3:rgba(79,142,247,.08);
+  --green:#3dd68c;--red:#f87171;--yellow:#fbbf24;
+  --tt:#fe2c55; /* TikTok red */
+  --tt2:rgba(254,44,85,.15);
+  --mono:'JetBrains Mono',monospace;
+  --sans:'Geist',system-ui,sans-serif;
+  --r:8px;--r2:12px;
+}
+body.light{
+  --bg:#f6f8fa;--bg2:#fff;--bg3:#f0f3f6;--bg4:#e8ecf0;
+  --border:#e2e8f0;--border2:#d1d9e0;
+  --text:#1a202c;--text2:#718096;--text3:#a0aec0;
+}
 
-        /* ===== DARK THEME ===== */
-        body.dark {
-            --bg-color: #1a1a1a;
-            --container-bg: #2d2d2d;
-            --text-primary: #e0e0e0;
-            --text-secondary: #b0b0b0;
-            --text-muted: #888;
-            --border-color: #404040;
-            --input-border: #404040;
-            --button-bg: #f72585;
-            --button-hover: #d61f6e;
-            --info-bg: #363636;
-            --info-border: #404040;
-            --preview-bg: #363636;
-            --preview-border: #404040;
-            --btn-download-bg: #2e7d32;
-            --btn-download-hover: #1b5e20;
-            --btn-download-text: white;
-            --btn-preview-bg: #1565c0;
-            --btn-preview-hover: #0d47a1;
-            --btn-preview-text: white;
-            --error-bg: #442222;
-            --error-text: #ff8a8a;
-            --modal-bg: #2d2d2d;
-            --modal-overlay: rgba(0,0,0,0.9);
-            --spinner-border: #404040;
-            --spinner-top: #f72585;
-            --step-bg: #363636;
-            --step-number-bg: #f72585;
-            --step-number-text: white;
-        }
+body{font-family:var(--sans);background:var(--bg);color:var(--text);min-height:100vh;display:flex;font-size:14px;line-height:1.6}
 
-        body {
-            font-family: Arial, Helvetica, sans-serif;
-            background: var(--bg-color);
-            min-height: 100vh;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            padding: 20px;
-        }
+/* ── SIDEBAR (shared) ───────────────────────────────────── */
+.sidebar{
+  width:240px;min-height:100vh;
+  background:var(--bg2);border-right:1px solid var(--border);
+  display:flex;flex-direction:column;
+  position:fixed;top:0;left:0;bottom:0;z-index:200;
+  transition:transform .3s;
+}
+.sb-logo{padding:1.25rem 1.25rem 1rem;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:.75rem;text-decoration:none}
+.sb-logo-box{width:34px;height:34px;background:linear-gradient(135deg,#4f8ef7,#7c5bfa);border-radius:var(--r);display:flex;align-items:center;justify-content:center;font-family:var(--mono);font-size:.75rem;font-weight:700;color:#fff;flex-shrink:0;box-shadow:0 0 20px rgba(79,142,247,.25)}
+.sb-logo-text{font-size:.875rem;font-weight:600;color:var(--text);letter-spacing:.01em}
+.sb-logo-text span{color:var(--accent)}
+.sb-logo-sub{font-size:.65rem;color:var(--text3);font-family:var(--mono)}
+.sb-nav{padding:.75rem 0;flex:1}
+.sb-section-label{padding:.25rem 1.25rem;font-size:.6rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--text3);font-family:var(--mono);margin-bottom:.25rem}
+.sb-item{display:flex;align-items:center;gap:.5rem;padding:.425rem 1.25rem;color:var(--text2);font-size:.8125rem;font-weight:500;cursor:pointer;transition:all .15s;border:none;background:none;width:100%;text-align:left;text-decoration:none}
+.sb-item:hover{background:var(--bg3);color:var(--text)}
+.sb-item.active{background:var(--tt2);color:var(--tt)}
+.sb-item .material-icons{font-size:.875rem;color:inherit}
+.sb-divider{height:1px;background:var(--border);margin:.5rem 1.25rem}
+.sb-bottom{margin-top:auto;padding:.875rem 1.25rem;border-top:1px solid var(--border);display:flex;align-items:center;justify-content:space-between}
+.tgl{position:relative;width:36px;height:20px;display:inline-block}
+.tgl input{opacity:0;width:0;height:0}
+.tgl-sl{position:absolute;inset:0;background:var(--bg4);border:1px solid var(--border2);border-radius:20px;transition:.2s;cursor:pointer}
+.tgl-sl:before{content:'';position:absolute;width:14px;height:14px;left:2px;bottom:2px;background:var(--text3);border-radius:50%;transition:.2s}
+input:checked+.tgl-sl{background:var(--accent2);border-color:rgba(79,142,247,.4)}
+input:checked+.tgl-sl:before{transform:translateX(16px);background:var(--accent)}
+.theme-row{display:flex;align-items:center;gap:.5rem}
+.tgl-icons{font-size:.75rem;color:var(--text3)}
+.sb-ver{font-size:.65rem;color:var(--text3);font-family:var(--mono)}
+.status-dot{width:6px;height:6px;border-radius:50%;background:var(--green);animation:pulse 2s infinite;display:inline-block}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.5}}
 
-        .container {
-            max-width: 800px;
-            width: 100%;
-            background: var(--container-bg);
-            border-radius: 10px;
-            padding: 25px;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-        }
+/* mob toggle */
+.mob-toggle{display:none;position:fixed;top:14px;left:14px;z-index:300;width:36px;height:36px;background:var(--bg2);border:1px solid var(--border2);border-radius:var(--r);color:var(--text2);align-items:center;justify-content:center;cursor:pointer}
 
-        /* ===== HEADER ===== */
-        .header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 15px;
-            padding-bottom: 15px;
-            border-bottom: 1px solid var(--border-color);
-        }
+/* ── MAIN ────────────────────────────────────────────────── */
+.main{margin-left:240px;flex:1;min-height:100vh;display:flex;flex-direction:column}
 
-        .title-section h1 {
-            font-size: 24px;
-            font-weight: 600;
-            color: var(--text-primary);
-        }
+/* topbar */
+.topbar{position:sticky;top:0;z-index:100;background:rgba(10,12,16,.95);backdrop-filter:blur(12px);border-bottom:1px solid var(--border);padding:.625rem 1.5rem;display:flex;align-items:center;justify-content:space-between;gap:1rem}
+body.light .topbar{background:rgba(246,248,250,.95)}
+.topbar-left{display:flex;align-items:center;gap:.75rem}
+.topbar-title{font-size:.875rem;font-weight:600;color:var(--text2);display:flex;align-items:center;gap:.375rem}
+.topbar-title .material-icons{font-size:.875rem}
+.bc-sep{color:var(--text3)}
+.bc-current{color:var(--text);font-weight:600}
+.topbar-right{display:flex;align-items:center;gap:.5rem}
+.badge-new{padding:.15rem .5rem;background:var(--tt2);border:1px solid rgba(254,44,85,.3);color:var(--tt);font-size:.65rem;font-weight:700;border-radius:100px;font-family:var(--mono);letter-spacing:.04em}
 
-        .title-section .subtitle {
-            color: var(--text-secondary);
-            font-size: 14px;
-            margin-top: 5px;
-        }
+/* ── HERO SECTION ────────────────────────────────────────── */
+.hero{
+  padding:2.5rem 1.5rem 2rem;
+  text-align:center;
+  border-bottom:1px solid var(--border);
+  position:relative;overflow:hidden;
+  background:radial-gradient(ellipse 80% 60% at 50% -20%, rgba(254,44,85,.08) 0%, transparent 70%);
+}
+.hero::before{
+  content:'';position:absolute;inset:0;
+  background-image:radial-gradient(rgba(254,44,85,.04) 1px, transparent 1px);
+  background-size:28px 28px;pointer-events:none;
+}
+.hero-badge{display:inline-flex;align-items:center;gap:.375rem;padding:.25rem .75rem;border-radius:100px;background:rgba(254,44,85,.12);border:1px solid rgba(254,44,85,.25);color:var(--tt);font-size:.7rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;font-family:var(--mono);margin-bottom:.875rem}
+.hero-badge .fab{font-size:.8rem}
+.hero h1{font-size:2rem;font-weight:700;color:var(--text);letter-spacing:-.03em;margin-bottom:.375rem}
+.hero h1 em{font-style:normal;color:var(--tt)}
+.hero-sub{font-size:.9rem;color:var(--text2);margin-bottom:2rem;max-width:440px;margin-left:auto;margin-right:auto}
 
-        /* ===== THEME TOGGLE ===== */
-        .theme-toggle {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
+/* input area */
+.input-wrap{max-width:580px;margin:0 auto;position:relative}
+.url-input{
+  width:100%;padding:.875rem 7rem .875rem 3rem;
+  background:var(--bg2);border:1.5px solid var(--border2);
+  border-radius:var(--r2);color:var(--text);
+  font-size:.9375rem;font-family:var(--sans);
+  outline:none;transition:all .2s;
+}
+.url-input:focus{border-color:var(--tt);box-shadow:0 0 0 3px rgba(254,44,85,.1)}
+.url-input::placeholder{color:var(--text3)}
+.url-input-icon{position:absolute;left:.875rem;top:50%;transform:translateY(-50%);color:var(--text3);font-size:1rem}
+.url-paste-btn{
+  position:absolute;right:.5rem;top:50%;transform:translateY(-50%);
+  padding:.4rem .875rem;background:var(--tt);color:#fff;
+  border:none;border-radius:var(--r);font-size:.8rem;font-weight:600;
+  cursor:pointer;transition:all .15s;font-family:var(--sans);
+  display:flex;align-items:center;gap:.3rem;
+}
+.url-paste-btn:hover{background:#ff3d6a;box-shadow:0 0 0 3px rgba(254,44,85,.25)}
+.url-paste-btn:active{transform:translateY(-50%) scale(.97)}
+.url-paste-btn .material-icons{font-size:.875rem}
 
-        .toggle-switch {
-            position: relative;
-            display: inline-block;
-            width: 60px;
-            height: 30px;
-        }
+.hero-note{font-size:.72rem;color:var(--text3);margin-top:.625rem;display:flex;align-items:center;justify-content:center;gap:.375rem}
+.hero-note .material-icons{font-size:.75rem}
 
-        .toggle-switch input {
-            opacity: 0;
-            width: 0;
-            height: 0;
-        }
+/* ── RESULT ──────────────────────────────────────────────── */
+.result-section{padding:1.5rem;display:none}
+.result-section.show{display:block}
 
-        .toggle-slider {
-            position: absolute;
-            cursor: pointer;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background-color: #ccc;
-            transition: .3s;
-            border-radius: 30px;
-        }
+/* loading */
+.loading-wrap{text-align:center;padding:2rem}
+.tt-spinner{width:36px;height:36px;border-radius:50%;border:3px solid var(--border2);border-top-color:var(--tt);animation:spin .6s linear infinite;margin:0 auto .875rem}
+@keyframes spin{to{transform:rotate(360deg)}}
+.loading-text{font-size:.8125rem;color:var(--text2)}
 
-        .toggle-slider:before {
-            position: absolute;
-            content: "";
-            height: 24px;
-            width: 24px;
-            left: 3px;
-            bottom: 3px;
-            background-color: white;
-            transition: .3s;
-            border-radius: 50%;
-        }
+/* error */
+.error-card{
+  background:rgba(248,113,113,.08);border:1px solid rgba(248,113,113,.25);
+  border-radius:var(--r2);padding:1.25rem 1.5rem;
+  display:flex;align-items:flex-start;gap:.875rem;
+}
+.error-icon{color:var(--red);font-size:1.25rem;flex-shrink:0;margin-top:.1rem}
+.error-title{font-weight:600;color:var(--red);margin-bottom:.25rem;font-size:.9rem}
+.error-msg{font-size:.8rem;color:var(--text2)}
 
-        input:checked + .toggle-slider {
-            background-color: #f72585;
-        }
+/* result card */
+.result-card{
+  background:var(--bg2);border:1px solid var(--border);
+  border-radius:var(--r2);overflow:hidden;max-width:700px;margin:0 auto;
+  box-shadow:0 8px 32px rgba(0,0,0,.2);
+}
+.result-header{
+  padding:1rem 1.25rem;border-bottom:1px solid var(--border);
+  display:flex;align-items:center;gap:.75rem;
+}
+.result-type-badge{
+  padding:.2rem .625rem;border-radius:100px;
+  font-size:.65rem;font-weight:700;letter-spacing:.06em;
+  text-transform:uppercase;font-family:var(--mono);
+}
+.badge-video{background:var(--accent2);border:1px solid rgba(79,142,247,.3);color:var(--accent)}
+.badge-photo{background:rgba(161,136,212,.15);border:1px solid rgba(161,136,212,.3);color:#a188d4}
+.result-author{font-weight:700;font-size:.9375rem;color:var(--text);flex:1}
+.result-close{
+  width:28px;height:28px;border-radius:var(--r);
+  background:var(--bg3);border:1px solid var(--border2);
+  color:var(--text2);display:flex;align-items:center;justify-content:center;
+  cursor:pointer;font-size:.875rem;transition:all .15s;
+}
+.result-close:hover{background:rgba(248,113,113,.15);color:var(--red);border-color:rgba(248,113,113,.3)}
 
-        input:checked + .toggle-slider:before {
-            transform: translateX(30px);
-        }
+/* stats row */
+.stats-row{
+  padding:.625rem 1.25rem;background:var(--bg);
+  border-bottom:1px solid var(--border);
+  display:flex;align-items:center;gap:1.25rem;flex-wrap:wrap;
+}
+.stat-item{display:flex;align-items:center;gap:.3rem;font-size:.75rem;color:var(--text2)}
+.stat-item .material-icons{font-size:.875rem;color:var(--tt)}
 
-        .toggle-icon {
-            font-size: 18px;
-        }
+/* download options */
+.dl-section{padding:1.25rem}
+.dl-title{font-size:.7rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--text3);font-family:var(--mono);margin-bottom:.75rem}
 
-        /* ===== STEPS UNTUK USER ===== */
-        .steps {
-            display: flex;
-            justify-content: space-between;
-            margin-bottom: 25px;
-            padding: 15px;
-            background: var(--step-bg);
-            border-radius: 8px;
-            border: 1px solid var(--border-color);
-        }
+.dl-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:.625rem}
+.dl-btn{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:.75rem 1rem;
+  background:var(--bg3);border:1px solid var(--border2);
+  border-radius:var(--r);cursor:pointer;transition:all .15s;
+  text-decoration:none;
+}
+.dl-btn:hover{border-color:var(--tt);background:rgba(254,44,85,.06)}
+.dl-btn-left{display:flex;align-items:center;gap:.625rem}
+.dl-btn-icon{
+  width:32px;height:32px;border-radius:var(--r);
+  display:flex;align-items:center;justify-content:center;
+  font-size:.875rem;flex-shrink:0;
+}
+.icon-nowm{background:rgba(61,214,140,.12);color:var(--green)}
+.icon-wm{background:rgba(251,191,36,.12);color:var(--yellow)}
+.icon-mp3{background:rgba(167,139,250,.12);color:#a78bfa}
+.icon-img{background:rgba(79,142,247,.12);color:var(--accent)}
+.dl-btn-label{font-weight:600;font-size:.825rem;color:var(--text)}
+.dl-btn-sub{font-size:.7rem;color:var(--text2);margin-top:.1rem}
+.dl-arrow{font-size:.875rem;color:var(--text3)}
+.dl-btn:hover .dl-arrow{color:var(--tt)}
 
-        .step {
-            flex: 1;
-            text-align: center;
-            position: relative;
-        }
+/* photo grid */
+.photo-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:.5rem;margin-top:.75rem}
+.photo-thumb{
+  aspect-ratio:3/4;border-radius:var(--r);overflow:hidden;
+  background:var(--bg3);position:relative;cursor:pointer;
+  border:1px solid var(--border2);transition:all .15s;
+}
+.photo-thumb:hover{border-color:var(--accent);transform:scale(1.02)}
+.photo-thumb img{width:100%;height:100%;object-fit:cover}
+.photo-thumb-overlay{
+  position:absolute;inset:0;background:rgba(0,0,0,.5);
+  display:flex;align-items:center;justify-content:center;
+  opacity:0;transition:opacity .15s;
+}
+.photo-thumb:hover .photo-thumb-overlay{opacity:1}
+.photo-thumb-overlay .material-icons{color:#fff;font-size:1.5rem}
 
-        .step:not(:last-child):after {
-            content: "→";
-            position: absolute;
-            right: -10px;
-            top: 50%;
-            transform: translateY(-50%);
-            color: var(--text-muted);
-            font-size: 20px;
-        }
+/* audio section */
+.audio-player{
+  margin:0 1.25rem 1.25rem;
+  background:var(--bg3);border:1px solid var(--border2);
+  border-radius:var(--r);padding:.875rem 1rem;
+}
+.audio-player-top{display:flex;align-items:center;gap:.625rem;margin-bottom:.625rem}
+.audio-icon{width:36px;height:36px;background:rgba(167,139,250,.12);border-radius:var(--r);display:flex;align-items:center;justify-content:center;color:#a78bfa;flex-shrink:0}
+.audio-title{font-weight:600;font-size:.8125rem}
+.audio-sub{font-size:.7rem;color:var(--text2)}
+audio{width:100%;height:36px;outline:none;border-radius:var(--r)}
 
-        .step-number {
-            width: 30px;
-            height: 30px;
-            background: var(--step-number-bg);
-            color: var(--step-number-text);
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin: 0 auto 8px;
-            font-weight: bold;
-        }
+/* ── HOW TO USE ──────────────────────────────────────────── */
+.howto{padding:0 1.5rem 2rem;max-width:700px;margin:0 auto}
+.howto-title{font-size:.7rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--text3);font-family:var(--mono);margin-bottom:.875rem;display:flex;align-items:center;gap:.375rem}
+.howto-steps{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:.625rem}
+.step{
+  background:var(--bg2);border:1px solid var(--border);
+  border-radius:var(--r2);padding:.875rem 1rem;
+  display:flex;align-items:flex-start;gap:.75rem;
+}
+.step-num{
+  width:26px;height:26px;border-radius:50%;
+  background:var(--tt2);border:1px solid rgba(254,44,85,.25);
+  color:var(--tt);font-size:.72rem;font-weight:700;
+  display:flex;align-items:center;justify-content:center;
+  flex-shrink:0;font-family:var(--mono);
+}
+.step-text{font-size:.8rem;color:var(--text2);line-height:1.5}
+.step-text strong{color:var(--text);display:block;margin-bottom:.125rem;font-size:.8125rem}
 
-        .step-text {
-            color: var(--text-secondary);
-            font-size: 13px;
-        }
+/* ── TOAST ───────────────────────────────────────────────── */
+.toast{position:fixed;bottom:1.25rem;right:1.25rem;z-index:9999;padding:.5625rem 1rem;background:var(--bg3);border:1px solid var(--border2);border-radius:var(--r);color:var(--text);font-size:.8rem;box-shadow:0 8px 24px rgba(0,0,0,.3);animation:toastIn .2s ease}
+@keyframes toastIn{from{opacity:0;transform:translateY(8px)}}
 
-        .step-text strong {
-            color: var(--text-primary);
-            display: block;
-            margin-bottom: 3px;
-        }
+.hidden{display:none!important}
 
-        /* ===== INPUT ===== */
-        .input-group {
-            display: flex;
-            gap: 10px;
-            margin-bottom: 15px;
-        }
-
-        .input-group input {
-            flex: 1;
-            padding: 12px 15px;
-            border: 1px solid var(--input-border);
-            border-radius: 6px;
-            font-size: 14px;
-            outline: none;
-            background: var(--container-bg);
-            color: var(--text-primary);
-        }
-
-        .input-group input:focus {
-            border-color: #f72585;
-        }
-
-        .input-group button {
-            padding: 12px 25px;
-            background: var(--button-bg);
-            color: white;
-            border: none;
-            border-radius: 6px;
-            font-size: 14px;
-            font-weight: 600;
-            cursor: pointer;
-        }
-
-        .input-group button:hover {
-            background: var(--button-hover);
-        }
-
-        /* ===== CONTOH LINK ===== */
-        .example-links {
-            color: var(--text-muted);
-            font-size: 13px;
-            margin-bottom: 20px;
-        }
-
-        .example-links span {
-            color: #f72585;
-            cursor: pointer;
-            text-decoration: underline;
-            margin: 0 3px;
-        }
-
-        /* ===== LOADING ===== */
-        .loading {
-            display: none;
-            text-align: center;
-            padding: 30px;
-        }
-
-        .loading.active {
-            display: block;
-        }
-
-        .spinner {
-            border: 3px solid var(--spinner-border);
-            border-top: 3px solid var(--spinner-top);
-            border-radius: 50%;
-            width: 30px;
-            height: 30px;
-            animation: spin 0.8s linear infinite;
-            margin: 0 auto 10px;
-        }
-
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-        }
-
-        /* ===== ERROR ===== */
-        .error {
-            display: none;
-            text-align: center;
-            padding: 20px;
-            background: var(--error-bg);
-            color: var(--error-text);
-            border-radius: 6px;
-            margin-top: 15px;
-            font-size: 14px;
-        }
-
-        .error.active {
-            display: block;
-        }
-
-        /* ===== HASIL ===== */
-        .result {
-            display: none;
-            margin-top: 20px;
-        }
-
-        .result.active {
-            display: block;
-        }
-
-        .info-box {
-            background: var(--info-bg);
-            border-radius: 8px;
-            padding: 15px;
-            margin-bottom: 20px;
-            border: 1px solid var(--info-border);
-        }
-
-        .info-row {
-            display: flex;
-            margin-bottom: 8px;
-            font-size: 14px;
-        }
-
-        .info-label {
-            width: 80px;
-            color: var(--text-secondary);
-        }
-
-        .info-value {
-            color: var(--text-primary);
-            font-weight: 500;
-        }
-
-        .preview-section {
-            margin-bottom: 20px;
-            padding: 15px;
-            background: var(--preview-bg);
-            border-radius: 8px;
-            border: 1px solid var(--preview-border);
-        }
-
-        .preview-title {
-            font-size: 14px;
-            font-weight: 600;
-            color: var(--text-primary);
-            margin-bottom: 10px;
-        }
-
-        .video-preview {
-            width: 100%;
-            border-radius: 6px;
-            background: #000;
-        }
-
-        /* ===== DOWNLOAD SECTION ===== */
-        .download-section {
-            margin-top: 20px;
-            padding: 15px;
-            background: var(--info-bg);
-            border-radius: 8px;
-            border: 1px solid var(--border-color);
-        }
-
-        .download-title {
-            font-size: 15px;
-            font-weight: 600;
-            color: var(--text-primary);
-            margin-bottom: 15px;
-            padding-bottom: 8px;
-            border-bottom: 1px solid var(--border-color);
-        }
-
-        .download-buttons {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 12px;
-        }
-
-        .download-btn {
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
-            padding: 12px 24px;
-            background: var(--btn-download-bg);
-            color: var(--btn-download-text);
-            border: none;
-            border-radius: 6px;
-            font-size: 14px;
-            font-weight: 600;
-            text-decoration: none;
-            cursor: pointer;
-            transition: 0.2s;
-            flex: 1 1 auto;
-            min-width: 140px;
-        }
-
-        .download-btn:hover {
-            background: var(--btn-download-hover);
-            transform: translateY(-2px);
-        }
-
-        .download-btn.preview-btn {
-            background: var(--btn-preview-bg);
-        }
-
-        .download-btn.preview-btn:hover {
-            background: var(--btn-preview-hover);
-        }
-
-        .download-btn i {
-            font-size: 16px;
-        }
-
-        /* ===== MODAL PREVIEW ===== */
-        .modal {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: var(--modal-overlay);
-            z-index: 1000;
-            align-items: center;
-            justify-content: center;
-            padding: 20px;
-        }
-
-        .modal.active {
-            display: flex;
-        }
-
-        .modal-content {
-            background: var(--modal-bg);
-            border-radius: 10px;
-            padding: 20px;
-            max-width: 800px;
-            width: 100%;
-            max-height: 90vh;
-            overflow-y: auto;
-        }
-
-        .modal-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 15px;
-            padding-bottom: 10px;
-            border-bottom: 1px solid var(--border-color);
-        }
-
-        .modal-title {
-            font-size: 16px;
-            font-weight: 600;
-            color: var(--text-primary);
-        }
-
-        .modal-close {
-            font-size: 20px;
-            cursor: pointer;
-            color: var(--text-secondary);
-        }
-
-        .modal-close:hover {
-            color: var(--text-primary);
-        }
-
-        .modal-video {
-            width: 100%;
-            max-height: 500px;
-            border-radius: 6px;
-        }
-
-        .modal-image {
-            width: 100%;
-            max-height: 500px;
-            object-fit: contain;
-        }
-
-        /* ===== FOOTER ===== */
-        .footer {
-            text-align: center;
-            margin-top: 25px;
-            padding-top: 15px;
-            border-top: 1px solid var(--border-color);
-            color: var(--text-muted);
-            font-size: 12px;
-        }
-
-        .footer a {
-            color: #f72585;
-            text-decoration: none;
-        }
-    </style>
+/* ── RESPONSIVE ──────────────────────────────────────────── */
+@media(max-width:768px){
+  body{display:block}
+  .sidebar{transform:translateX(-100%)}
+  .sidebar.open{transform:translateX(0)}
+  .mob-toggle{display:flex}
+  .main{margin-left:0}
+  .topbar{padding-left:3.5rem}
+  .hero{padding:1.5rem 1rem 1.5rem}
+  .hero h1{font-size:1.5rem}
+  .result-section,.howto{padding:1rem}
+  .dl-grid{grid-template-columns:1fr}
+  .howto-steps{grid-template-columns:1fr}
+}
+</style>
 </head>
 <body>
-    <div class="container">
-        <!-- HEADER DENGAN TOGGLE THEME -->
-        <div class="header">
-            <div class="title-section">
-                <h1>Manzxy TikTok</h1>
-                <div class="subtitle">Download video & audio TikTok gratis</div>
-            </div>
-            <div class="theme-toggle">
-                <span class="toggle-icon">☀️</span>
-                <label class="toggle-switch">
-                    <input type="checkbox" id="themeToggle" onchange="toggleTheme()">
-                    <span class="toggle-slider"></span>
-                </label>
-                <span class="toggle-icon">🌙</span>
-            </div>
-        </div>
 
-        <!-- LANGKAH-LANGKAH UNTUK USER -->
-        <div class="steps">
-            <div class="step">
-                <div class="step-number">1</div>
-                <div class="step-text">
-                    <strong>Salin Link</strong>
-                    Copy URL video dari TikTok
-                </div>
-            </div>
-            <div class="step">
-                <div class="step-number">2</div>
-                <div class="step-text">
-                    <strong>Tempel di sini</strong>
-                    Paste URL ke kolom di bawah
-                </div>
-            </div>
-            <div class="step">
-                <div class="step-number">3</div>
-                <div class="step-text">
-                    <strong>Download</strong>
-                    Klik tombol hijau untuk download
-                </div>
-            </div>
-        </div>
+<!-- ── SIDEBAR ──────────────────────────────────────────── -->
+<aside class="sidebar" id="sidebar">
+  <a href="/" class="sb-logo">
+    <div class="sb-logo-box">MX</div>
+    <div>
+      <div class="sb-logo-text">Manzxy <span>API</span></div>
+      <div class="sb-logo-sub">code & tools</div>
+    </div>
+  </a>
 
-        <!-- INPUT URL -->
-        <div class="input-group">
-            <input type="text" id="urlInput" placeholder="Contoh: https://vt.tiktok.com/ZSjXNEnbC/" value="https://vt.tiktok.com/ZSa4J7JoB/">
-            <button onclick="fetchData()">Cari</button>
-        </div>
+  <nav class="sb-nav">
+    <div class="sb-section-label">Navigation</div>
+    <a href="/" class="sb-item">
+      <span class="material-icons">api</span>Documentation
+    </a>
+    <a href="/snippet" class="sb-item">
+      <span class="material-icons">code</span>Code Snippets
+    </a>
+    <a href="/tiktok" class="sb-item active">
+      <i class="fab fa-tiktok" style="font-size:.875rem;width:1rem;text-align:center"></i>TikTok Downloader
+    </a>
 
-        <!-- CONTOH LINK -->
-        <div class="example-links">
-            🔗 Coba link contoh: 
-            <span onclick="document.getElementById('urlInput').value='https://vt.tiktok.com/ZSa4J7JoB/'">Video 1</span>
-            <span onclick="document.getElementById('urlInput').value='https://vt.tiktok.com/ZSa4J7JoC/'">Video 2</span>
-            <span onclick="document.getElementById('urlInput').value='https://vt.tiktok.com/ZSa4J7JoD/'">Slide</span>
-        </div>
+    <div class="sb-divider"></div>
+    <div class="sb-section-label">Features</div>
+    <div class="sb-item" style="cursor:default;opacity:.6">
+      <span class="material-icons">download</span>No Watermark
+    </div>
+    <div class="sb-item" style="cursor:default;opacity:.6">
+      <span class="material-icons">photo_library</span>Slideshow Support
+    </div>
+    <div class="sb-item" style="cursor:default;opacity:.6">
+      <span class="material-icons">music_note</span>Audio Extract
+    </div>
+    <div class="sb-item" style="cursor:default;opacity:.6">
+      <span class="material-icons">speed</span>Fast & Free
+    </div>
+  </nav>
 
-        <!-- LOADING -->
-        <div class="loading" id="loading">
-            <div class="spinner"></div>
-            <p style="color: var(--text-secondary);">Memproses...</p>
-        </div>
+  <div class="sb-bottom">
+    <div class="theme-row">
+      <span class="tgl-icons">🌙</span>
+      <label class="tgl">
+        <input type="checkbox" id="tglInput" onchange="toggleTheme()">
+        <span class="tgl-sl"></span>
+      </label>
+      <span class="tgl-icons">☀️</span>
+    </div>
+    <div style="display:flex;align-items:center;gap:.375rem">
+      <span class="status-dot"></span>
+      <span class="sb-ver">v2.0</span>
+    </div>
+  </div>
+</aside>
 
-        <!-- ERROR -->
-        <div class="error" id="error">
-            Gagal mengambil data. Periksa URL atau coba lagi.
-        </div>
+<!-- MOB TOGGLE -->
+<button class="mob-toggle" id="mobToggle" onclick="toggleSb()">
+  <span class="material-icons">menu</span>
+</button>
 
-        <!-- HASIL -->
-        <div class="result" id="result"></div>
+<!-- ── MAIN ──────────────────────────────────────────────── -->
+<div class="main">
 
-        <!-- FOOTER -->
-        <div class="footer">
-            © 2026 Manzxy • Scraped from CodeVerse
-        </div>
+  <!-- TOPBAR -->
+  <div class="topbar">
+    <div class="topbar-left">
+      <div class="topbar-title">
+        <a href="/" style="color:inherit;text-decoration:none;display:flex;align-items:center;gap:.3rem">
+          <span class="material-icons">api</span>Manzxy API
+        </a>
+        <span class="bc-sep">/</span>
+        <span class="bc-current">TikTok Downloader</span>
+      </div>
+    </div>
+    <div class="topbar-right">
+      <span class="badge-new"><i class="fab fa-tiktok"></i> Free</span>
+      <a href="/snippet" class="topbar-title" style="text-decoration:none;padding:.3rem .625rem;background:var(--bg3);border:1px solid var(--border2);border-radius:var(--r);font-size:.75rem;color:var(--text2)">
+        <span class="material-icons" style="font-size:.875rem">code</span>Snippets
+      </a>
+    </div>
+  </div>
+
+  <!-- HERO -->
+  <div class="hero">
+    <div class="hero-badge"><i class="fab fa-tiktok"></i>&nbsp;TikTok Downloader</div>
+    <h1>Download <em>TikTok</em><br>Tanpa Watermark</h1>
+    <p class="hero-sub">Video, foto slideshow, dan audio — gratis, cepat, tanpa watermark.</p>
+
+    <div class="input-wrap">
+      <span class="material-icons url-input-icon">link</span>
+      <input
+        type="url"
+        id="urlInput"
+        class="url-input"
+        placeholder="https://vt.tiktok.com/... atau tiktok.com/@user/video/..."
+        autocomplete="off"
+        spellcheck="false"
+      >
+      <button class="url-paste-btn" onclick="download()">
+        <span class="material-icons">download</span>Download
+      </button>
+    </div>
+    <div class="hero-note">
+      <span class="material-icons">info</span>
+      Paste link TikTok — mendukung video, slideshow foto &amp; audio
+    </div>
+  </div>
+
+  <!-- RESULT SECTION -->
+  <div class="result-section" id="resultSection">
+
+    <!-- LOADING -->
+    <div id="loadingWrap" class="hidden">
+      <div class="loading-wrap">
+        <div class="tt-spinner"></div>
+        <div class="loading-text">Mengambil konten TikTok...</div>
+        <div class="loading-text" style="font-size:.72rem;margin-top:.25rem;color:var(--text3)">Mohon tunggu sebentar</div>
+      </div>
     </div>
 
-    <!-- MODAL PREVIEW -->
-    <div class="modal" id="previewModal">
-        <div class="modal-content">
-            <div class="modal-header">
-                <div class="modal-title" id="modalTitle">Preview</div>
-                <div class="modal-close" onclick="closeModal()">✕</div>
-            </div>
-            <div id="modalContent"></div>
+    <!-- ERROR -->
+    <div id="errorWrap" class="hidden" style="max-width:600px;margin:0 auto">
+      <div class="error-card">
+        <span class="material-icons error-icon">error_outline</span>
+        <div>
+          <div class="error-title">Gagal mengunduh</div>
+          <div class="error-msg" id="errorMsg">Terjadi kesalahan.</div>
         </div>
+      </div>
     </div>
 
-    <script>
-        // ===== THEME TOGGLE =====
-        function toggleTheme() {
-            const isChecked = document.getElementById('themeToggle').checked;
-            if (isChecked) {
-                document.body.classList.add('dark');
-                localStorage.setItem('theme', 'dark');
-            } else {
-                document.body.classList.remove('dark');
-                localStorage.setItem('theme', 'light');
-            }
-        }
+    <!-- SUCCESS -->
+    <div id="successWrap" class="hidden">
+      <div class="result-card">
 
-        // Load theme dari localStorage
-        (function loadTheme() {
-            const savedTheme = localStorage.getItem('theme');
-            if (savedTheme === 'dark') {
-                document.body.classList.add('dark');
-                document.getElementById('themeToggle').checked = true;
-            }
-        })();
+        <!-- header -->
+        <div class="result-header">
+          <span class="result-type-badge" id="typeBadge">VIDEO</span>
+          <div class="result-author" id="resultAuthor">@username</div>
+          <button class="result-close" onclick="clearResult()">✕</button>
+        </div>
 
-        // ===== FUNGSI UTAMA =====
-        async function fetchData() {
-            const url = document.getElementById('urlInput').value.trim();
-            
-            if (!url) {
-                alert('Masukkan URL TikTok');
-                return;
-            }
+        <!-- stats -->
+        <div class="stats-row" id="statsRow"></div>
 
-            if (!url.includes('tiktok.com')) {
-                alert('URL tidak valid. Harus dari tiktok.com');
-                return;
-            }
+        <!-- VIDEO downloads -->
+        <div id="videoDl" class="dl-section hidden">
+          <div class="dl-title">📥 Download Video</div>
+          <div class="dl-grid" id="videoDlGrid"></div>
+        </div>
 
-            // Tampilkan loading
-            document.getElementById('loading').classList.add('active');
-            document.getElementById('result').classList.remove('active');
-            document.getElementById('error').classList.remove('active');
+        <!-- AUDIO player + download -->
+        <div id="audioDl" class="hidden">
+          <div class="audio-player">
+            <div class="audio-player-top">
+              <div class="audio-icon"><span class="material-icons">music_note</span></div>
+              <div>
+                <div class="audio-title">Audio Extracted</div>
+                <div class="audio-sub">MP3 dari video ini</div>
+              </div>
+            </div>
+            <audio id="audioEl" controls></audio>
+          </div>
+        </div>
 
-            try {
-                const response = await fetch(`/api/tiktok?url=${encodeURIComponent(url)}`);
-                const result = await response.json();
+        <!-- PHOTO downloads -->
+        <div id="photoDl" class="dl-section hidden">
+          <div class="dl-title">🖼️ Foto Slideshow (<span id="photoCount">0</span> gambar)</div>
+          <div class="dl-grid" id="photoDlGrid"></div>
+          <div class="photo-grid" id="photoPreviewGrid"></div>
+        </div>
 
-                if (!result.success) {
-                    throw new Error(result.error);
-                }
+      </div>
+    </div>
+  </div>
 
-                renderResult(result.data);
-            } catch (error) {
-                console.error('Error:', error);
-                document.getElementById('loading').classList.remove('active');
-                document.getElementById('error').classList.add('active');
-            }
-        }
+  <!-- HOW TO USE -->
+  <div class="howto" id="howtoSection">
+    <div class="howto-title"><span class="material-icons" style="font-size:.85rem">help_outline</span>Cara Pakai</div>
+    <div class="howto-steps">
+      <div class="step">
+        <div class="step-num">1</div>
+        <div class="step-text"><strong>Buka TikTok</strong>Cari video atau foto yang ingin didownload</div>
+      </div>
+      <div class="step">
+        <div class="step-num">2</div>
+        <div class="step-text"><strong>Copy Link</strong>Tap Share → Copy Link di aplikasi TikTok</div>
+      </div>
+      <div class="step">
+        <div class="step-num">3</div>
+        <div class="step-text"><strong>Paste & Download</strong>Paste link di atas lalu klik tombol Download</div>
+      </div>
+      <div class="step">
+        <div class="step-num">4</div>
+        <div class="step-text"><strong>Pilih Format</strong>Pilih video tanpa WM, dengan WM, atau audio MP3</div>
+      </div>
+    </div>
+  </div>
 
-        function renderResult(data) {
-            const container = document.getElementById('result');
-            
-            // Format angka (K, M)
-            const formatNumber = (num) => {
-                if (!num) return '0';
-                const n = parseInt(num);
-                if (n >= 1000000) return (n/1000000).toFixed(1) + 'M';
-                if (n >= 1000) return (n/1000).toFixed(1) + 'K';
-                return n;
-            };
+</div><!-- /main -->
 
-            // Mulai membangun HTML
-            let html = '';
+<script>
+// ── SIDEBAR ──
+function toggleSb(){document.getElementById('sidebar').classList.toggle('open')}
+document.addEventListener('click',e=>{
+  const sb=document.getElementById('sidebar'),mb=document.getElementById('mobToggle');
+  if(!sb.contains(e.target)&&mb&&!mb.contains(e.target)&&window.innerWidth<=768)sb.classList.remove('open');
+});
 
-            // Preview video otomatis (jika ada)
-            if (data.type === 'video') {
-                const previewVideo = data.videos?.nowm?.[0] || data.videos?.wm?.[0];
-                if (previewVideo) {
-                    html += `
-                        <div class="preview-section">
-                            <div class="preview-title">📺 Preview Video</div>
-                            <video class="video-preview" controls>
-                                <source src="${previewVideo}" type="video/mp4">
-                            </video>
-                        </div>
-                    `;
-                }
-            }
+// ── THEME ──
+function toggleTheme(){
+  const v=document.getElementById('tglInput').checked;
+  document.body.classList.toggle('light',v);
+  localStorage.setItem('theme',v?'light':'dark');
+}
+(()=>{
+  const t=localStorage.getItem('theme')||'dark';
+  if(t==='light'){document.body.classList.add('light');const el=document.getElementById('tglInput');if(el)el.checked=true;}
+})();
 
-            // Info box
-            html += `
-                <div class="info-box">
-                    <div class="info-row">
-                        <span class="info-label">Author</span>
-                        <span class="info-value">${escapeHTML(data.username || 'Unknown')}</span>
-                    </div>
-            `;
+// ── TOAST ──
+function toast(msg,dur=2500){
+  const t=document.createElement('div');t.className='toast';t.textContent=msg;
+  document.body.appendChild(t);
+  setTimeout(()=>{t.style.opacity='0';t.style.transition='opacity .3s';setTimeout(()=>t.remove(),300);},dur);
+}
 
-            if (data.duration) {
-                html += `
-                    <div class="info-row">
-                        <span class="info-label">Durasi</span>
-                        <span class="info-value">${data.duration}</span>
-                    </div>
-                `;
-            }
+// ── HELPERS ──
+function show(id){document.getElementById(id).classList.remove('hidden')}
+function hide(id){document.getElementById(id).classList.add('hidden')}
+function esc(s){return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')}
+function fmtNum(n){
+  if(!n)return'0';
+  n=parseInt(n)||0;
+  if(n>=1e6)return(n/1e6).toFixed(1)+'M';
+  if(n>=1e3)return(n/1e3).toFixed(1)+'K';
+  return n.toString();
+}
 
-            if (data.views) {
-                html += `
-                    <div class="info-row">
-                        <span class="info-label">Views</span>
-                        <span class="info-value">${formatNumber(data.views)}</span>
-                    </div>
-                `;
-            }
+// ── DOWNLOAD ──
+async function download(){
+  const url=document.getElementById('urlInput').value.trim();
+  if(!url){toast('⚠️ Paste link TikTok dulu!');return}
+  if(!url.includes('tiktok.com')){toast('❌ Bukan link TikTok!');return}
 
-            if (data.likes) {
-                html += `
-                    <div class="info-row">
-                        <span class="info-label">Likes</span>
-                        <span class="info-value">${formatNumber(data.likes)}</span>
-                    </div>
-                `;
-            }
+  // show result section & loading
+  const rs=document.getElementById('resultSection');
+  rs.style.display='block';
+  document.getElementById('howtoSection').style.opacity='.3';
+  hide('errorWrap');hide('successWrap');show('loadingWrap');
 
-            html += `</div>`;
+  try{
+    const res=await fetch('/api/tiktok?url='+encodeURIComponent(url));
+    const json=await res.json();
 
-            // ===== TOMBOL DOWNLOAD =====
-            // Video tanpa watermark
-            if (data.videos?.nowm?.length > 0) {
-                html += `
-                    <div class="download-section">
-                        <div class="download-title">📹 Video Tanpa Watermark</div>
-                        <div class="download-buttons">
-                `;
-                
-                data.videos.nowm.forEach((url, i) => {
-                    html += `
-                        <a href="${url}" class="download-btn" download>
-                            ⬇️ Download Video ${data.videos.nowm.length > 1 ? i+1 : ''}
-                        </a>
-                    `;
-                });
-                
-                html += `</div></div>`;
-            }
+    hide('loadingWrap');
 
-            // Video dengan watermark
-            if (data.videos?.wm?.length > 0) {
-                html += `
-                    <div class="download-section">
-                        <div class="download-title">💧 Video Dengan Watermark</div>
-                        <div class="download-buttons">
-                `;
-                
-                data.videos.wm.forEach((url, i) => {
-                    html += `
-                        <a href="${url}" class="download-btn" download>
-                            ⬇️ Download Video ${data.videos.wm.length > 1 ? i+1 : ''}
-                        </a>
-                    `;
-                });
-                
-                html += `</div></div>`;
-            }
+    if(!json.success||!json.data){
+      throw new Error(json.error||'Gagal mengambil data');
+    }
 
-            // Audio MP3
-            if (data.audio?.length > 0) {
-                html += `
-                    <div class="download-section">
-                        <div class="download-title">🎵 Audio MP3</div>
-                        <div class="download-buttons">
-                `;
-                
-                data.audio.forEach((url, i) => {
-                    html += `
-                        <a href="${url}" class="download-btn" download>
-                            ⬇️ Download Audio ${data.audio.length > 1 ? i+1 : ''}
-                        </a>
-                    `;
-                });
-                
-                html += `</div></div>`;
-            }
+    renderResult(json.data);
+  }catch(e){
+    hide('loadingWrap');
+    document.getElementById('errorMsg').textContent=e.message||'Terjadi kesalahan, coba lagi.';
+    show('errorWrap');
+    document.getElementById('howtoSection').style.opacity='1';
+  }
+}
 
-            // Gambar
-            if (data.images?.length > 0) {
-                html += `
-                    <div class="download-section">
-                        <div class="download-title">🖼️ Gambar</div>
-                        <div class="download-buttons">
-                `;
-                
-                data.images.forEach((url, i) => {
-                    html += `
-                        <a href="${url}" class="download-btn" download>
-                            ⬇️ Download Gambar ${i+1}
-                        </a>
-                    `;
-                });
-                
-                html += `</div></div>`;
-            }
+function renderResult(d){
+  show('successWrap');
+  document.getElementById('howtoSection').style.opacity='.3';
 
-            container.innerHTML = html;
-            document.getElementById('loading').classList.remove('active');
-            container.classList.add('active');
-        }
+  // type badge
+  const tb=document.getElementById('typeBadge');
+  if(d.type==='photo'){tb.textContent='SLIDESHOW';tb.className='result-type-badge';tb.style.background='rgba(161,136,212,.15)';tb.style.color='#a188d4';tb.style.border='1px solid rgba(161,136,212,.3)';}
+  else{tb.textContent='VIDEO';tb.className='result-type-badge badge-video';}
 
-        function escapeHTML(str) {
-            if (!str) return '';
-            return String(str)
-                .replace(/&/g, '&amp;')
-                .replace(/</g, '&lt;')
-                .replace(/>/g, '&gt;')
-                .replace(/"/g, '&quot;')
-                .replace(/'/g, '&#039;');
-        }
-    </script>
+  // author
+  document.getElementById('resultAuthor').textContent=d.username||'@unknown';
+
+  // stats
+  const stats=[];
+  if(d.views) stats.push({icon:'visibility',label:fmtNum(d.views)+' views'});
+  if(d.likes) stats.push({icon:'favorite',label:fmtNum(d.likes)+' likes'});
+  if(d.comments) stats.push({icon:'chat_bubble',label:fmtNum(d.comments)+' comments'});
+  if(d.shares) stats.push({icon:'share',label:fmtNum(d.shares)+' shares'});
+  if(d.duration) stats.push({icon:'schedule',label:d.duration});
+  document.getElementById('statsRow').innerHTML=stats.map(s=>`<div class="stat-item"><span class="material-icons">${s.icon}</span>${esc(s.label)}</div>`).join('');
+
+  // VIDEO
+  hide('videoDl');hide('audioDl');hide('photoDl');
+
+  if(d.type==='video'){
+    const vGrid=document.getElementById('videoDlGrid');
+    const items=[];
+
+    if(d.videos?.nowm?.length){
+      d.videos.nowm.forEach((url,i)=>{
+        items.push({url,icon:'icon-nowm',iconName:'download',label:'Tanpa Watermark',sub:i===0?'Kualitas terbaik':'Alternatif '+(i+1)});
+      });
+    }
+    if(d.videos?.wm?.length){
+      d.videos.wm.forEach((url,i)=>{
+        items.push({url,icon:'icon-wm',iconName:'download',label:'Dengan Watermark',sub:'Versi original TikTok'});
+      });
+    }
+
+    if(items.length){
+      vGrid.innerHTML=items.map(it=>`
+        <a href="${esc(it.url)}" target="_blank" class="dl-btn" download>
+          <div class="dl-btn-left">
+            <div class="dl-btn-icon ${it.icon}"><span class="material-icons">${it.iconName}</span></div>
+            <div><div class="dl-btn-label">${esc(it.label)}</div><div class="dl-btn-sub">${esc(it.sub)}</div></div>
+          </div>
+          <span class="material-icons dl-arrow">download</span>
+        </a>`).join('');
+      show('videoDl');
+    }
+
+    // audio
+    if(d.audio?.length){
+      document.getElementById('audioEl').src=d.audio[0];
+      // add dl button inside audio section
+      const audioDlBtn=`<a href="${esc(d.audio[0])}" target="_blank" download class="dl-btn" style="margin:.5rem 1.25rem 1.25rem;display:flex">
+        <div class="dl-btn-left"><div class="dl-btn-icon icon-mp3"><span class="material-icons">music_note</span></div><div><div class="dl-btn-label">Download MP3</div><div class="dl-btn-sub">Audio dari video ini</div></div></div>
+        <span class="material-icons dl-arrow">download</span>
+      </a>`;
+      document.getElementById('audioDl').insertAdjacentHTML('beforeend',audioDlBtn);
+      show('audioDl');
+    }
+
+  } else if(d.type==='photo'){
+    // photos
+    const imgs=d.images||[];
+    document.getElementById('photoCount').textContent=imgs.length;
+
+    // download buttons
+    const pGrid=document.getElementById('photoDlGrid');
+    pGrid.innerHTML=imgs.map((url,i)=>`
+      <a href="${esc(url)}" target="_blank" download class="dl-btn">
+        <div class="dl-btn-left"><div class="dl-btn-icon icon-img"><span class="material-icons">image</span></div><div><div class="dl-btn-label">Foto ${i+1}</div><div class="dl-btn-sub">Download gambar</div></div></div>
+        <span class="material-icons dl-arrow">download</span>
+      </a>`).join('');
+
+    // preview thumbs
+    const pPrev=document.getElementById('photoPreviewGrid');
+    pPrev.innerHTML=imgs.map((url,i)=>`
+      <div class="photo-thumb" onclick="window.open('${esc(url)}','_blank')">
+        <img src="${esc(url)}" alt="Foto ${i+1}" loading="lazy" onerror="this.parentElement.style.display='none'">
+        <div class="photo-thumb-overlay"><span class="material-icons">open_in_new</span></div>
+      </div>`).join('');
+
+    show('photoDl');
+  }
+}
+
+function clearResult(){
+  const rs=document.getElementById('resultSection');
+  rs.style.display='none';
+  document.getElementById('urlInput').value='';
+  document.getElementById('howtoSection').style.opacity='1';
+  hide('loadingWrap');hide('errorWrap');hide('successWrap');
+  // clear audio src
+  const a=document.getElementById('audioEl');
+  if(a)a.src='';
+  // remove injected audio dl button
+  const inj=document.getElementById('audioDl').querySelector('a.dl-btn');
+  if(inj)inj.remove();
+}
+
+// ── ENTER KEY ──
+document.getElementById('urlInput').addEventListener('keydown',e=>{
+  if(e.key==='Enter')download();
+});
+
+// ── PASTE FROM CLIPBOARD ──
+document.getElementById('urlInput').addEventListener('focus',async()=>{
+  try{
+    const txt=await navigator.clipboard.readText();
+    if(txt&&txt.includes('tiktok.com')&&!document.getElementById('urlInput').value){
+      document.getElementById('urlInput').value=txt;
+      toast('📋 Link TikTok di-paste otomatis');
+    }
+  }catch{}
+});
+</script>
 </body>
 </html>
