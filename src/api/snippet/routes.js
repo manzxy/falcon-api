@@ -250,5 +250,21 @@ module.exports = function (app) {
     }
   })
 
+}
+
+  // ── POST /api/snippets/:id/view ──────────────────────────────────────────
+  // Increment view counter (fire & forget dari client)
+  app.post("/api/snippets/:id/view", (req, res) => {
+    try {
+      const db = readDB()
+      const snippet = db.snippets.find((s) => s.id === req.params.id)
+      if (!snippet) return res.status(404).json({ success: false })
+      snippet.views = (snippet.views || 0) + 1
+      writeDB(db)
+      return res.json({ success: true, views: snippet.views })
+    } catch (e) {
+      return res.status(500).json({ success: false, message: e.message })
     }
-  
+  })
+
+}
