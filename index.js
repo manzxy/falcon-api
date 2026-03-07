@@ -19,8 +19,8 @@ const WEBHOOK_URL = 'https://discord.com/api/webhooks/1396122030163628112/-vEj4H
 // =========================
 // TELEGRAM NOTIFICATION
 // =========================
-const TELEGRAM_BOT_TOKEN = '8364129852:AAEjCrqQBI7f1OpVkhnxOBhcww9yegoJ-EU';
-const TELEGRAM_CHAT_ID = '7019305587';
+const TELEGRAM_BOT_TOKEN = '8715828235:AAEPV8q2uPHUeOvg6w4hY67UkmRLSp-RWm0';
+const TELEGRAM_CHAT_ID = '8115232554';
 
 // =========================
 // LOG BUFFER
@@ -150,13 +150,7 @@ app.use((req, res, next) => {
 });
 
 // =========================
-// STATIC FILES
-// =========================
-app.use('/', express.static(path.join(__dirname, 'api-page')));
-app.use('/assets', express.static(path.join(__dirname, 'assets')));
-
-// =========================
-// CUSTOM ROUTES
+// CUSTOM ROUTES - Page Routes (must be BEFORE static middleware)
 // =========================
 
 // Route untuk halaman utama
@@ -189,6 +183,19 @@ app.get('/snippet', (req, res) => {
         res.status(404).send('Snippet page not found');
     }
 });
+
+// Route tiktok page
+app.get('/tiktok', (req, res) => {
+    const p = require('path').join(__dirname, 'api-page', 'tiktok.html');
+    if (require('fs').existsSync(p)) res.sendFile(p);
+    else res.status(404).send('TikTok page not found');
+});
+
+// =========================
+// STATIC FILES (after explicit routes)
+// =========================
+app.use('/', express.static(path.join(__dirname, 'api-page')));
+app.use('/assets', express.static(path.join(__dirname, 'assets')));
 
 // =========================
 // TIKTOK SCRAPER (SaveTT.cc)
@@ -415,45 +422,7 @@ app.get('/api/tiktok', async (req, res) => {
   }
 });
 
-// Halaman TikTok Downloader
-app.get('/tiktok', (req, res) => {
-    const tiktokPath = path.join(__dirname, 'api-page', 'tiktok.html');
-    
-    if (fs.existsSync(tiktokPath)) {
-        res.sendFile(tiktokPath);
-    } else {
-        res.send(`
-            <!DOCTYPE html>
-            <html>
-            <head>
-                <title>TikTok Downloader</title>
-                <style>
-                    body { font-family: Arial; text-align: center; padding: 50px; background: #0b0b0b; color: white; }
-                    a { color: #f72585; }
-                </style>
-            </head>
-            <body>
-                <h2>⚠️ File tiktok.html tidak ditemukan</h2>
-                <p>Pastikan file ada di folder api-page/</p>
-                <p>Kembali ke <a href="/">Beranda</a></p>
-            </body>
-            </html>
-        `);
-    }
-});
-
-// Redirect alternatif
-app.get('/tiktok-downloader', (req, res) => {
-    res.redirect('/tiktok');
-});
-
-app.get('/download-tiktok', (req, res) => {
-    res.redirect('/tiktok');
-});
-
-app.get('/tt', (req, res) => {
-    res.redirect('/tiktok');
-});
+// tiktok routes handled above
 
 // =========================
 // MOCK OAUTH ENDPOINTS
