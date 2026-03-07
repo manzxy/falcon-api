@@ -1,0 +1,1329 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Manzxy Codes — Code Sharing Platform</title>
+<link rel="icon" href="/assets/icon.png">
+<link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Geist:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+::-webkit-scrollbar{width:5px;height:5px}
+::-webkit-scrollbar-track{background:transparent}
+::-webkit-scrollbar-thumb{background:#2d3748;border-radius:10px}
+::-webkit-scrollbar-thumb:hover{background:#4a5568}
+html{scroll-behavior:smooth}
+
+:root{
+  --bg:#0a0c10;
+  --bg2:#0f1117;
+  --bg3:#141820;
+  --bg4:#1a1f2e;
+  --border:#1e2433;
+  --border2:#252d3d;
+  --text:#e8eaf0;
+  --text2:#8892a4;
+  --text3:#4a5568;
+  --accent:#4f8ef7;
+  --accent2:rgba(79,142,247,.15);
+  --accent3:rgba(79,142,247,.08);
+  --green:#3dd68c;
+  --red:#f87171;
+  --yellow:#fbbf24;
+  --purple:#a78bfa;
+  --mono:'JetBrains Mono',monospace;
+  --sans:'Geist',system-ui,sans-serif;
+  --r:8px;
+  --r2:12px;
+}
+
+body{
+  font-family:var(--sans);
+  background:var(--bg);
+  color:var(--text);
+  min-height:100vh;
+  font-size:14px;
+  line-height:1.6;
+  display:flex;
+}
+
+/* ── SIDEBAR ─────────────────────────────────────────── */
+.sidebar{
+  width:240px;
+  min-height:100vh;
+  background:var(--bg2);
+  border-right:1px solid var(--border);
+  display:flex;
+  flex-direction:column;
+  position:fixed;
+  top:0;left:0;bottom:0;
+  z-index:200;
+  transition:transform .3s;
+}
+.sb-logo{
+  padding:1.25rem 1.25rem 1rem;
+  border-bottom:1px solid var(--border);
+  display:flex;align-items:center;gap:.75rem;
+  text-decoration:none;
+}
+.sb-logo-box{
+  width:34px;height:34px;
+  background:linear-gradient(135deg,#4f8ef7,#7c5bfa);
+  border-radius:var(--r);
+  display:flex;align-items:center;justify-content:center;
+  font-family:var(--mono);font-size:.75rem;font-weight:700;color:#fff;
+  flex-shrink:0;
+  box-shadow:0 0 20px rgba(79,142,247,.25);
+}
+.sb-logo-text{font-size:.875rem;font-weight:600;color:var(--text);letter-spacing:.01em}
+.sb-logo-text span{color:var(--accent)}
+.sb-logo-sub{font-size:.65rem;color:var(--text3);font-family:var(--mono)}
+
+.sb-search{
+  padding:.875rem 1rem;
+  border-bottom:1px solid var(--border);
+}
+.sb-search-wrap{
+  position:relative;
+}
+.sb-search input{
+  width:100%;
+  padding:.4rem .75rem .4rem 2rem;
+  background:var(--bg3);
+  border:1px solid var(--border2);
+  border-radius:var(--r);
+  color:var(--text);
+  font-size:.78rem;font-family:var(--sans);
+  outline:none;transition:border .15s;
+}
+.sb-search input:focus{border-color:var(--accent)}
+.sb-search input::placeholder{color:var(--text3)}
+.sb-search .ico{
+  position:absolute;left:.625rem;top:50%;transform:translateY(-50%);
+  color:var(--text3);font-size:.875rem;pointer-events:none;
+}
+
+.sb-nav{padding:.75rem 0}
+.sb-section-label{
+  padding:.25rem 1.25rem;
+  font-size:.6rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;
+  color:var(--text3);font-family:var(--mono);
+  margin-bottom:.25rem;
+}
+.sb-item{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:.425rem 1.25rem;
+  color:var(--text2);font-size:.8125rem;font-weight:500;
+  cursor:pointer;transition:all .15s;
+  border:none;background:none;width:100%;text-align:left;
+  gap:.5rem;
+  text-decoration:none;
+}
+.sb-item:hover{background:var(--bg3);color:var(--text)}
+.sb-item.active{background:var(--accent2);color:var(--accent)}
+.sb-item-left{display:flex;align-items:center;gap:.5rem}
+.sb-item .material-icons{font-size:.875rem;color:inherit}
+.sb-count{
+  font-size:.65rem;font-family:var(--mono);
+  background:var(--bg4);border:1px solid var(--border2);
+  color:var(--text3);padding:.1rem .375rem;border-radius:100px;
+}
+.sb-item.active .sb-count{background:var(--accent2);border-color:rgba(79,142,247,.3);color:var(--accent)}
+
+.sb-divider{height:1px;background:var(--border);margin:.5rem 1.25rem}
+
+.sb-bottom{
+  margin-top:auto;padding:.875rem 1.25rem;
+  border-top:1px solid var(--border);
+  display:flex;align-items:center;justify-content:space-between;
+}
+.theme-toggle{display:flex;align-items:center;gap:.5rem;cursor:pointer}
+.tgl{position:relative;width:36px;height:20px;display:inline-block}
+.tgl input{opacity:0;width:0;height:0}
+.tgl-sl{
+  position:absolute;inset:0;
+  background:var(--bg4);border:1px solid var(--border2);
+  border-radius:20px;transition:.2s;cursor:pointer;
+}
+.tgl-sl:before{
+  content:'';position:absolute;
+  width:14px;height:14px;left:2px;bottom:2px;
+  background:var(--text3);border-radius:50%;transition:.2s;
+}
+input:checked+.tgl-sl{background:var(--accent2);border-color:rgba(79,142,247,.4)}
+input:checked+.tgl-sl:before{transform:translateX(16px);background:var(--accent)}
+.tgl-icons{font-size:.75rem;color:var(--text3)}
+.sb-status{
+  display:flex;align-items:center;gap:.3rem;
+  font-size:.65rem;color:var(--text3);font-family:var(--mono);
+}
+.status-dot{width:6px;height:6px;border-radius:50%;background:var(--green);animation:pulse 2s infinite}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.5}}
+
+/* ── MAIN ─────────────────────────────────────────────── */
+.main{
+  margin-left:240px;
+  flex:1;
+  min-height:100vh;
+  display:flex;flex-direction:column;
+}
+
+/* ── TOPBAR ────────────────────────────────────────────── */
+.topbar{
+  position:sticky;top:0;z-index:100;
+  background:rgba(10,12,16,.95);
+  backdrop-filter:blur(12px);
+  border-bottom:1px solid var(--border);
+  padding:.625rem 1.5rem;
+  display:flex;align-items:center;justify-content:space-between;gap:1rem;
+}
+.topbar-left{
+  display:flex;align-items:center;gap:.75rem;
+}
+.mob-menu-btn{
+  display:none;
+  width:34px;height:34px;
+  background:var(--bg3);border:1px solid var(--border2);
+  border-radius:var(--r);color:var(--text2);
+  align-items:center;justify-content:center;cursor:pointer;
+}
+.topbar-title{
+  font-size:.875rem;font-weight:600;color:var(--text2);
+  display:flex;align-items:center;gap:.375rem;
+}
+.topbar-title .material-icons{font-size:.875rem}
+.bc-sep{color:var(--text3)}
+.bc-current{color:var(--text);font-weight:600}
+
+.topbar-right{display:flex;align-items:center;gap:.625rem}
+.btn{
+  display:inline-flex;align-items:center;gap:.3rem;
+  padding:.4rem .875rem;font-size:.78rem;font-weight:600;
+  border-radius:var(--r);cursor:pointer;border:none;
+  font-family:var(--sans);transition:all .15s;
+  text-decoration:none;
+}
+.btn:active{transform:translateY(1px)}
+.btn .material-icons{font-size:.875rem}
+.btn-primary{background:var(--accent);color:#0a0c10}
+.btn-primary:hover{background:#6aa0ff;box-shadow:0 0 0 3px var(--accent2)}
+.btn-ghost{background:transparent;border:1px solid var(--border2);color:var(--text2)}
+.btn-ghost:hover{border-color:var(--border);color:var(--text);background:var(--bg3)}
+.btn-sm{padding:.3rem .625rem;font-size:.72rem}
+.btn-icon{padding:.35rem;border-radius:var(--r)}
+
+/* user chip */
+.user-chip{
+  display:flex;align-items:center;gap:.375rem;
+  padding:.3rem .5rem .3rem .3rem;
+  background:var(--bg3);border:1px solid var(--border2);
+  border-radius:100px;cursor:pointer;transition:all .15s;
+  position:relative;
+}
+.user-chip:hover{border-color:var(--border)}
+.uc-avatar{width:22px;height:22px;border-radius:50%;object-fit:cover}
+.uc-name{font-size:.75rem;font-weight:500;color:var(--text2);max-width:80px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.uc-arrow{font-size:.75rem;color:var(--text3)}
+
+/* dropdown */
+.drop{
+  position:absolute;top:calc(100% + .5rem);right:0;z-index:500;
+  background:var(--bg2);border:1px solid var(--border2);
+  border-radius:var(--r2);min-width:200px;
+  box-shadow:0 16px 48px rgba(0,0,0,.4);overflow:hidden;
+}
+.drop.hidden{display:none}
+.drop-head{
+  padding:.875rem 1rem;border-bottom:1px solid var(--border);
+  display:flex;align-items:center;gap:.625rem;
+}
+.drop-avatar{width:36px;height:36px;border-radius:50%;object-fit:cover;border:2px solid rgba(79,142,247,.4)}
+.drop-name{font-weight:600;font-size:.8125rem;color:var(--text)}
+.drop-sub{font-size:.7rem;color:var(--text2)}
+.drop-item{
+  display:flex;align-items:center;gap:.5rem;
+  padding:.5rem 1rem;color:var(--text2);
+  font-size:.8rem;cursor:pointer;transition:background .15s;
+}
+.drop-item:hover{background:var(--bg3);color:var(--text)}
+.drop-item .material-icons{font-size:.875rem}
+.drop-item.danger{color:var(--red)}
+.drop-item.danger:hover{background:rgba(248,113,113,.08)}
+
+/* ── HERO ──────────────────────────────────────────────── */
+.hero{
+  padding:2rem 1.5rem 1.5rem;
+  border-bottom:1px solid var(--border);
+  background:linear-gradient(180deg,var(--bg3) 0%,transparent 100%);
+}
+.hero-eyebrow{
+  display:inline-flex;align-items:center;gap:.375rem;
+  padding:.2rem .625rem;border-radius:100px;
+  background:var(--accent2);border:1px solid rgba(79,142,247,.25);
+  color:var(--accent);font-size:.65rem;font-weight:700;
+  letter-spacing:.08em;text-transform:uppercase;font-family:var(--mono);
+  margin-bottom:.75rem;
+}
+.hero-eyebrow .material-icons{font-size:.75rem}
+.hero h1{
+  font-size:1.75rem;font-weight:700;color:var(--text);
+  letter-spacing:-.025em;margin-bottom:.375rem;
+}
+.hero h1 em{font-style:normal;color:var(--accent)}
+.hero-sub{font-size:.875rem;color:var(--text2);margin-bottom:1.25rem}
+.hero-searchbar{
+  max-width:480px;position:relative;
+}
+.hero-searchbar input{
+  width:100%;
+  padding:.625rem 1rem .625rem 2.5rem;
+  background:var(--bg2);
+  border:1px solid var(--border2);
+  border-radius:var(--r);
+  color:var(--text);font-size:.875rem;font-family:var(--sans);
+  outline:none;transition:all .2s;
+}
+.hero-searchbar input:focus{border-color:var(--accent);box-shadow:0 0 0 3px var(--accent3)}
+.hero-searchbar input::placeholder{color:var(--text3)}
+.hero-searchbar .search-icon{
+  position:absolute;left:.75rem;top:50%;transform:translateY(-50%);
+  color:var(--text3);font-size:1.1rem;pointer-events:none;
+}
+.hero-stats{
+  display:flex;align-items:center;gap:1.5rem;margin-top:1rem;flex-wrap:wrap;
+}
+.hstat{font-size:.78rem;color:var(--text2);display:flex;align-items:center;gap:.3rem}
+.hstat strong{color:var(--text)}
+.hstat .material-icons{font-size:.875rem;color:var(--accent)}
+
+/* ── CONTENT ───────────────────────────────────────────── */
+.content{padding:1.25rem 1.5rem;flex:1}
+
+/* sort row */
+.sort-row{
+  display:flex;align-items:center;justify-content:space-between;
+  margin-bottom:1rem;flex-wrap:wrap;gap:.5rem;
+}
+.sort-label{font-size:.8rem;color:var(--text2)}
+.sort-label strong{color:var(--text)}
+.sort-sel{
+  padding:.3rem .625rem;background:var(--bg3);
+  border:1px solid var(--border2);border-radius:var(--r);
+  color:var(--text2);font-size:.75rem;font-family:var(--sans);
+  outline:none;cursor:pointer;
+}
+.sort-sel option{background:var(--bg2)}
+
+/* ── CARD GRID ─────────────────────────────────────────── */
+.grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fill,minmax(320px,1fr));
+  gap:1rem;
+}
+
+/* ── CARD ──────────────────────────────────────────────── */
+.card{
+  background:var(--bg2);
+  border:1px solid var(--border);
+  border-radius:var(--r2);
+  overflow:hidden;
+  cursor:pointer;
+  transition:transform .18s,border-color .18s,box-shadow .18s;
+  display:flex;flex-direction:column;
+}
+.card:hover{
+  transform:translateY(-2px);
+  border-color:var(--border2);
+  box-shadow:0 8px 32px rgba(0,0,0,.3);
+}
+.card.mine{border-left:2px solid var(--accent)}
+
+/* code block on card */
+.card-code{
+  background:var(--bg);
+  padding:.875rem 1rem;
+  font-family:var(--mono);font-size:.72rem;
+  color:#8ec5fc;line-height:1.7;
+  min-height:100px;max-height:120px;
+  overflow:hidden;position:relative;
+  border-bottom:1px solid var(--border);
+}
+.card-code::after{
+  content:'';position:absolute;bottom:0;left:0;right:0;height:40px;
+  background:linear-gradient(transparent,var(--bg));
+}
+.card-code .line-num{
+  display:inline-block;
+  color:var(--text3);
+  min-width:1.5rem;
+  user-select:none;
+  font-size:.65rem;
+  margin-right:.375rem;
+}
+
+/* card info */
+.card-body{padding:.75rem 1rem;flex:1}
+.card-lang-row{
+  display:flex;align-items:center;gap:.375rem;margin-bottom:.375rem;
+}
+.lang-dot{
+  width:8px;height:8px;border-radius:50%;
+  background:var(--lc,var(--accent));flex-shrink:0;
+}
+.lang-label{
+  font-size:.65rem;font-family:var(--mono);font-weight:700;
+  color:var(--lc,var(--accent));letter-spacing:.04em;
+}
+.card-title{
+  font-size:.9375rem;font-weight:600;color:var(--text);
+  margin-bottom:.25rem;
+  white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
+}
+.card-desc{
+  font-size:.78rem;color:var(--text2);line-height:1.5;
+  display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;
+}
+
+/* card footer */
+.card-footer{
+  padding:.5rem 1rem;
+  border-top:1px solid var(--border);
+  display:flex;align-items:center;justify-content:space-between;gap:.5rem;
+}
+.card-author{display:flex;align-items:center;gap:.375rem}
+.author-avatar{
+  width:20px;height:20px;border-radius:50%;object-fit:cover;
+  border:1px solid var(--border2);
+}
+.author-name{font-size:.72rem;color:var(--text2);font-weight:500;max-width:90px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.card-stats{display:flex;align-items:center;gap:.75rem}
+.stat{display:flex;align-items:center;gap:.2rem;font-size:.7rem;color:var(--text3)}
+.stat .material-icons{font-size:.8rem}
+
+/* lang colors */
+.lc-js   {--lc:#f7df1e}
+.lc-ts   {--lc:#3178c6}
+.lc-py   {--lc:#3572a5}
+.lc-php  {--lc:#8993be}
+.lc-html {--lc:#e34c26}
+.lc-css  {--lc:#563d7c}
+.lc-java {--lc:#b07219}
+.lc-cpp  {--lc:#f34b7d}
+.lc-cs   {--lc:#178600}
+.lc-go   {--lc:#00add8}
+.lc-rust {--lc:#dea584}
+.lc-bash {--lc:#89e051}
+.lc-sql  {--lc:#e38c00}
+.lc-def  {--lc:#8892a4}
+
+/* ── EMPTY / LOADER ────────────────────────────────────── */
+.empty{
+  grid-column:1/-1;text-align:center;
+  padding:4rem 1rem;color:var(--text2);
+}
+.empty .material-icons{font-size:3rem;color:var(--text3);display:block;margin-bottom:.75rem}
+.empty p{font-size:.875rem}
+.loader-wrap{grid-column:1/-1;text-align:center;padding:3rem}
+.spinner{
+  width:26px;height:26px;border-radius:50%;margin:0 auto;
+  border:2px solid var(--border2);border-top-color:var(--accent);
+  animation:spin .6s linear infinite;
+}
+@keyframes spin{to{transform:rotate(360deg)}}
+
+/* ── PAGINATION ────────────────────────────────────────── */
+.pager{
+  display:flex;align-items:center;justify-content:center;
+  gap:.375rem;padding:1.75rem 0;flex-wrap:wrap;
+}
+.pg{
+  min-width:32px;height:32px;padding:0 .5rem;
+  background:var(--bg3);border:1px solid var(--border);
+  border-radius:var(--r);color:var(--text2);
+  font-size:.78rem;cursor:pointer;transition:all .15s;
+  display:flex;align-items:center;justify-content:center;
+  font-family:var(--sans);
+}
+.pg:hover{border-color:var(--border2);color:var(--text)}
+.pg.on{background:var(--accent2);border-color:rgba(79,142,247,.35);color:var(--accent);font-weight:700}
+.pg:disabled{opacity:.35;cursor:not-allowed}
+.pg .material-icons{font-size:.875rem}
+
+/* ── OVERLAY ───────────────────────────────────────────── */
+.overlay{
+  position:fixed;inset:0;
+  background:rgba(0,0,0,.75);backdrop-filter:blur(6px);
+  z-index:1000;display:flex;align-items:center;justify-content:center;
+  padding:1rem;
+}
+.overlay.hidden{display:none}
+
+/* ── VIEW MODAL ────────────────────────────────────────── */
+.view-modal{
+  background:var(--bg2);border:1px solid var(--border2);
+  border-radius:var(--r2);width:100%;max-width:880px;
+  max-height:92vh;overflow:hidden;
+  display:flex;flex-direction:column;
+  box-shadow:0 40px 80px rgba(0,0,0,.5);
+}
+.vm-head{
+  padding:1rem 1.25rem;border-bottom:1px solid var(--border);
+  display:flex;align-items:flex-start;justify-content:space-between;gap:1rem;
+}
+.vm-head-info{flex:1;min-width:0}
+.vm-lang-row{display:flex;align-items:center;gap:.5rem;margin-bottom:.375rem}
+.vm-title{font-size:1.125rem;font-weight:700;color:var(--text)}
+.vm-desc{font-size:.8rem;color:var(--text2);margin-top:.125rem}
+.close-btn{
+  width:28px;height:28px;border-radius:var(--r);
+  background:var(--bg3);border:1px solid var(--border2);
+  color:var(--text2);display:flex;align-items:center;justify-content:center;
+  cursor:pointer;transition:all .15s;flex-shrink:0;font-size:.875rem;
+}
+.close-btn:hover{background:rgba(248,113,113,.15);border-color:rgba(248,113,113,.4);color:var(--red)}
+
+.vm-meta-bar{
+  padding:.5rem 1.25rem;
+  background:var(--bg);
+  border-bottom:1px solid var(--border);
+  display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:.5rem;
+}
+.vm-meta-group{display:flex;align-items:center;gap:1.25rem;flex-wrap:wrap}
+.vm-meta-item{display:flex;align-items:center;gap:.3rem;font-size:.75rem;color:var(--text2)}
+.vm-meta-item .material-icons{font-size:.875rem;color:var(--accent)}
+.vm-toolbar{display:flex;align-items:center;gap:.375rem}
+
+.vm-code-wrap{
+  flex:1;overflow-y:auto;
+  background:var(--bg);
+}
+.vm-code{
+  padding:1.25rem 1.5rem;
+  font-family:var(--mono);font-size:.8rem;
+  color:#8ec5fc;line-height:1.75;
+  white-space:pre-wrap;word-break:break-word;
+  min-height:200px;
+}
+
+.vm-foot{
+  padding:.75rem 1.25rem;border-top:1px solid var(--border);
+  display:flex;align-items:center;justify-content:space-between;
+  background:var(--bg2);
+}
+.vm-author{display:flex;align-items:center;gap:.625rem}
+.vm-author-avatar{width:32px;height:32px;border-radius:50%;object-fit:cover;border:2px solid rgba(79,142,247,.3)}
+.vm-author-name{font-weight:600;font-size:.8125rem;color:var(--text)}
+.vm-author-sub{font-size:.68rem;color:var(--text2)}
+.like-btn{
+  display:flex;align-items:center;gap:.375rem;
+  padding:.35rem .875rem;border-radius:100px;
+  background:var(--bg3);border:1px solid var(--border2);
+  color:var(--text2);font-size:.78rem;font-weight:600;
+  cursor:pointer;transition:all .15s;font-family:var(--sans);
+}
+.like-btn:hover{border-color:rgba(248,113,113,.4);color:var(--red)}
+.like-btn.liked{background:rgba(248,113,113,.12);border-color:rgba(248,113,113,.4);color:var(--red)}
+.like-btn .material-icons{font-size:.9rem}
+
+/* ── POST MODAL ────────────────────────────────────────── */
+.post-modal{
+  background:var(--bg2);border:1px solid var(--border2);
+  border-radius:var(--r2);width:100%;max-width:580px;
+  max-height:92vh;overflow-y:auto;
+  box-shadow:0 40px 80px rgba(0,0,0,.5);
+}
+.pm-head{
+  padding:1rem 1.25rem;border-bottom:1px solid var(--border);
+  display:flex;align-items:center;justify-content:space-between;
+  position:sticky;top:0;background:var(--bg2);z-index:1;
+}
+.pm-head-title{font-weight:700;font-size:.9375rem;color:var(--text);display:flex;align-items:center;gap:.375rem}
+.pm-head-title .material-icons{font-size:1rem;color:var(--accent)}
+.pm-body{padding:1.25rem;display:flex;flex-direction:column;gap:.875rem}
+.row2{display:grid;grid-template-columns:1fr 1fr;gap:.875rem}
+.fg{display:flex;flex-direction:column;gap:.3rem}
+.fg.full{grid-column:1/-1}
+.fg label{
+  font-size:.65rem;font-weight:700;letter-spacing:.1em;
+  text-transform:uppercase;color:var(--text3);font-family:var(--mono);
+}
+.fg input,.fg select,.fg textarea{
+  padding:.5rem .75rem;
+  background:var(--bg3);border:1px solid var(--border2);
+  border-radius:var(--r);color:var(--text);
+  font-size:.875rem;font-family:var(--sans);
+  outline:none;transition:border .15s;
+}
+.fg textarea{
+  min-height:180px;resize:vertical;
+  font-family:var(--mono);font-size:.78rem;
+  color:#8ec5fc;line-height:1.7;
+}
+.fg input:focus,.fg select:focus,.fg textarea:focus{border-color:var(--accent)}
+.fg input::placeholder,.fg textarea::placeholder{color:var(--text3)}
+.fg select option{background:var(--bg2)}
+.pm-foot{
+  padding:.875rem 1.25rem;border-top:1px solid var(--border);
+  display:flex;justify-content:flex-end;gap:.5rem;
+  position:sticky;bottom:0;background:var(--bg2);
+}
+
+/* ── AUTH MODAL ────────────────────────────────────────── */
+.auth-modal{
+  background:var(--bg2);border:1px solid var(--border2);
+  border-radius:var(--r2);width:100%;max-width:360px;
+  padding:2rem;text-align:center;
+  box-shadow:0 40px 80px rgba(0,0,0,.5);
+}
+.auth-logo{
+  width:48px;height:48px;
+  background:linear-gradient(135deg,#4f8ef7,#7c5bfa);
+  border-radius:12px;
+  display:flex;align-items:center;justify-content:center;
+  margin:0 auto .875rem;
+  box-shadow:0 0 24px rgba(79,142,247,.3);
+  font-family:var(--mono);font-size:.875rem;font-weight:700;color:#fff;
+}
+.auth-modal h2{font-size:1.125rem;font-weight:700;margin-bottom:.25rem}
+.auth-modal p{font-size:.8125rem;color:var(--text2);margin-bottom:1.5rem}
+.auth-divider{
+  position:relative;font-size:.72rem;color:var(--text3);
+  margin:.875rem 0;
+}
+.auth-divider::before,.auth-divider::after{
+  content:'';position:absolute;top:50%;
+  width:calc(50% - 1.25rem);height:1px;background:var(--border);
+}
+.auth-divider::before{left:0}.auth-divider::after{right:0}
+.auth-google{
+  width:100%;padding:.7rem;border-radius:var(--r);
+  border:1px solid #d0d5dd;background:#fff;color:#344054;
+  font-size:.875rem;font-weight:600;cursor:pointer;
+  display:flex;align-items:center;justify-content:center;gap:.625rem;
+  margin-bottom:.625rem;transition:all .15s;font-family:var(--sans);
+}
+.auth-google:hover{box-shadow:0 2px 8px rgba(0,0,0,.15)}
+.auth-github{
+  width:100%;padding:.7rem;border-radius:var(--r);
+  border:1px solid #30363d;background:#161b22;color:#fff;
+  font-size:.875rem;font-weight:600;cursor:pointer;
+  display:flex;align-items:center;justify-content:center;gap:.625rem;
+  transition:all .15s;font-family:var(--sans);
+}
+.auth-github:hover{background:#21262d;border-color:#8b949e}
+
+/* ── TOAST ─────────────────────────────────────────────── */
+.toast{
+  position:fixed;bottom:1.25rem;right:1.25rem;z-index:9999;
+  padding:.5625rem 1rem;
+  background:var(--bg3);border:1px solid var(--border2);
+  border-radius:var(--r);color:var(--text);font-size:.8rem;
+  box-shadow:0 8px 24px rgba(0,0,0,.3);
+  animation:toastIn .2s ease;
+}
+@keyframes toastIn{from{opacity:0;transform:translateY(8px)}}
+
+.hidden{display:none!important}
+
+/* ── RESPONSIVE ────────────────────────────────────────── */
+@media(max-width:768px){
+  body{display:block}
+  .sidebar{transform:translateX(-100%)}
+  .sidebar.open{transform:translateX(0)}
+  .main{margin-left:0}
+  .topbar{padding-left:1rem}
+  .mob-menu-btn{display:flex}
+  .hero{padding:1.25rem 1rem}
+  .hero h1{font-size:1.375rem}
+  .content{padding:1rem}
+  .row2{grid-template-columns:1fr}
+  .grid{grid-template-columns:1fr}
+}
+</style>
+</head>
+<body>
+
+<!-- ── SIDEBAR ──────────────────────────────────────────── -->
+<aside class="sidebar" id="sidebar">
+  <a href="/" class="sb-logo">
+    <div class="sb-logo-box">MX</div>
+    <div>
+      <div class="sb-logo-text">Manzxy <span>Codes</span></div>
+      <div class="sb-logo-sub">code sharing</div>
+    </div>
+  </a>
+
+  <div class="sb-search">
+    <div class="sb-search-wrap">
+      <span class="material-icons ico">search</span>
+      <input type="text" id="sbSearch" placeholder="Search snippets...">
+    </div>
+  </div>
+
+  <nav class="sb-nav">
+    <div class="sb-section-label">Browse</div>
+    <button class="sb-item active" id="catAll" onclick="setCat('all',this)">
+      <span class="sb-item-left"><span class="material-icons">grid_view</span>All Snippets</span>
+      <span class="sb-count" id="cntAll">0</span>
+    </button>
+    <div class="sb-divider"></div>
+    <div class="sb-section-label">Language</div>
+    <button class="sb-item" onclick="setCat('javascript',this)">
+      <span class="sb-item-left"><span style="width:8px;height:8px;border-radius:50%;background:#f7df1e;flex-shrink:0"></span>JavaScript</span>
+      <span class="sb-count" id="cntJs">0</span>
+    </button>
+    <button class="sb-item" onclick="setCat('typescript',this)">
+      <span class="sb-item-left"><span style="width:8px;height:8px;border-radius:50%;background:#3178c6;flex-shrink:0"></span>TypeScript</span>
+      <span class="sb-count" id="cntTs">0</span>
+    </button>
+    <button class="sb-item" onclick="setCat('python',this)">
+      <span class="sb-item-left"><span style="width:8px;height:8px;border-radius:50%;background:#3572a5;flex-shrink:0"></span>Python</span>
+      <span class="sb-count" id="cntPy">0</span>
+    </button>
+    <button class="sb-item" onclick="setCat('php',this)">
+      <span class="sb-item-left"><span style="width:8px;height:8px;border-radius:50%;background:#8993be;flex-shrink:0"></span>PHP</span>
+      <span class="sb-count" id="cntPhp">0</span>
+    </button>
+    <button class="sb-item" onclick="setCat('html',this)">
+      <span class="sb-item-left"><span style="width:8px;height:8px;border-radius:50%;background:#e34c26;flex-shrink:0"></span>HTML</span>
+      <span class="sb-count" id="cntHtml">0</span>
+    </button>
+    <button class="sb-item" onclick="setCat('css',this)">
+      <span class="sb-item-left"><span style="width:8px;height:8px;border-radius:50%;background:#563d7c;flex-shrink:0"></span>CSS</span>
+      <span class="sb-count" id="cntCss">0</span>
+    </button>
+    <button class="sb-item" onclick="setCat('bash',this)">
+      <span class="sb-item-left"><span style="width:8px;height:8px;border-radius:50%;background:#89e051;flex-shrink:0"></span>Bash</span>
+      <span class="sb-count" id="cntBash">0</span>
+    </button>
+    <button class="sb-item" onclick="setCat('go',this)">
+      <span class="sb-item-left"><span style="width:8px;height:8px;border-radius:50%;background:#00add8;flex-shrink:0"></span>Go</span>
+      <span class="sb-count" id="cntGo">0</span>
+    </button>
+    <button class="sb-item" onclick="setCat('other',this)">
+      <span class="sb-item-left"><span class="material-icons" style="font-size:.75rem;color:var(--text3)">more_horiz</span>Other</span>
+      <span class="sb-count" id="cntOther">0</span>
+    </button>
+
+    <div class="sb-divider"></div>
+    <div class="sb-section-label">Account</div>
+    <button class="sb-item" id="sbLoginBtn" onclick="showAuth()">
+      <span class="sb-item-left"><span class="material-icons">login</span>Login</span>
+    </button>
+    <button class="sb-item hidden" id="sbMineBtn" onclick="setCat('_mine',this)">
+      <span class="sb-item-left"><span class="material-icons">push_pin</span>My Snippets</span>
+    </button>
+    <button class="sb-item hidden" id="sbLogoutBtn" onclick="logout()" style="color:var(--red)">
+      <span class="sb-item-left"><span class="material-icons">logout</span>Logout</span>
+    </button>
+  </nav>
+
+  <div class="sb-bottom">
+    <div class="theme-toggle" onclick="document.getElementById('tglInput').click()">
+      <span class="tgl-icons">🌙</span>
+      <label class="tgl"><input type="checkbox" id="tglInput" onchange="toggleTheme()"><span class="tgl-sl"></span></label>
+      <span class="tgl-icons">☀️</span>
+    </div>
+    <div class="sb-status"><span class="status-dot"></span>v2.0</div>
+  </div>
+</aside>
+
+<!-- ── AUTH MODAL ────────────────────────────────────────── -->
+<div class="overlay hidden" id="authOverlay">
+  <div class="auth-modal" onclick="event.stopPropagation()">
+    <div class="auth-logo">MX</div>
+    <h2>Sign in to Manzxy</h2>
+    <p>Login untuk post & like snippet</p>
+    <button class="auth-google" onclick="loginGoogle()">
+      <i class="fab fa-google"></i> Continue with Google
+    </button>
+    <div class="auth-divider">or</div>
+    <button class="auth-github" onclick="loginGithub()">
+      <i class="fab fa-github"></i> Continue with GitHub
+    </button>
+  </div>
+</div>
+
+<!-- ── VIEW MODAL ────────────────────────────────────────── -->
+<div class="overlay hidden" id="viewOverlay" onclick="if(event.target===this)hideView()">
+  <div class="view-modal">
+    <div class="vm-head">
+      <div class="vm-head-info">
+        <div class="vm-lang-row">
+          <span class="lang-dot" id="vmDot"></span>
+          <span class="lang-label" id="vmLang" style="color:var(--lc,var(--accent))"></span>
+        </div>
+        <div class="vm-title" id="vmTitle">—</div>
+        <div class="vm-desc" id="vmDesc"></div>
+      </div>
+      <button class="close-btn" onclick="hideView()">✕</button>
+    </div>
+    <div class="vm-meta-bar">
+      <div class="vm-meta-group">
+        <div class="vm-meta-item"><span class="material-icons">visibility</span><span id="vmViews">0</span> views</div>
+        <div class="vm-meta-item"><span class="material-icons">favorite</span><span id="vmLikes">0</span> likes</div>
+        <div class="vm-meta-item"><span class="material-icons">schedule</span><span id="vmDate">—</span></div>
+      </div>
+      <div class="vm-toolbar">
+        <button class="btn btn-ghost btn-sm" onclick="copyCode()"><span class="material-icons">content_copy</span> Copy</button>
+        <button class="btn btn-ghost btn-sm" onclick="shareSnippet()"><span class="material-icons">link</span> Share</button>
+        <button class="btn btn-ghost btn-sm hidden" id="vmEditBtn" onclick="editFromView()"><span class="material-icons">edit</span></button>
+        <button class="btn btn-ghost btn-sm hidden" id="vmDelBtn" onclick="delFromView()" style="color:var(--red)"><span class="material-icons">delete</span></button>
+      </div>
+    </div>
+    <div class="vm-code-wrap">
+      <pre class="vm-code" id="vmCode"></pre>
+    </div>
+    <div class="vm-foot">
+      <div class="vm-author">
+        <img id="vmAvatar" src="" class="vm-author-avatar" onerror="this.src='https://c.termai.cc/i151/YU4EKRg.jpg'">
+        <div>
+          <div class="vm-author-name" id="vmAuthor">—</div>
+          <div class="vm-author-sub">author</div>
+        </div>
+      </div>
+      <button class="like-btn" id="vmLikeBtn" onclick="likeSnippet()">
+        <span class="material-icons">favorite</span>
+        <span id="vmLikeCount">0</span>
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- ── POST MODAL ────────────────────────────────────────── -->
+<div class="overlay hidden" id="postOverlay" onclick="if(event.target===this)hidePost()">
+  <div class="post-modal">
+    <div class="pm-head">
+      <div class="pm-head-title">
+        <span class="material-icons" id="pmIcon">add_circle</span>
+        <span id="pmHeadTitle">Post Snippet</span>
+      </div>
+      <button class="close-btn" onclick="hidePost()">✕</button>
+    </div>
+    <div class="pm-body">
+      <div class="row2">
+        <div class="fg">
+          <label>Title *</label>
+          <input type="text" id="fTitle" placeholder="e.g. Fetch API Example" maxlength="100">
+        </div>
+        <div class="fg">
+          <label>Language</label>
+          <select id="fLang">
+            <option value="javascript">JavaScript</option>
+            <option value="typescript">TypeScript</option>
+            <option value="python">Python</option>
+            <option value="php">PHP</option>
+            <option value="html">HTML</option>
+            <option value="css">CSS</option>
+            <option value="java">Java</option>
+            <option value="cpp">C++</option>
+            <option value="csharp">C#</option>
+            <option value="go">Go</option>
+            <option value="rust">Rust</option>
+            <option value="bash">Bash</option>
+            <option value="sql">SQL</option>
+            <option value="text">Plain Text</option>
+          </select>
+        </div>
+      </div>
+      <div class="fg full">
+        <label>Description</label>
+        <input type="text" id="fDesc" placeholder="Deskripsi singkat (opsional)" maxlength="300">
+      </div>
+      <div class="fg full">
+        <label>Code *</label>
+        <textarea id="fCode" placeholder="// Paste code kamu di sini..."></textarea>
+      </div>
+    </div>
+    <div class="pm-foot">
+      <button class="btn btn-ghost" onclick="hidePost()">Batal</button>
+      <button class="btn btn-primary" id="pmBtn" onclick="submitPost()">
+        <span class="material-icons">upload</span>
+        <span id="pmBtnLabel">Post Snippet</span>
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- ── MAIN ──────────────────────────────────────────────── -->
+<div class="main">
+  <!-- TOPBAR -->
+  <div class="topbar">
+    <div class="topbar-left">
+      <button class="mob-menu-btn" onclick="toggleSidebar()"><span class="material-icons">menu</span></button>
+      <div class="topbar-title">
+        <a href="/" style="color:inherit;text-decoration:none;display:flex;align-items:center;gap:.3rem"><span class="material-icons">api</span>Manzxy API</a>
+        <span class="bc-sep">/</span>
+        <span class="bc-current">Snippets</span>
+      </div>
+    </div>
+    <div class="topbar-right">
+      <button class="btn btn-ghost btn-sm hidden" id="topLoginBtn" onclick="showAuth()">
+        <span class="material-icons">login</span>Login
+      </button>
+      <div class="user-chip hidden" id="topUser">
+        <img id="topAvatar" src="" class="uc-avatar" onerror="this.src='https://c.termai.cc/i151/YU4EKRg.jpg'">
+        <span class="uc-name" id="topName"></span>
+        <span class="uc-arrow material-icons">expand_more</span>
+        <div class="drop hidden" id="userDrop">
+          <div class="drop-head">
+            <img id="dropAvatar" src="" class="drop-avatar" onerror="this.src='https://c.termai.cc/i151/YU4EKRg.jpg'">
+            <div>
+              <div class="drop-name" id="dropName">—</div>
+              <div class="drop-sub" id="dropSub">—</div>
+            </div>
+          </div>
+          <div class="drop-item" onclick="setCat('_mine',null);toggleDrop()"><span class="material-icons">push_pin</span>Snippet Saya</div>
+          <div class="drop-item danger" onclick="logout()"><span class="material-icons">logout</span>Logout</div>
+        </div>
+      </div>
+      <button class="btn btn-primary btn-sm" onclick="openPost()">
+        <span class="material-icons">add</span>Post Snippet
+      </button>
+    </div>
+  </div>
+
+  <!-- HERO -->
+  <div class="hero">
+    <div class="hero-eyebrow"><span class="material-icons">bolt</span>Community Powered</div>
+    <h1>Explore. <em>Share.</em> Code.</h1>
+    <p class="hero-sub">Browse snippet dari komunitas developer — gratis & open.</p>
+    <div class="hero-searchbar">
+      <span class="material-icons search-icon">search</span>
+      <input type="text" id="mainSearch" placeholder="Cari berdasarkan judul, bahasa, author...">
+    </div>
+    <div class="hero-stats">
+      <div class="hstat"><span class="material-icons">code</span><strong id="statTotal">0</strong>&nbsp;snippets</div>
+      <div class="hstat"><span class="material-icons">people</span><strong id="statAuthors">0</strong>&nbsp;contributors</div>
+      <div class="hstat"><span class="material-icons">favorite</span><strong id="statLikes">0</strong>&nbsp;total likes</div>
+    </div>
+  </div>
+
+  <!-- CONTENT -->
+  <div class="content">
+    <div class="sort-row">
+      <span class="sort-label"><strong id="sortLabel">All Snippets</strong></span>
+      <select class="sort-sel" id="sortSel" onchange="render()">
+        <option value="newest">Terbaru</option>
+        <option value="popular">Terpopuler</option>
+        <option value="views">Most Viewed</option>
+      </select>
+    </div>
+    <div class="grid" id="grid">
+      <div class="loader-wrap"><div class="spinner"></div></div>
+    </div>
+    <div class="pager" id="pager"></div>
+  </div>
+</div>
+
+<script src="https://accounts.google.com/gsi/client" async defer></script>
+<script>
+// ══════════════════════════════════════════════
+// HELPERS
+// ══════════════════════════════════════════════
+const $ = id => document.getElementById(id);
+function esc(s){return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')}
+function fmt(d){
+  if(!d)return'—';const n=new Date(),dt=new Date(d),diff=(n-dt)/1e3;
+  if(diff<60)return'baru saja';
+  if(diff<3600)return Math.floor(diff/60)+' mnt lalu';
+  if(diff<86400)return Math.floor(diff/3600)+' jam lalu';
+  if(diff<604800)return Math.floor(diff/86400)+' hari lalu';
+  return dt.toLocaleDateString('id-ID',{day:'numeric',month:'short',year:'numeric'});
+}
+function toast(msg,dur=2500){
+  const t=document.createElement('div');t.className='toast';t.textContent=msg;
+  document.body.appendChild(t);
+  setTimeout(()=>{t.style.opacity='0';t.style.transition='opacity .3s';setTimeout(()=>t.remove(),300);},dur);
+}
+async function copy(text){try{await navigator.clipboard.writeText(text);toast('✅ Copied!');}catch{toast('❌ Failed');}}
+
+// lang config
+const LC={
+  javascript:{label:'JavaScript',cls:'lc-js',color:'#f7df1e'},
+  typescript:{label:'TypeScript',cls:'lc-ts',color:'#3178c6'},
+  python:    {label:'Python',   cls:'lc-py',color:'#3572a5'},
+  php:       {label:'PHP',      cls:'lc-php',color:'#8993be'},
+  html:      {label:'HTML',     cls:'lc-html',color:'#e34c26'},
+  css:       {label:'CSS',      cls:'lc-css',color:'#563d7c'},
+  java:      {label:'Java',     cls:'lc-java',color:'#b07219'},
+  cpp:       {label:'C++',      cls:'lc-cpp',color:'#f34b7d'},
+  csharp:    {label:'C#',       cls:'lc-cs',color:'#178600'},
+  go:        {label:'Go',       cls:'lc-go',color:'#00add8'},
+  rust:      {label:'Rust',     cls:'lc-rust',color:'#dea584'},
+  bash:      {label:'Bash',     cls:'lc-bash',color:'#89e051'},
+  sql:       {label:'SQL',      cls:'lc-sql',color:'#e38c00'},
+  text:      {label:'Text',     cls:'lc-def',color:'#8892a4'},
+};
+function lc(lang){return LC[lang]||LC.text}
+
+// ══════════════════════════════════════════════
+// THEME
+// ══════════════════════════════════════════════
+function toggleTheme(){
+  const v=$('tglInput').checked;
+  document.body.classList.toggle('light',v);
+  localStorage.setItem('theme',v?'light':'dark');
+}
+(()=>{
+  if(localStorage.getItem('theme')==='light'){
+    document.body.classList.add('light');
+    const el=$('tglInput');if(el)el.checked=true;
+  }
+})();
+
+// ══════════════════════════════════════════════
+// SIDEBAR / MOBILE
+// ══════════════════════════════════════════════
+function toggleSidebar(){$('sidebar').classList.toggle('open')}
+document.addEventListener('click',e=>{
+  const sb=$('sidebar'),mb=$('topbar');
+  if(!sb.contains(e.target)&&window.innerWidth<=768)sb.classList.remove('open');
+  const drop=$('userDrop'),chip=$('topUser');
+  if(chip&&!chip.contains(e.target))drop?.classList.add('hidden');
+});
+function toggleDrop(){$('userDrop').classList.toggle('hidden')}
+$('topUser')?.addEventListener('click',e=>{if(e.target.closest('.drop'))return;toggleDrop()})
+
+// ══════════════════════════════════════════════
+// API
+// ══════════════════════════════════════════════
+const API='/api/snippets';
+async function api(path,opts={}){
+  const r=await fetch(API+path,{headers:{'Content-Type':'application/json',...(opts.headers||{})},...opts});
+  const d=await r.json();
+  if(!r.ok)throw new Error(d.message||'Request failed');
+  return d;
+}
+
+// ══════════════════════════════════════════════
+// STATE
+// ══════════════════════════════════════════════
+let user=null,cat='all',page=1,editId=null,viewSnip=null;
+const LIMIT=12;
+
+// ══════════════════════════════════════════════
+// AUTH
+// ══════════════════════════════════════════════
+const GH_ID='Ov23ctRnIkJzTTgFJUZn';
+
+window.addEventListener('load',()=>{
+  if(typeof google!=='undefined'&&google.accounts){
+    google.accounts.id.initialize({
+      client_id:'YOUR_GOOGLE_CLIENT_ID.apps.googleusercontent.com',
+      callback:onGoogle
+    });
+  }
+});
+
+function loginGoogle(){
+  if(typeof google!=='undefined')google.accounts.id.prompt();
+  else toast('❌ Google tidak tersedia');
+}
+function onGoogle(r){
+  try{
+    const p=JSON.parse(atob(r.credential.split('.')[1]));
+    doLogin({id:'g_'+p.sub,provider:'google',name:p.name,email:p.email,avatar:p.picture,displayName:p.name,username:p.email.split('@')[0]});
+    toast('👋 Welcome, '+p.name+'!');hideAuth();
+  }catch{toast('❌ Google login gagal')}
+}
+function loginGithub(){
+  const red=location.origin+'/github-callback.html';
+  const w=600,h=700,l=screen.width/2-300,t=screen.height/2-350;
+  window.open(`https://github.com/login/oauth/authorize?client_id=${GH_ID}&redirect_uri=${encodeURIComponent(red)}&scope=user:email`,'gh',`width=${w},height=${h},top=${t},left=${l}`);
+  window.addEventListener('message',e=>{
+    if(e.origin!==location.origin)return;
+    if(e.data.type==='github-auth'&&e.data.code)ghCallback(e.data.code);
+  },{once:true});
+}
+async function ghCallback(code){
+  toast('🔄 Authenticating...');
+  try{
+    const d=await fetch('/auth/github',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({code})}).then(r=>r.json());
+    doLogin({id:'gh_'+d.id,provider:'github',name:d.name||d.login,email:d.email||'',avatar:d.avatar_url,displayName:d.name||d.login,username:d.login});
+    toast('👋 Welcome, '+(d.name||d.login)+'!');hideAuth();
+  }catch{toast('❌ GitHub login gagal')}
+}
+function doLogin(u){
+  user=u;localStorage.setItem('cu',JSON.stringify(u));
+  updateUI();loadAll();
+}
+function loadUser(){
+  try{const s=localStorage.getItem('cu');if(s)user=JSON.parse(s);}catch{}
+  updateUI();
+}
+function logout(){
+  user=null;localStorage.removeItem('cu');
+  updateUI();cat='all';loadAll();toast('Logged out');
+}
+function updateUI(){
+  const ok=!!user;
+  $('sbLoginBtn').classList.toggle('hidden',ok);
+  $('sbMineBtn').classList.toggle('hidden',!ok);
+  $('sbLogoutBtn').classList.toggle('hidden',!ok);
+  $('topLoginBtn').classList.toggle('hidden',ok);
+  $('topUser').classList.toggle('hidden',!ok);
+  if(ok){
+    [$('topAvatar'),$('dropAvatar')].forEach(el=>{if(el)el.src=user.avatar||'https://c.termai.cc/i151/YU4EKRg.jpg'});
+    if($('topName'))$('topName').textContent=user.displayName||user.name;
+    if($('dropName'))$('dropName').textContent=user.displayName||user.name;
+    if($('dropSub'))$('dropSub').textContent=user.email||user.username||'';
+  }
+}
+function showAuth(){$('authOverlay').classList.remove('hidden')}
+function hideAuth(){$('authOverlay').classList.add('hidden')}
+
+// ══════════════════════════════════════════════
+// LOAD
+// ══════════════════════════════════════════════
+let allSnippets=[];
+
+async function loadAll(){
+  $('grid').innerHTML='<div class="loader-wrap"><div class="spinner"></div></div>';
+  try{
+    const d=await api('?limit=200');
+    allSnippets=d.snippets||[];
+    updateCounts(allSnippets);
+    updateStats(allSnippets);
+    render();
+  }catch(e){
+    $('grid').innerHTML=`<div class="empty"><span class="material-icons">wifi_off</span><p>Gagal memuat: ${esc(e.message)}</p></div>`;
+  }
+}
+
+function updateCounts(snips){
+  $('cntAll').textContent=snips.length;
+  $('cntJs').textContent=snips.filter(s=>s.language==='javascript').length;
+  $('cntTs').textContent=snips.filter(s=>s.language==='typescript').length;
+  $('cntPy').textContent=snips.filter(s=>s.language==='python').length;
+  $('cntPhp').textContent=snips.filter(s=>s.language==='php').length;
+  $('cntHtml').textContent=snips.filter(s=>s.language==='html').length;
+  $('cntCss').textContent=snips.filter(s=>s.language==='css').length;
+  $('cntBash').textContent=snips.filter(s=>s.language==='bash').length;
+  $('cntGo').textContent=snips.filter(s=>s.language==='go').length;
+  const known=['javascript','typescript','python','php','html','css','bash','go'];
+  $('cntOther').textContent=snips.filter(s=>!known.includes(s.language)).length;
+}
+
+function updateStats(snips){
+  $('statTotal').textContent=snips.length;
+  $('statAuthors').textContent=new Set(snips.map(s=>s.authorId)).size;
+  $('statLikes').textContent=snips.reduce((a,s)=>a+(s.likes||0),0);
+}
+
+function setCat(c,btn){
+  cat=c;page=1;
+  document.querySelectorAll('.sb-item').forEach(b=>b.classList.remove('active'));
+  if(btn)btn.classList.add('active');
+  render();
+}
+
+function render(){
+  let snips=[...allSnippets];
+
+  // filter cat
+  if(cat==='_mine'&&user)snips=snips.filter(s=>s.authorId===user.id);
+  else if(cat==='other'){const k=['javascript','typescript','python','php','html','css','bash','go'];snips=snips.filter(s=>!k.includes(s.language));}
+  else if(cat!=='all')snips=snips.filter(s=>s.language===cat);
+
+  // search
+  const q=($('sbSearch')?.value||$('mainSearch')?.value||'').toLowerCase().trim();
+  if(q)snips=snips.filter(s=>
+    (s.title||'').toLowerCase().includes(q)||
+    (s.description||'').toLowerCase().includes(q)||
+    (s.language||'').toLowerCase().includes(q)||
+    (s.authorName||'').toLowerCase().includes(q)
+  );
+
+  // sort
+  const srt=$('sortSel')?.value||'newest';
+  if(srt==='popular')snips.sort((a,b)=>(b.likes||0)-(a.likes||0));
+  else if(srt==='views')snips.sort((a,b)=>(b.views||0)-(a.views||0));
+  else snips.sort((a,b)=>new Date(b.createdAt||0)-new Date(a.createdAt||0));
+
+  // label
+  const labels={all:'All Snippets',_mine:'My Snippets',javascript:'JavaScript',typescript:'TypeScript',python:'Python',php:'PHP',html:'HTML',css:'CSS',bash:'Bash',go:'Go',other:'Other'};
+  $('sortLabel').textContent=(labels[cat]||cat)+' ('+snips.length+')';
+
+  // paginate
+  const total=snips.length,pages=Math.ceil(total/LIMIT)||1;
+  if(page>pages)page=1;
+  const slice=snips.slice((page-1)*LIMIT,page*LIMIT);
+
+  drawCards(slice,total,snips.length);
+  drawPager(pages);
+}
+
+function drawCards(snips,total){
+  const g=$('grid');
+  if(!snips.length){
+    g.innerHTML='<div class="empty"><span class="material-icons">code_off</span><p>Belum ada snippet di sini</p><p style="font-size:.75rem;color:var(--text3);margin-top:.25rem">Jadilah yang pertama!</p></div>';
+    $('pager').innerHTML='';
+    return;
+  }
+
+  g.innerHTML=snips.map(s=>{
+    const l=lc(s.language);
+    const own=user&&s.authorId===user.id;
+    const lines=(s.code||'').split('\n').slice(0,6).map((ln,i)=>
+      `<span class="line-num">${i+1}</span>${esc(ln)}`
+    ).join('\n');
+    return`<div class="card${own?' mine':''}" onclick="openView('${s.id}')">
+      <div class="card-code ${l.cls}">${lines||'<span class="line-num">1</span>// no preview'}</div>
+      <div class="card-body">
+        <div class="card-lang-row">
+          <span class="lang-dot" style="background:${l.color}"></span>
+          <span class="lang-label" style="color:${l.color}">${l.label}</span>
+        </div>
+        <div class="card-title">${esc(s.title||'Untitled')}</div>
+        <div class="card-desc">${esc(s.description||'No description')}</div>
+      </div>
+      <div class="card-footer">
+        <div class="card-author">
+          <img src="${esc(s.authorAvatar||'https://c.termai.cc/i151/YU4EKRg.jpg')}" class="author-avatar" onerror="this.src='https://c.termai.cc/i151/YU4EKRg.jpg'">
+          <span class="author-name">${esc(s.authorName||'Anonymous')}</span>
+        </div>
+        <div class="card-stats">
+          <div class="stat"><span class="material-icons">favorite</span>${s.likes||0}</div>
+          <div class="stat"><span class="material-icons">visibility</span>${s.views||0}</div>
+          <div class="stat"><span class="material-icons">schedule</span>${fmt(s.createdAt)}</div>
+        </div>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+function drawPager(pages){
+  const p=$('pager');
+  if(pages<=1){p.innerHTML='';return}
+  let h=`<button class="pg" onclick="goPage(${page-1})" ${page===1?'disabled':''}><span class="material-icons">chevron_left</span></button>`;
+  for(let i=1;i<=pages;i++){
+    if(i===1||i===pages||Math.abs(i-page)<=1){
+      h+=`<button class="pg${i===page?' on':''}" onclick="goPage(${i})">${i}</button>`;
+    }else if(Math.abs(i-page)===2){h+='<span style="color:var(--text3);padding:0 .2rem">…</span>';}
+  }
+  h+=`<button class="pg" onclick="goPage(${page+1})" ${page===pages?'disabled':''}><span class="material-icons">chevron_right</span></button>`;
+  p.innerHTML=h;
+}
+function goPage(p){page=p;render();window.scrollTo({top:0,behavior:'smooth'})}
+
+// ══════════════════════════════════════════════
+// VIEW
+// ══════════════════════════════════════════════
+async function openView(id){
+  try{
+    const d=await api('/'+id);
+    const s=viewSnip=d.snippet;
+    const l=lc(s.language);
+    const own=user&&s.authorId===user.id;
+    const liked=user&&(s.likedBy||[]).includes(user.id);
+
+    $('vmDot').style.background=l.color;
+    $('vmLang').textContent=l.label;
+    $('vmLang').style.color=l.color;
+    $('vmTitle').textContent=s.title||'Untitled';
+    $('vmDesc').textContent=s.description||'';
+    $('vmViews').textContent=s.views||0;
+    $('vmLikes').textContent=s.likes||0;
+    $('vmLikeCount').textContent=s.likes||0;
+    $('vmDate').textContent=fmt(s.createdAt);
+    $('vmCode').textContent=s.code||'// no code';
+    $('vmAuthor').textContent=s.authorName||'Anonymous';
+    $('vmAvatar').src=s.authorAvatar||'https://c.termai.cc/i151/YU4EKRg.jpg';
+    $('vmLikeBtn').classList.toggle('liked',liked);
+    $('vmEditBtn').classList.toggle('hidden',!own);
+    $('vmDelBtn').classList.toggle('hidden',!own);
+
+    $('viewOverlay').classList.remove('hidden');
+    api('/'+id+'/view',{method:'POST'}).catch(()=>{});
+  }catch(e){toast('❌ '+e.message)}
+}
+function hideView(){$('viewOverlay').classList.add('hidden');viewSnip=null}
+function copyCode(){if(viewSnip)copy(viewSnip.code)}
+function shareSnippet(){if(viewSnip)copy(`${location.origin}/snippet?id=${viewSnip.id}`)}
+async function likeSnippet(){
+  if(!user){showAuth();return}
+  if(!viewSnip)return;
+  try{
+    const d=await api('/'+viewSnip.id+'/like',{method:'POST',body:JSON.stringify({userId:user.id})});
+    viewSnip.likes=d.likes;
+    $('vmLikes').textContent=d.likes;
+    $('vmLikeCount').textContent=d.likes;
+    $('vmLikeBtn').classList.toggle('liked',d.action==='liked');
+    toast(d.action==='liked'?'❤️ Liked!':'💔 Unliked');
+    loadAll();
+  }catch(e){toast('❌ '+e.message)}
+}
+function editFromView(){if(viewSnip){hideView();openPost(viewSnip)}}
+async function delFromView(){
+  if(!viewSnip||!user)return;
+  if(!confirm('Hapus snippet ini?'))return;
+  try{
+    await api('/'+viewSnip.id,{method:'DELETE',body:JSON.stringify({authorId:user.id})});
+    hideView();toast('🗑️ Dihapus!');loadAll();
+  }catch(e){toast('❌ '+e.message)}
+}
+
+// ══════════════════════════════════════════════
+// POST
+// ══════════════════════════════════════════════
+function openPost(snip=null){
+  if(!user){showAuth();return}
+  editId=snip?snip.id:null;
+  $('pmIcon').textContent=snip?'edit':'add_circle';
+  $('pmHeadTitle').textContent=snip?'Edit Snippet':'Post Snippet';
+  $('pmBtnLabel').textContent=snip?'Update':'Post Snippet';
+  $('fTitle').value=snip?.title||'';
+  $('fLang').value=snip?.language||'javascript';
+  $('fDesc').value=snip?.description||'';
+  $('fCode').value=snip?.code||'';
+  $('postOverlay').classList.remove('hidden');
+}
+function hidePost(){$('postOverlay').classList.add('hidden');editId=null}
+async function submitPost(){
+  if(!user){showAuth();return}
+  const title=$('fTitle').value.trim(),lang=$('fLang').value,desc=$('fDesc').value.trim(),code=$('fCode').value.trim();
+  if(!title||!code){toast('⚠️ Title & Code wajib!');return}
+  const btn=$('pmBtn');btn.disabled=true;$('pmBtnLabel').textContent='Menyimpan...';
+  try{
+    if(editId){
+      await api('/'+editId,{method:'PUT',body:JSON.stringify({title,language:lang,description:desc,code,authorId:user.id})});
+      toast('✅ Updated!');
+    }else{
+      await api('',{method:'POST',body:JSON.stringify({title,language:lang,description:desc,code,authorId:user.id,authorName:user.displayName||user.name,authorAvatar:user.avatar||'https://c.termai.cc/i151/YU4EKRg.jpg'})});
+      toast('✅ Posted!');
+    }
+    hidePost();loadAll();
+  }catch(e){toast('❌ '+e.message)}
+  finally{btn.disabled=false;$('pmBtnLabel').textContent=editId?'Update':'Post Snippet'}
+}
+
+// ══════════════════════════════════════════════
+// SEARCH (both inputs sync + debounce)
+// ══════════════════════════════════════════════
+let stimer;
+function onSearch(){clearTimeout(stimer);stimer=setTimeout(()=>{page=1;render();},200)}
+$('sbSearch').addEventListener('input',e=>{$('mainSearch').value=e.target.value;onSearch()});
+$('mainSearch').addEventListener('input',e=>{$('sbSearch').value=e.target.value;onSearch()});
+
+// ══════════════════════════════════════════════
+// SHARED LINK
+// ══════════════════════════════════════════════
+async function checkLink(){
+  const id=new URLSearchParams(location.search).get('id');
+  if(id)try{await openView(id)}catch{}
+}
+
+// ══════════════════════════════════════════════
+// INIT
+// ══════════════════════════════════════════════
+document.addEventListener('DOMContentLoaded',()=>{
+  loadUser();
+  loadAll();
+  checkLink();
+});
+</script>
+</body>
+</html>
