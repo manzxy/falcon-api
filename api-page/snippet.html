@@ -3,1026 +3,440 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Manzxy Snippets</title>
+<title>Manzxy Codes</title>
 <link rel="icon" href="/assets/icon.png">
-
-<script src="https://cdn.tailwindcss.com"></script>
 <script src="https://accounts.google.com/gsi/client" async defer></script>
 <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 
 <style>
-/* Hide scrollbar but keep functionality */
-::-webkit-scrollbar {
-  display: none;
-}
+::-webkit-scrollbar { width: 4px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: var(--accent); border-radius: 4px; }
+html { scroll-behavior: smooth; }
 
-/* Smooth scrolling */
-html {
-  scroll-behavior: smooth;
-}
-
-/* ===== ANIME BACKGROUND ===== */
-body {
-  position: relative;
-  min-height: 100vh;
-  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-  line-height: 1.5;
-  font-size: 14px;
-  transition: color 0.2s ease;
-}
-
-/* Fixed Background Image */
-body::before {
-  content: '';
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background-image: url('https://c.termai.cc/i199/f6HGr.jpg');
-  background-size: cover;
-  background-position: center;
-  background-repeat: no-repeat;
-  background-attachment: fixed;
-  z-index: -2;
-}
-
-/* Overlay untuk readability */
-body::after {
-  content: '';
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: rgba(0, 0, 0, 0.7);
-  z-index: -1;
-  transition: background 0.3s ease;
-}
-
-/* Light theme overlay */
-body.light::after {
-  background: rgba(255, 255, 255, 0.8);
-}
-
-/* ===== THEME VAR ===== */
 :root {
-  --bg: transparent;
-  --panel: rgba(22, 27, 34, 0.85);
-  --border: rgba(48, 54, 61, 0.5);
-  --text: #e6edf3;
-  --text-secondary: #8b949e;
-  --text-muted: #6e7681;
-  --input: rgba(13, 17, 23, 0.9);
-  --accent: #2f81f7;
-  --accent-hover: #3c8eff;
-  --success: #3fb950;
-  --warning: #d29922;
-  --error: #f85149;
-  --hover: rgba(33, 38, 45, 0.9);
-  --button-primary: #238636;
-  --button-primary-hover: #2ea043;
-  --button-secondary: rgba(33, 38, 45, 0.9);
-  --button-secondary-hover: rgba(48, 54, 61, 0.9);
-  --code-bg: rgba(13, 17, 23, 0.9);
-  --panel-hover: rgba(33, 38, 45, 0.9);
-  --play-bg: #1f6feb;
-  --play-hover: #3c8eff;
-  --blur-amount: 8px;
-  --snippet-bg: rgba(0, 0, 0, 0.5);
-  --snippet-border: rgba(255, 255, 255, 0.1);
+  --bg: #070b0f;
+  --panel: rgba(12, 18, 26, 0.92);
+  --panel-2: rgba(18, 26, 38, 0.88);
+  --border: rgba(56, 189, 248, 0.12);
+  --border-bright: rgba(56, 189, 248, 0.3);
+  --text: #e2eaf4;
+  --text-secondary: #7d9bb5;
+  --text-muted: #4a6077;
+  --input: rgba(6, 12, 20, 0.95);
+  --accent: #38bdf8;
+  --accent-dim: rgba(56, 189, 248, 0.15);
+  --accent-glow: rgba(56, 189, 248, 0.08);
+  --success: #34d399;
+  --success-dim: rgba(52, 211, 153, 0.15);
+  --warning: #fbbf24;
+  --warning-dim: rgba(251, 191, 36, 0.15);
+  --error: #f87171;
+  --error-dim: rgba(248, 113, 113, 0.15);
+  --hover: rgba(56, 189, 248, 0.06);
+  --code-bg: rgba(4, 10, 18, 0.98);
+  --blur: 16px;
+  --font-mono: 'Space Mono', monospace;
+  --font-sans: 'DM Sans', sans-serif;
 }
 
 body.light {
-  --panel: rgba(246, 248, 250, 0.85);
-  --border: rgba(208, 215, 222, 0.5);
-  --text: #1f2328;
-  --text-secondary: #656d76;
-  --text-muted: #6e7781;
-  --input: rgba(255, 255, 255, 0.9);
-  --accent: #0969da;
-  --accent-hover: #1a7f37;
-  --success: #1a7f37;
-  --warning: #9a6700;
-  --error: #cf222e;
-  --hover: rgba(234, 238, 242, 0.9);
-  --button-primary: #1f883d;
-  --button-primary-hover: #2c974b;
-  --button-secondary: rgba(234, 238, 242, 0.9);
-  --button-secondary-hover: rgba(208, 215, 222, 0.9);
-  --code-bg: rgba(246, 248, 250, 0.9);
-  --panel-hover: rgba(234, 238, 242, 0.9);
-  --play-bg: #0969da;
-  --play-hover: #1a7f37;
-  --snippet-bg: rgba(255, 255, 255, 0.1);
-  --snippet-border: rgba(0, 0, 0, 0.1);
+  --bg: #f0f4f8;
+  --panel: rgba(255,255,255,0.92);
+  --panel-2: rgba(240,248,255,0.88);
+  --border: rgba(14,116,144,0.15);
+  --border-bright: rgba(14,116,144,0.4);
+  --text: #0c1824;
+  --text-secondary: #2a6080;
+  --text-muted: #6a8fa8;
+  --input: rgba(240,248,255,0.98);
+  --accent: #0284c7;
+  --accent-dim: rgba(2,132,199,0.12);
+  --accent-glow: rgba(2,132,199,0.06);
+  --success: #059669;
+  --success-dim: rgba(5,150,105,0.12);
+  --warning: #d97706;
+  --warning-dim: rgba(217,119,6,0.12);
+  --error: #dc2626;
+  --error-dim: rgba(220,38,38,0.12);
+  --hover: rgba(2,132,199,0.06);
+  --code-bg: rgba(226,236,248,0.98);
 }
 
-/* ===== CONTAINER with glass effect ===== */
-.container-custom {
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 2rem 1.5rem;
-  position: relative;
-  z-index: 1;
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  font-family: var(--font-sans);
+  background: var(--bg); color: var(--text);
+  min-height: 100vh; font-size: 14px; line-height: 1.6;
+  transition: background 0.3s, color 0.3s;
 }
 
-/* ===== MENU BUTTON ===== */
-.menu-button {
-  position: fixed;
-  top: 20px;
-  left: 20px;
-  z-index: 10000;
-  width: 45px;
-  height: 45px;
-  border-radius: 50%;
-  background: var(--panel);
-  border: 1px solid var(--border);
-  color: var(--text);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-  transition: all 0.2s ease;
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+body::before {
+  content: ''; position: fixed; inset: 0;
+  background-image: url('https://c.termai.cc/i199/f6HGr.jpg');
+  background-size: cover; background-position: center; background-attachment: fixed;
+  z-index: -3; opacity: 0.5;
+}
+body::after {
+  content: ''; position: fixed; inset: 0;
+  background: linear-gradient(135deg, rgba(7,11,15,0.92) 0%, rgba(7,15,25,0.88) 100%);
+  z-index: -2;
+}
+body.light::before { opacity: 0.15; }
+body.light::after { background: linear-gradient(135deg, rgba(240,244,248,0.93) 0%, rgba(220,235,248,0.90) 100%); }
+
+.grid-bg {
+  position: fixed; inset: 0; z-index: -1;
+  background-image:
+    linear-gradient(rgba(56,189,248,0.04) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(56,189,248,0.04) 1px, transparent 1px);
+  background-size: 40px 40px; pointer-events: none;
+}
+body.light .grid-bg {
+  background-image:
+    linear-gradient(rgba(2,132,199,0.05) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(2,132,199,0.05) 1px, transparent 1px);
 }
 
-.menu-button:hover {
-  transform: scale(1.1);
-  background: var(--hover);
+/* SIDEBAR */
+.sidebar {
+  position: fixed; top: 0; left: 0; bottom: 0; width: 220px;
+  background: var(--panel); border-right: 1px solid var(--border);
+  backdrop-filter: blur(var(--blur)); -webkit-backdrop-filter: blur(var(--blur));
+  z-index: 1000; display: flex; flex-direction: column;
+  transition: transform 0.3s cubic-bezier(0.4,0,0.2,1); overflow: hidden;
 }
-
-.menu-dropdown {
-  position: fixed;
-  top: 75px;
-  left: 20px;
-  z-index: 10000;
-  background: var(--panel);
-  border: 1px solid var(--border);
-  border-radius: 8px;
-  min-width: 200px;
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
-  transition: all 0.2s ease;
+.sidebar-brand {
+  padding: 1.25rem; border-bottom: 1px solid var(--border);
+  display: flex; align-items: center; gap: 0.625rem;
 }
-
-.menu-dropdown.hidden {
-  opacity: 0;
-  transform: translateY(-10px);
-  pointer-events: none;
-}
-
-.menu-item {
-  padding: 12px 16px;
-  color: var(--text);
-  text-decoration: none;
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  transition: all 0.2s ease;
-  border-bottom: 1px solid var(--border);
-  cursor: pointer;
-}
-
-.menu-item:last-child {
-  border-bottom: none;
-}
-
-.menu-item:hover {
-  background: var(--hover);
-  padding-left: 20px;
-}
-
-.menu-item.active {
-  color: var(--accent);
-  background: var(--hover);
-}
-
-.menu-item .material-icons {
-  font-size: 1.2rem;
-}
-
-/* ===== PANEL with glass morphism ===== */
-.panel {
-  background: var(--panel);
-  border: 1px solid var(--border);
-  border-radius: 6px;
-  transition: all 0.2s ease;
-  backdrop-filter: blur(var(--blur-amount));
-  -webkit-backdrop-filter: blur(var(--blur-amount));
-}
-
-/* ===== HEADER ===== */
-.header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  margin-bottom: 1.5rem;
-  background: var(--panel);
-  border: 1px solid var(--border);
-  border-radius: 6px;
-  padding: 1rem 1.5rem;
-  backdrop-filter: blur(var(--blur-amount));
-  -webkit-backdrop-filter: blur(var(--blur-amount));
-  margin-left: 60px;
-}
-
-.header-title {
-  font-size: 1.5rem;
-  font-weight: 700;
-  color: var(--text);
-  letter-spacing: -0.5px;
-}
-
-.header-title span {
+.brand-icon {
+  width: 32px; height: 32px;
+  background: var(--accent-dim); border: 1px solid var(--border-bright);
+  border-radius: 8px; display: flex; align-items: center; justify-content: center;
   color: var(--accent);
 }
+.brand-name { font-family: var(--font-mono); font-size: 0.8rem; font-weight: 700; color: var(--text); letter-spacing: 0.04em; }
+.brand-name span { color: var(--accent); }
+.sidebar-section { padding: 1rem 0.75rem 0.5rem; }
+.sidebar-label { font-size: 0.6rem; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: var(--text-muted); padding: 0 0.5rem; margin-bottom: 0.375rem; }
+.sidebar-link { display: flex; align-items: center; gap: 0.5rem; padding: 0.5rem 0.75rem; border-radius: 6px; color: var(--text-secondary); text-decoration: none; font-size: 0.8125rem; font-weight: 500; transition: all 0.15s; margin-bottom: 2px; cursor: pointer; }
+.sidebar-link:hover, .sidebar-link.active { background: var(--hover); color: var(--text); }
+.sidebar-link.active { color: var(--accent); }
+.sidebar-link .material-icons { font-size: 1.05rem; }
+.sidebar-bottom { margin-top: auto; padding: 1rem; border-top: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; }
+.theme-toggle { display: flex; align-items: center; gap: 0.4rem; }
+.toggle-switch { position: relative; display: inline-block; width: 40px; height: 22px; }
+.toggle-switch input { opacity: 0; width: 0; height: 0; }
+.toggle-slider { position: absolute; cursor: pointer; inset: 0; background: var(--panel-2); border: 1px solid var(--border); border-radius: 22px; transition: 0.2s; }
+.toggle-slider:before { position: absolute; content: ""; height: 16px; width: 16px; left: 2px; bottom: 2px; background: var(--text-secondary); border-radius: 50%; transition: 0.2s; }
+input:checked + .toggle-slider { background: var(--accent-dim); border-color: var(--accent); }
+input:checked + .toggle-slider:before { transform: translateX(18px); background: var(--accent); }
+.toggle-icon { font-size: 0.8rem; color: var(--text-muted); }
 
-/* ===== THEME TOGGLE ===== */
-.theme-toggle {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
+.menu-toggle { display: none; position: fixed; top: 16px; left: 16px; z-index: 2000; width: 40px; height: 40px; background: var(--panel); border: 1px solid var(--border); border-radius: 8px; color: var(--text); cursor: pointer; align-items: center; justify-content: center; backdrop-filter: blur(12px); }
+
+/* MAIN */
+.main { margin-left: 220px; min-height: 100vh; padding: 1.5rem; max-width: calc(100% - 220px); }
+
+/* TOPBAR */
+.topbar { display: flex; align-items: center; justify-content: space-between; gap: 1rem; margin-bottom: 1.5rem; flex-wrap: wrap; }
+.topbar-title { font-family: var(--font-mono); font-size: 1rem; font-weight: 700; color: var(--text); letter-spacing: 0.03em; }
+.topbar-title span { color: var(--accent); }
+
+.user-area { display: flex; align-items: center; gap: 0.75rem; }
+.login-btn { display: flex; align-items: center; gap: 0.375rem; padding: 0.4rem 0.875rem; background: var(--accent-dim); border: 1px solid var(--border-bright); border-radius: 6px; color: var(--accent); font-size: 0.8rem; font-weight: 600; font-family: var(--font-sans); cursor: pointer; transition: all 0.15s; }
+.login-btn:hover { background: var(--accent); color: #070b0f; }
+.user-avatar { width: 32px; height: 32px; border-radius: 8px; border: 2px solid var(--accent); cursor: pointer; object-fit: cover; transition: all 0.15s; }
+.user-avatar:hover { box-shadow: 0 0 10px var(--accent-dim); }
+.user-displayname { color: var(--text-secondary); font-size: 0.8rem; }
+.theme-toggle-top { display: flex; align-items: center; gap: 0.4rem; }
+
+/* CONTROLS */
+.controls-bar { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 0.75rem; margin-bottom: 1.25rem; }
+
+.tabs {
+  display: flex; gap: 0; background: var(--panel);
+  border: 1px solid var(--border); border-radius: 8px; padding: 0.2rem; overflow: hidden;
 }
-
-.toggle-switch {
-  position: relative;
-  display: inline-block;
-  width: 56px;
-  height: 28px;
-}
-
-.toggle-switch input {
-  opacity: 0;
-  width: 0;
-  height: 0;
-}
-
-.toggle-slider {
-  position: absolute;
-  cursor: pointer;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background-color: var(--button-secondary);
-  border: 1px solid var(--border);
-  transition: .2s;
-  border-radius: 28px;
-}
-
-.toggle-slider:before {
-  position: absolute;
-  content: "";
-  height: 22px;
-  width: 22px;
-  left: 3px;
-  bottom: 2px;
-  background-color: var(--text);
-  transition: .2s;
-  border-radius: 50%;
-}
-
-input:checked + .toggle-slider {
-  background-color: var(--accent);
-}
-
-input:checked + .toggle-slider:before {
-  transform: translateX(28px);
-}
-
-.toggle-icon {
-  font-size: 1rem;
-  color: var(--text-secondary);
-}
-
-/* ===== USER MENU ===== */
-.user-menu {
-  display: flex;
-  align-items: center;
-  gap: 1rem;
-}
-
-.user-avatar {
-  width: 40px;
-  height: 40px;
-  border-radius: 50%;
-  border: 2px solid var(--accent);
-  cursor: pointer;
-  transition: all 0.2s ease;
-}
-
-.user-avatar:hover {
-  transform: scale(1.1);
-  box-shadow: 0 0 10px var(--accent);
-}
-
-.login-btn {
-  padding: 0.5rem 1rem;
-  background: var(--accent);
-  color: white;
-  border: none;
-  border-radius: 6px;
-  font-size: 0.875rem;
-  cursor: pointer;
-  transition: all 0.2s ease;
-}
-
-.login-btn:hover {
-  background: var(--accent-hover);
-  transform: translateY(-1px);
-}
-
-/* ===== AUTH MODAL ===== */
-.modal {
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: rgba(0, 0, 0, 0.7);
-  backdrop-filter: blur(8px);
-  z-index: 20000;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  transition: all 0.3s ease;
-}
-
-.modal.hidden {
-  opacity: 0;
-  pointer-events: none;
-}
-
-.modal-content {
-  background: var(--panel);
-  border: 1px solid var(--border);
-  border-radius: 12px;
-  padding: 2rem;
-  max-width: 400px;
-  width: 90%;
-  backdrop-filter: blur(12px);
-  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
-}
-
-.modal-title {
-  font-size: 1.5rem;
-  font-weight: 700;
-  color: var(--text);
-  margin-bottom: 1.5rem;
-  text-align: center;
-}
-
-.auth-buttons {
-  display: flex;
-  flex-direction: column;
-  gap: 1rem;
-}
-
-.auth-btn {
-  padding: 1rem;
-  border: 1px solid var(--border);
-  border-radius: 8px;
-  background: var(--button-secondary);
-  color: var(--text);
-  font-size: 1rem;
-  font-weight: 500;
-  cursor: pointer;
-  transition: all 0.2s ease;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 1rem;
-}
-
-.auth-btn:hover {
-  background: var(--button-secondary-hover);
-  transform: translateY(-2px);
-}
-
-.auth-btn.google {
-  background: #fff;
-  color: #333;
-  border: 1px solid #ddd;
-}
-
-.auth-btn.github {
-  background: #24292e;
-  color: #fff;
-  border: 1px solid #1b1f23;
-}
-
-.auth-btn i {
-  font-size: 1.25rem;
-}
-
-.modal-close {
-  position: absolute;
-  top: 1rem;
-  right: 1rem;
-  width: 30px;
-  height: 30px;
-  border-radius: 50%;
-  background: var(--button-secondary);
-  border: 1px solid var(--border);
-  color: var(--text);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-  transition: all 0.2s ease;
-}
-
-.modal-close:hover {
-  background: var(--error);
-  color: white;
-}
-
-/* ===== PROFILE MODAL ===== */
-.profile-form {
-  display: flex;
-  flex-direction: column;
-  gap: 1rem;
-  margin-top: 1rem;
-}
-
-.profile-field {
-  display: flex;
-  flex-direction: column;
-  gap: 0.25rem;
-}
-
-.profile-label {
-  color: var(--text-secondary);
-  font-size: 0.875rem;
-  font-weight: 500;
-}
-
-.profile-input {
-  padding: 0.75rem;
-  background: var(--input);
-  border: 1px solid var(--border);
-  border-radius: 6px;
-  color: var(--text);
-  font-size: 0.875rem;
-}
-
-.profile-input:focus {
-  outline: none;
-  border-color: var(--accent);
-  box-shadow: 0 0 0 3px rgba(9, 105, 218, 0.2);
-}
-
-.profile-avatar-preview {
-  width: 80px;
-  height: 80px;
-  border-radius: 50%;
-  margin: 0 auto 1rem;
-  border: 3px solid var(--accent);
-}
-
-.profile-actions {
-  display: flex;
-  gap: 1rem;
-  margin-top: 1rem;
-}
-
-/* ===== SNIPPETS SECTION ===== */
-.snippets-header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  margin-bottom: 1.5rem;
-  margin-left: 60px;
-  flex-wrap: wrap;
-  gap: 1rem;
-}
-
-.snippets-title {
-  font-size: 1.25rem;
-  font-weight: 600;
-  color: var(--text);
-}
-
-.snippets-tabs {
-  display: flex;
-  gap: 0.5rem;
-  background: var(--panel);
-  border: 1px solid var(--border);
-  border-radius: 6px;
-  padding: 0.25rem;
-}
-
 .tab-btn {
-  padding: 0.5rem 1rem;
-  background: transparent;
-  border: none;
-  color: var(--text-secondary);
-  font-size: 0.875rem;
-  cursor: pointer;
-  transition: all 0.2s ease;
-  border-radius: 4px;
+  padding: 0.375rem 0.875rem;
+  background: transparent; border: none; border-radius: 6px;
+  color: var(--text-secondary); font-size: 0.8rem; font-weight: 600;
+  cursor: pointer; transition: all 0.15s; font-family: var(--font-sans);
+  white-space: nowrap;
 }
+.tab-btn:hover { color: var(--text); }
+.tab-btn.active { background: var(--accent); color: #070b0f; }
 
-.tab-btn:hover {
-  color: var(--text);
-}
-
-.tab-btn.active {
-  background: var(--accent);
-  color: white;
-}
-
-.snippets-filter {
-  display: flex;
-  gap: 0.5rem;
-  flex-wrap: wrap;
-}
-
+.lang-filters { display: flex; gap: 0.3rem; flex-wrap: wrap; }
 .filter-btn {
-  padding: 0.5rem 1rem;
-  background: var(--button-secondary);
-  border: 1px solid var(--border);
-  border-radius: 6px;
-  color: var(--text);
-  font-size: 0.8125rem;
-  cursor: pointer;
-  transition: all 0.2s ease;
+  padding: 0.3rem 0.625rem;
+  background: var(--panel); border: 1px solid var(--border); border-radius: 6px;
+  color: var(--text-muted); font-size: 0.72rem; font-weight: 700;
+  cursor: pointer; transition: all 0.15s; font-family: var(--font-mono);
+  letter-spacing: 0.04em;
 }
+.filter-btn:hover { border-color: var(--border-bright); color: var(--text); }
+.filter-btn.active { background: var(--accent-dim); border-color: var(--border-bright); color: var(--accent); }
 
-.filter-btn:hover {
-  background: var(--button-secondary-hover);
-}
-
-.filter-btn.active {
-  background: var(--accent);
-  color: white;
-  border-color: var(--accent);
-}
-
-.snippets-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
-  gap: 1rem;
-  margin-bottom: 2rem;
-  margin-left: 60px;
-}
+/* SNIPPETS GRID */
+.snippets-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 1rem; margin-bottom: 2rem; }
 
 .snippet-card {
-  background: var(--panel);
-  border: 1px solid var(--border);
-  border-radius: 8px;
-  overflow: hidden;
-  transition: all 0.2s ease;
-  backdrop-filter: blur(var(--blur-amount));
-  -webkit-backdrop-filter: blur(var(--blur-amount));
-  position: relative;
-  cursor: pointer;
+  background: var(--panel); border: 1px solid var(--border); border-radius: 10px;
+  overflow: hidden; transition: all 0.2s; backdrop-filter: blur(8px);
+  cursor: pointer; display: flex; flex-direction: column;
 }
-
-.snippet-card:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
-}
-
-.snippet-card.own-snippet {
-  border-left: 4px solid var(--accent);
-}
+.snippet-card:hover { transform: translateY(-3px); box-shadow: 0 8px 24px rgba(0,0,0,0.25); border-color: var(--border-bright); }
+.snippet-card.own-snippet { border-left: 3px solid var(--accent); }
 
 .snippet-header {
-  padding: 1rem;
+  padding: 0.75rem 1rem;
   border-bottom: 1px solid var(--border);
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
+  display: flex; align-items: center; justify-content: space-between; gap: 0.5rem;
 }
 
-.snippet-language {
-  padding: 0.25rem 0.5rem;
-  background: var(--accent);
-  color: white;
-  font-size: 0.6875rem;
-  font-weight: 500;
-  border-radius: 4px;
+.lang-badge {
+  padding: 0.175rem 0.5rem;
+  background: var(--accent-dim); color: var(--accent);
+  font-size: 0.6rem; font-weight: 700;
+  border-radius: 4px; border: 1px solid var(--border-bright);
+  font-family: var(--font-mono); letter-spacing: 0.05em;
 }
 
-.snippet-title {
-  padding: 1rem;
-  font-weight: 600;
-  color: var(--text);
-  font-size: 1rem;
+.own-badge {
+  color: var(--text-muted); font-size: 0.68rem;
+  display: flex; align-items: center; gap: 0.25rem;
 }
 
-.snippet-description {
-  padding: 0 1rem 1rem;
-  color: var(--text-secondary);
-  font-size: 0.875rem;
-  line-height: 1.6;
+.snippet-body { padding: 0.875rem 1rem; flex: 1; }
+.snippet-title { font-weight: 700; color: var(--text); font-size: 0.9rem; margin-bottom: 0.375rem; }
+.snippet-desc { color: var(--text-secondary); font-size: 0.8rem; line-height: 1.5; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+
+.snippet-code-preview {
+  margin: 0.5rem 0;
+  padding: 0.5rem 0.75rem;
+  background: var(--code-bg); border: 1px solid var(--border); border-radius: 6px;
+  font-family: var(--font-mono); font-size: 0.68rem; color: var(--accent);
+  white-space: pre; overflow: hidden; max-height: 52px;
+  line-height: 1.5;
 }
+body.light .snippet-code-preview { color: #0284c7; }
 
 .snippet-stats {
   padding: 0.5rem 1rem;
-  display: flex;
-  gap: 1rem;
-  border-top: 1px solid var(--border);
-  color: var(--text-muted);
-  font-size: 0.75rem;
+  display: flex; gap: 1rem; border-top: 1px solid var(--border);
+  color: var(--text-muted); font-size: 0.72rem;
 }
-
-.snippet-stat {
-  display: flex;
-  align-items: center;
-  gap: 0.25rem;
-}
+.snippet-stat { display: flex; align-items: center; gap: 0.25rem; }
+.snippet-stat .material-icons { font-size: 0.85rem; }
 
 .snippet-footer {
-  padding: 0.75rem 1rem;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  background: rgba(0, 0, 0, 0.2);
+  padding: 0.625rem 1rem;
+  display: flex; align-items: center; justify-content: space-between;
+  background: rgba(0,0,0,0.15); border-top: 1px solid var(--border);
 }
+.snippet-author { display: flex; align-items: center; gap: 0.4rem; cursor: pointer; }
+.snippet-author-avatar { width: 22px; height: 22px; border-radius: 5px; border: 1px solid var(--border); object-fit: cover; }
+.snippet-author-name { color: var(--text-secondary); font-size: 0.72rem; transition: color 0.15s; }
+.snippet-author:hover .snippet-author-name { color: var(--accent); }
 
-.snippet-author {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  cursor: pointer;
-}
-
-.snippet-author:hover .snippet-author-name {
-  color: var(--accent);
-}
-
-.snippet-author-avatar {
-  width: 24px;
-  height: 24px;
-  border-radius: 50%;
-  border: 1px solid var(--border);
-}
-
-.snippet-author-name {
-  color: var(--text-secondary);
-  font-size: 0.75rem;
-  transition: color 0.2s ease;
-}
-
-.snippet-actions {
-  display: flex;
-  gap: 0.5rem;
-}
-
+.snippet-actions { display: flex; gap: 0.3rem; }
 .snippet-btn {
-  padding: 0.25rem 0.5rem;
-  background: var(--button-secondary);
-  border: 1px solid var(--border);
-  border-radius: 4px;
-  color: var(--text);
-  font-size: 0.6875rem;
-  cursor: pointer;
-  transition: all 0.2s ease;
-  display: flex;
-  align-items: center;
-  gap: 0.25rem;
+  padding: 0.2rem 0.45rem;
+  background: var(--panel-2); border: 1px solid var(--border); border-radius: 4px;
+  color: var(--text-secondary); font-size: 0.65rem; cursor: pointer;
+  transition: all 0.15s; display: flex; align-items: center; gap: 0.2rem;
+  font-family: var(--font-sans);
 }
+.snippet-btn:hover { border-color: var(--border-bright); color: var(--text); }
+.snippet-btn.liked { background: var(--error-dim); border-color: var(--error); color: var(--error); }
+.snippet-btn.edit-btn { background: var(--warning-dim); border-color: var(--warning); color: var(--warning); }
+.snippet-btn.del-btn { background: var(--error-dim); border-color: var(--error); color: var(--error); }
+.snippet-btn .material-icons { font-size: 0.75rem; }
 
-.snippet-btn:hover {
-  background: var(--button-secondary-hover);
+/* MODALS */
+.modal-overlay {
+  position: fixed; inset: 0; background: rgba(0,0,0,0.75);
+  backdrop-filter: blur(8px); z-index: 10000;
+  display: flex; align-items: center; justify-content: center;
+  transition: opacity 0.2s;
 }
+.modal-overlay.hidden { opacity: 0; pointer-events: none; }
 
-.snippet-btn.liked {
-  background: var(--error);
-  color: white;
-}
-
-.snippet-btn.edit {
-  background: var(--warning);
-  color: white;
-}
-
-.snippet-btn.delete {
-  background: var(--error);
-  color: white;
-}
-
-/* ===== VIEW CODE MODAL ===== */
-.view-modal {
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: rgba(0, 0, 0, 0.9);
-  backdrop-filter: blur(10px);
-  z-index: 30000;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  transition: all 0.3s ease;
-}
-
-.view-modal.hidden {
-  opacity: 0;
-  pointer-events: none;
-}
-
-.view-modal-content {
-  background: var(--panel);
-  border: 1px solid var(--border);
-  border-radius: 12px;
-  width: 90%;
-  max-width: 900px;
-  max-height: 90vh;
-  overflow: hidden;
-  display: flex;
-  flex-direction: column;
-  backdrop-filter: blur(12px);
-}
-
-.view-modal-header {
-  padding: 1.5rem;
-  border-bottom: 1px solid var(--border);
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-}
-
-.view-modal-title {
-  font-size: 1.25rem;
-  font-weight: 600;
-  color: var(--text);
-}
-
-.view-modal-close {
-  width: 36px;
-  height: 36px;
-  border-radius: 50%;
-  background: var(--button-secondary);
-  border: 1px solid var(--border);
-  color: var(--text);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-  transition: all 0.2s ease;
-}
-
-.view-modal-close:hover {
-  background: var(--error);
-  color: white;
-}
-
-.view-modal-info {
-  padding: 1rem 1.5rem;
-  background: rgba(0, 0, 0, 0.2);
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  flex-wrap: wrap;
-  gap: 1rem;
-}
-
-.view-modal-meta {
-  display: flex;
-  align-items: center;
-  gap: 2rem;
-}
-
-.view-modal-meta-item {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  color: var(--text-secondary);
-  font-size: 0.875rem;
-}
-
-.view-modal-actions {
-  display: flex;
-  gap: 0.5rem;
-}
-
-.view-modal-code {
-  padding: 1.5rem;
-  background: var(--code-bg);
-  font-family: 'Fira Code', monospace;
-  font-size: 0.875rem;
-  color: #79c0ff;
-  white-space: pre-wrap;
-  overflow-y: auto;
-  max-height: 50vh;
-  line-height: 1.6;
+.modal-box {
+  background: var(--panel); border: 1px solid var(--border); border-radius: 12px;
+  padding: 2rem; max-width: 420px; width: 90%;
+  backdrop-filter: blur(16px); box-shadow: 0 20px 48px rgba(0,0,0,0.4);
   position: relative;
 }
+.modal-title { font-size: 1.125rem; font-weight: 700; color: var(--text); margin-bottom: 1.5rem; text-align: center; }
+.modal-close { position: absolute; top: 1rem; right: 1rem; width: 28px; height: 28px; border-radius: 6px; background: var(--panel-2); border: 1px solid var(--border); color: var(--text-secondary); display: flex; align-items: center; justify-content: center; cursor: pointer; font-size: 0.875rem; transition: all 0.15s; }
+.modal-close:hover { background: var(--error-dim); color: var(--error); border-color: var(--error); }
 
-body.light .view-modal-code {
-  color: #0550ae;
+.auth-btns { display: flex; flex-direction: column; gap: 0.75rem; }
+.auth-btn {
+  padding: 0.875rem 1rem; border: 1px solid var(--border); border-radius: 8px;
+  background: var(--panel-2); color: var(--text);
+  font-size: 0.9rem; font-weight: 600; cursor: pointer;
+  transition: all 0.2s; display: flex; align-items: center; justify-content: center; gap: 0.75rem;
+  font-family: var(--font-sans);
 }
+.auth-btn:hover { transform: translateY(-2px); }
+.auth-btn.google { background: #fff; color: #333; border: 1px solid #e0e0e0; }
+.auth-btn.github { background: #161b22; color: #fff; border-color: #30363d; }
+.auth-btn i { font-size: 1.125rem; }
 
-.view-modal-raw-link {
-  padding: 0.5rem 1rem;
-  background: var(--button-secondary);
-  border: 1px solid var(--border);
-  border-radius: 4px;
-  color: var(--text);
-  font-size: 0.75rem;
-  text-decoration: none;
-  display: inline-flex;
-  align-items: center;
-  gap: 0.5rem;
-  transition: all 0.2s ease;
-}
+/* PROFILE MODAL */
+.profile-form { display: flex; flex-direction: column; gap: 0.75rem; margin-top: 0.75rem; }
+.profile-field { display: flex; flex-direction: column; gap: 0.25rem; }
+.profile-label { color: var(--text-muted); font-size: 0.65rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; font-family: var(--font-mono); }
+.profile-input { padding: 0.5rem 0.75rem; background: var(--input); border: 1px solid var(--border); border-radius: 6px; color: var(--text); font-size: 0.875rem; font-family: var(--font-sans); transition: all 0.15s; }
+.profile-input:focus { outline: none; border-color: var(--accent); }
+.profile-avatar-preview { width: 64px; height: 64px; border-radius: 12px; margin: 0 auto 0.75rem; border: 2px solid var(--accent); object-fit: cover; }
+.profile-actions { display: flex; gap: 0.5rem; margin-top: 0.75rem; }
 
-.view-modal-raw-link:hover {
-  background: var(--button-secondary-hover);
-}
+/* VIEW MODAL */
+.view-modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.9); backdrop-filter: blur(10px); z-index: 20000; display: flex; align-items: center; justify-content: center; transition: opacity 0.2s; }
+.view-modal-overlay.hidden { opacity: 0; pointer-events: none; }
+.view-modal-box { background: var(--panel); border: 1px solid var(--border); border-radius: 12px; width: 95%; max-width: 880px; max-height: 92vh; overflow: hidden; display: flex; flex-direction: column; backdrop-filter: blur(16px); }
+.view-header { padding: 1.25rem 1.5rem; border-bottom: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; gap: 1rem; }
+.view-title { font-size: 1.1rem; font-weight: 700; color: var(--text); }
+.view-close { width: 32px; height: 32px; border-radius: 8px; background: var(--panel-2); border: 1px solid var(--border); color: var(--text-secondary); display: flex; align-items: center; justify-content: center; cursor: pointer; transition: all 0.15s; flex-shrink: 0; }
+.view-close:hover { background: var(--error-dim); color: var(--error); border-color: var(--error); }
+.view-meta { padding: 0.75rem 1.5rem; background: rgba(0,0,0,0.15); display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 0.75rem; border-bottom: 1px solid var(--border); }
+.view-meta-items { display: flex; align-items: center; gap: 1.25rem; flex-wrap: wrap; }
+.view-meta-item { display: flex; align-items: center; gap: 0.375rem; color: var(--text-secondary); font-size: 0.8rem; }
+.view-meta-item .material-icons { font-size: 0.9rem; color: var(--accent); }
+.view-actions { display: flex; gap: 0.375rem; }
+.view-code { padding: 1.25rem 1.5rem; background: var(--code-bg); font-family: var(--font-mono); font-size: 0.8rem; color: var(--accent); white-space: pre-wrap; overflow-y: auto; max-height: 50vh; line-height: 1.7; }
+body.light .view-code { color: #0284c7; }
+.view-footer { padding: 0.875rem 1.5rem; border-top: 1px solid var(--border); color: var(--text-secondary); font-size: 0.8rem; }
 
-/* ===== ADD SNIPPET FORM ===== */
-.add-snippet {
+/* ADD SNIPPET */
+.add-snippet-section {
   margin-top: 2rem;
-  margin-left: 60px;
   padding: 1.5rem;
-  background: var(--panel);
-  border: 1px solid var(--border);
-  border-radius: 8px;
-  backdrop-filter: blur(var(--blur-amount));
-  -webkit-backdrop-filter: blur(var(--blur-amount));
+  background: var(--panel); border: 1px solid var(--border); border-radius: 10px;
+  backdrop-filter: blur(8px);
 }
+.add-snippet-title { font-weight: 700; color: var(--text); font-size: 0.9375rem; margin-bottom: 1.25rem; display: flex; align-items: center; gap: 0.5rem; }
+.add-snippet-title .material-icons { color: var(--accent); font-size: 1.1rem; }
+.login-prompt { text-align: center; padding: 1.5rem; color: var(--text-secondary); }
 
-.add-snippet-title {
-  font-size: 1rem;
-  font-weight: 600;
-  color: var(--text);
-  margin-bottom: 1rem;
-}
-
-.add-snippet-form {
-  display: grid;
-  gap: 1rem;
-}
-
-.form-row {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 1rem;
-}
-
-.form-group {
-  display: flex;
-  flex-direction: column;
-  gap: 0.25rem;
-}
-
-.form-label {
-  color: var(--text-secondary);
-  font-size: 0.8125rem;
-  font-weight: 500;
-}
-
-.form-select, .form-textarea {
+.form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0.875rem; }
+.form-group { display: flex; flex-direction: column; gap: 0.25rem; }
+.form-group.full { grid-column: 1 / -1; }
+.form-label { color: var(--text-muted); font-size: 0.65rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; font-family: var(--font-mono); }
+.form-input, .form-select, .form-textarea {
   padding: 0.5rem 0.75rem;
-  background: var(--input);
-  border: 1px solid var(--border);
-  border-radius: 6px;
-  color: var(--text);
-  font-size: 0.875rem;
-  transition: all 0.2s ease;
+  background: var(--input); border: 1px solid var(--border); border-radius: 6px;
+  color: var(--text); font-size: 0.875rem; font-family: var(--font-sans);
+  transition: all 0.2s;
 }
+.form-input:focus, .form-select:focus, .form-textarea:focus { outline: none; border-color: var(--accent); }
+.form-textarea { min-height: 140px; resize: vertical; font-family: var(--font-mono); font-size: 0.8rem; }
+.form-select option { background: #0c1824; }
+.form-actions { display: flex; gap: 0.5rem; justify-content: flex-end; margin-top: 0.75rem; }
 
-.form-select {
-  cursor: pointer;
-}
+/* BUTTONS */
+.btn { display: inline-flex; align-items: center; gap: 0.3rem; padding: 0.4rem 0.875rem; font-size: 0.8rem; font-weight: 600; border-radius: 6px; cursor: pointer; transition: all 0.15s; font-family: var(--font-sans); border: none; }
+.btn .material-icons { font-size: 0.875rem; }
+.btn:active { transform: translateY(1px); }
+.btn-primary { background: var(--accent); color: #070b0f; }
+.btn-primary:hover { opacity: 0.9; transform: translateY(-1px); }
+.btn-ghost { background: transparent; border: 1px solid var(--border); color: var(--text-secondary); }
+.btn-ghost:hover { border-color: var(--border-bright); color: var(--text); background: var(--hover); }
 
-.form-textarea {
-  min-height: 150px;
-  resize: vertical;
-  font-family: 'Fira Code', monospace;
-  font-size: 0.8125rem;
-}
+/* NO RESULTS */
+.no-results { text-align: center; padding: 2.5rem 1rem; color: var(--text-secondary); font-size: 0.875rem; background: var(--panel); border: 1px solid var(--border); border-radius: 8px; }
+.no-results .material-icons { font-size: 2.25rem; color: var(--text-muted); }
 
-.form-select:focus, .form-textarea:focus {
-  outline: none;
-  border-color: var(--accent);
-  box-shadow: 0 0 0 3px rgba(9, 105, 218, 0.2);
-}
+/* LOADER */
+.loader { border: 2px solid var(--border); border-top: 2px solid var(--accent); border-radius: 50%; width: 20px; height: 20px; animation: spin 0.7s linear infinite; margin: 2rem auto; }
+@keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
 
-.form-actions {
-  display: flex;
-  gap: 1rem;
-  justify-content: flex-end;
-}
+/* TOAST */
+.toast { position: fixed; bottom: 20px; right: 20px; padding: 0.625rem 1.125rem; background: var(--panel); border: 1px solid var(--border-bright); border-radius: 8px; color: var(--text); font-size: 0.8rem; z-index: 99999; backdrop-filter: blur(12px); box-shadow: 0 4px 16px rgba(0,0,0,0.2); animation: slideIn 0.2s ease; }
+@keyframes slideIn { from { opacity:0; transform:translateY(10px); } to { opacity:1; transform:translateY(0); } }
 
-.login-prompt {
-  text-align: center;
-  padding: 2rem;
-  color: var(--text-secondary);
-}
+.copy-mini { padding: 0.2rem 0.45rem; background: var(--panel-2); border: 1px solid var(--border); border-radius: 4px; color: var(--text-secondary); font-size: 0.6rem; cursor: pointer; font-family: var(--font-sans); white-space: nowrap; transition: all 0.15s; flex-shrink: 0; }
+.copy-mini:hover { border-color: var(--accent); color: var(--accent); }
 
-.login-prompt button {
-  margin-top: 1rem;
-}
+.hidden { display: none !important; }
 
-/* ===== LOADER ===== */
-.loader {
-  border: 2px solid var(--border);
-  border-top: 2px solid var(--accent);
-  border-radius: 50%;
-  width: 24px;
-  height: 24px;
-  animation: spin 0.8s linear infinite;
-  margin: 2rem auto;
-}
-@keyframes spin {
-  0% { transform: rotate(0deg); }
-  100% { transform: rotate(360deg); }
-}
-
-/* ===== NO RESULTS ===== */
-.no-results {
-  text-align: center;
-  padding: 3rem 1rem;
-  color: var(--text-secondary);
-  font-size: 0.875rem;
-  background: var(--panel);
-  border: 1px solid var(--border);
-  border-radius: 6px;
-  backdrop-filter: blur(var(--blur-amount));
-  -webkit-backdrop-filter: blur(var(--blur-amount));
-  margin-left: 60px;
-}
-
-/* ===== UTILITY ===== */
-.hidden {
-  display: none;
-}
-
-.material-icons {
-  font-size: 1.25rem;
-  color: var(--text-secondary);
-  transition: color 0.2s ease;
-}
-
-/* Optimasi scrolling */
-* {
-  -webkit-overflow-scrolling: touch;
-  scroll-behavior: smooth;
+@media (max-width: 768px) {
+  .sidebar { transform: translateX(-100%); }
+  .sidebar.open { transform: translateX(0); }
+  .menu-toggle { display: flex; }
+  .main { margin-left: 0; max-width: 100%; padding: 1rem; padding-top: 4rem; }
+  .snippets-grid { grid-template-columns: 1fr; }
+  .form-grid { grid-template-columns: 1fr; }
+  .controls-bar { flex-direction: column; align-items: flex-start; }
 }
 </style>
 </head>
 
 <body>
+<div class="grid-bg"></div>
 
-<!-- Menu Button (Titik Tiga) -->
-<div class="menu-button" id="menuButton" onclick="toggleMenu()">
+<aside class="sidebar" id="sidebar">
+  <div class="sidebar-brand">
+    <div class="brand-icon"><span class="material-icons" style="font-size:0.9rem;">code</span></div>
+    <div class="brand-name">MANZXY <span>CODES</span></div>
+  </div>
+  <div class="sidebar-section">
+    <div class="sidebar-label">Navigation</div>
+    <a href="/" class="sidebar-link"><span class="material-icons">api</span>Documentation</a>
+    <a href="/snippet" class="sidebar-link active"><span class="material-icons">code</span>Code Snippets</a>
+    <div class="sidebar-link" onclick="showProfileModal()" id="sidebarProfileBtn" style="display:none;">
+      <span class="material-icons">account_circle</span>Profile
+    </div>
+    <div class="sidebar-link" onclick="logout()" id="sidebarLogoutBtn" style="display:none;">
+      <span class="material-icons">logout</span>Logout
+    </div>
+  </div>
+  <div class="sidebar-bottom">
+    <div class="theme-toggle">
+      <span class="toggle-icon">🌙</span>
+      <label class="toggle-switch">
+        <input type="checkbox" id="themeToggle" onchange="toggleTheme()">
+        <span class="toggle-slider"></span>
+      </label>
+      <span class="toggle-icon">☀️</span>
+    </div>
+    <span style="font-size:0.68rem;color:var(--text-muted);font-family:var(--font-mono);">v1.2</span>
+  </div>
+</aside>
+
+<button class="menu-toggle" id="menuToggle" onclick="toggleSidebar()">
   <span class="material-icons">menu</span>
-</div>
+</button>
 
-<!-- Menu Dropdown -->
-<div class="menu-dropdown hidden" id="menuDropdown">
-  <a href="/" class="menu-item">
-    <span class="material-icons">api</span>
-    API Documentation
-  </a>
-  <a href="/snippet" class="menu-item active">
-    <span class="material-icons">code</span>
-    Code Snippets
-  </a>
-  <div class="menu-item" onclick="showProfileModal()">
-    <span class="material-icons">account_circle</span>
-    Profile Settings
-  </div>
-  <div class="menu-item" onclick="logout()" id="logoutBtn">
-    <span class="material-icons">logout</span>
-    Logout
-  </div>
-</div>
-
-<!-- Auth Modal -->
-<div id="authModal" class="modal hidden">
-  <div class="modal-content">
-    <div class="modal-close" onclick="hideAuthModal()">✕</div>
+<!-- AUTH MODAL -->
+<div id="authModal" class="modal-overlay hidden">
+  <div class="modal-box">
+    <button class="modal-close" onclick="hideAuthModal()">✕</button>
     <div class="modal-title">Login to Manzxy</div>
-    <div class="auth-buttons">
+    <div class="auth-btns">
       <button class="auth-btn google" onclick="loginWithGoogle()">
-        <i class="fab fa-google"></i>
-        Continue with Google
+        <i class="fab fa-google"></i> Continue with Google
       </button>
       <button class="auth-btn github" onclick="loginWithGithub()">
-        <i class="fab fa-github"></i>
-        Continue with GitHub
+        <i class="fab fa-github"></i> Continue with GitHub
       </button>
     </div>
   </div>
 </div>
 
-<!-- Profile Modal -->
-<div id="profileModal" class="modal hidden">
-  <div class="modal-content">
-    <div class="modal-close" onclick="hideProfileModal()">✕</div>
+<!-- PROFILE MODAL -->
+<div id="profileModal" class="modal-overlay hidden">
+  <div class="modal-box" style="max-width:480px;">
+    <button class="modal-close" onclick="hideProfileModal()">✕</button>
     <div class="modal-title">Profile Settings</div>
     <img id="profileAvatarPreview" src="" class="profile-avatar-preview hidden">
     <div class="profile-form">
@@ -1043,144 +457,100 @@ body.light .view-modal-code {
         <textarea id="profileBio" class="profile-input" rows="3" placeholder="Tell us about yourself..."></textarea>
       </div>
       <div class="profile-actions">
-        <button class="btn btn-secondary" onclick="hideProfileModal()">Cancel</button>
-        <button class="btn btn-primary" onclick="saveProfile()">Save Changes</button>
+        <button class="btn btn-ghost" onclick="hideProfileModal()">Cancel</button>
+        <button class="btn btn-primary" onclick="saveProfile()"><span class="material-icons">save</span> Save</button>
       </div>
     </div>
   </div>
 </div>
 
-<!-- View Code Modal -->
-<div id="viewModal" class="view-modal hidden">
-  <div class="view-modal-content">
-    <div class="view-modal-header">
-      <div class="view-modal-title" id="viewModalTitle">Snippet Title</div>
-      <div class="view-modal-close" onclick="hideViewModal()">✕</div>
+<!-- VIEW CODE MODAL -->
+<div id="viewModal" class="view-modal-overlay hidden">
+  <div class="view-modal-box">
+    <div class="view-header">
+      <div class="view-title" id="viewModalTitle">Snippet</div>
+      <div class="view-close" onclick="hideViewModal()">✕</div>
     </div>
-    <div class="view-modal-info">
-      <div class="view-modal-meta">
-        <div class="view-modal-meta-item">
-          <span class="material-icons" style="font-size: 1rem;">code</span>
-          <span id="viewModalLanguage">JavaScript</span>
-        </div>
-        <div class="view-modal-meta-item">
-          <span class="material-icons" style="font-size: 1rem;">person</span>
-          <span id="viewModalAuthor">Manzxy</span>
-        </div>
-        <div class="view-modal-meta-item">
-          <span class="material-icons" style="font-size: 1rem;">favorite</span>
-          <span id="viewModalLikes">0</span>
-        </div>
+    <div class="view-meta">
+      <div class="view-meta-items">
+        <div class="view-meta-item"><span class="material-icons">code</span><span id="viewModalLanguage">JS</span></div>
+        <div class="view-meta-item"><span class="material-icons">person</span><span id="viewModalAuthor">Manzxy</span></div>
+        <div class="view-meta-item"><span class="material-icons">favorite</span><span id="viewModalLikes">0</span></div>
       </div>
-      <div class="view-modal-actions">
-        <button class="snippet-btn" onclick="copyViewCode()">
-          <span class="material-icons" style="font-size: 0.875rem;">content_copy</span>
-          Copy
-        </button>
-        <a href="#" id="viewModalRawLink" class="view-modal-raw-link" target="_blank">
-          <span class="material-icons" style="font-size: 0.875rem;">code</span>
-          Raw
-        </a>
-        <button class="snippet-btn" onclick="shareViewSnippet()">
-          <span class="material-icons" style="font-size: 0.875rem;">share</span>
-          Share
-        </button>
+      <div class="view-actions">
+        <button class="snippet-btn" onclick="copyViewCode()"><span class="material-icons">content_copy</span> Copy</button>
+        <button class="snippet-btn" onclick="shareViewSnippet()"><span class="material-icons">share</span> Share</button>
       </div>
     </div>
-    <div class="view-modal-code" id="viewModalCode">
-      // Loading...
-    </div>
-    <div class="view-modal-info" style="border-top: 1px solid var(--border);">
-      <div class="view-modal-meta-item">
-        <span class="material-icons" style="font-size: 1rem;">description</span>
-        <span id="viewModalDescription">Description</span>
-      </div>
-    </div>
+    <div class="view-code" id="viewModalCode">// Loading...</div>
+    <div class="view-footer" id="viewModalDescription">No description</div>
   </div>
 </div>
 
-<!-- ================= MAIN ================= -->
-<div class="container-custom">
-
-  <!-- HEADER with User Menu -->
-  <div class="header">
-    <div class="header-title">Manzxy <span>Codes</span></div>
-    <div style="display: flex; align-items: center; gap: 1rem;">
-      <div class="user-menu" id="userMenu">
-        <div id="userLoggedOut">
-          <button class="login-btn" onclick="showAuthModal()">
-            <i class="fas fa-sign-in-alt"></i>
-            Login
-          </button>
-        </div>
-        <div id="userLoggedIn" class="hidden">
-          <span id="userDisplayName" style="color: var(--text); margin-right: 0.5rem;"></span>
-          <img id="userAvatar" src="" class="user-avatar" onclick="showProfileModal()">
-        </div>
+<!-- MAIN -->
+<main class="main">
+  <div class="topbar">
+    <div class="topbar-title">Manzxy <span>Codes</span></div>
+    <div class="user-area">
+      <div id="userLoggedOut">
+        <button class="login-btn" onclick="showAuthModal()">
+          <i class="fas fa-sign-in-alt"></i> Login
+        </button>
       </div>
-      <div class="theme-toggle">
-        <span class="toggle-icon">🌙</span>
-        <label class="toggle-switch">
-          <input type="checkbox" id="themeToggle" onchange="toggleTheme()">
-          <span class="toggle-slider"></span>
-        </label>
-        <span class="toggle-icon">☀️</span>
+      <div id="userLoggedIn" class="hidden" style="display:flex;align-items:center;gap:0.5rem;">
+        <span class="user-displayname" id="userDisplayName"></span>
+        <img id="userAvatar" src="" class="user-avatar" onclick="showProfileModal()">
       </div>
     </div>
   </div>
 
-  <!-- TABS -->
-  <div class="snippets-header">
-    <div class="snippets-tabs">
-      <button class="tab-btn active" onclick="switchTab('all')" id="tabAll">All Snippets</button>
-      <button class="tab-btn" onclick="switchTab('mine')" id="tabMine">My Snippets</button>
+  <div class="controls-bar">
+    <div class="tabs">
+      <button class="tab-btn active" onclick="switchTab('all')" id="tabAll">All</button>
+      <button class="tab-btn" onclick="switchTab('mine')" id="tabMine">Mine</button>
       <button class="tab-btn" onclick="switchTab('liked')" id="tabLiked">Liked</button>
     </div>
-    <div class="snippets-filter" id="languageFilter">
-      <button class="filter-btn active" onclick="filterSnippets('all')">All</button>
-      <button class="filter-btn" onclick="filterSnippets('javascript')">JS</button>
-      <button class="filter-btn" onclick="filterSnippets('python')">Py</button>
-      <button class="filter-btn" onclick="filterSnippets('php')">PHP</button>
-      <button class="filter-btn" onclick="filterSnippets('html')">HTML</button>
-      <button class="filter-btn" onclick="filterSnippets('css')">CSS</button>
-      <button class="filter-btn" onclick="filterSnippets('java')">Java</button>
-      <button class="filter-btn" onclick="filterSnippets('cpp')">C++</button>
-      <button class="filter-btn" onclick="filterSnippets('csharp')">C#</button>
-      <button class="filter-btn" onclick="filterSnippets('ruby')">Ruby</button>
-      <button class="filter-btn" onclick="filterSnippets('go')">Go</button>
-      <button class="filter-btn" onclick="filterSnippets('rust')">Rust</button>
-      <button class="filter-btn" onclick="filterSnippets('swift')">Swift</button>
-      <button class="filter-btn" onclick="filterSnippets('kotlin')">Kotlin</button>
-      <button class="filter-btn" onclick="filterSnippets('typescript')">TS</button>
-      <button class="filter-btn" onclick="filterSnippets('sql')">SQL</button>
-      <button class="filter-btn" onclick="filterSnippets('bash')">Bash</button>
+    <div class="lang-filters" id="langFilters">
+      <button class="filter-btn active" onclick="filterSnippets('all',event)">ALL</button>
+      <button class="filter-btn" onclick="filterSnippets('javascript',event)">JS</button>
+      <button class="filter-btn" onclick="filterSnippets('python',event)">PY</button>
+      <button class="filter-btn" onclick="filterSnippets('php',event)">PHP</button>
+      <button class="filter-btn" onclick="filterSnippets('html',event)">HTML</button>
+      <button class="filter-btn" onclick="filterSnippets('css',event)">CSS</button>
+      <button class="filter-btn" onclick="filterSnippets('java',event)">JAVA</button>
+      <button class="filter-btn" onclick="filterSnippets('typescript',event)">TS</button>
+      <button class="filter-btn" onclick="filterSnippets('bash',event)">BASH</button>
+      <button class="filter-btn" onclick="filterSnippets('sql',event)">SQL</button>
+      <button class="filter-btn" onclick="filterSnippets('go',event)">GO</button>
+      <button class="filter-btn" onclick="filterSnippets('rust',event)">RUST</button>
     </div>
   </div>
 
-  <!-- SNIPPETS GRID -->
-  <div id="snippetsGrid" class="snippets-grid">
-    <div class="loader"></div>
-  </div>
+  <div id="snippetsGrid" class="snippets-grid"><div class="loader"></div></div>
 
-  <!-- NO RESULTS MESSAGE -->
   <div id="noSnippets" class="no-results hidden">
-    <span class="material-icons" style="font-size: 3rem;">code_off</span>
-    <p style="margin-top: 1rem;">No snippets found</p>
+    <span class="material-icons">code_off</span>
+    <p style="margin-top:0.625rem;">No snippets found</p>
   </div>
 
-  <!-- ADD SNIPPET FORM -->
-  <div class="add-snippet" id="addSnippetSection">
-    <h3 class="add-snippet-title">➕ Add New Snippet</h3>
+  <!-- ADD SNIPPET -->
+  <div class="add-snippet-section" id="addSnippetSection">
+    <div class="add-snippet-title">
+      <span class="material-icons">add_circle</span>
+      <span id="addSnippetLabel">Add New Snippet</span>
+    </div>
     <div id="addSnippetLoggedOut" class="login-prompt">
-      <p>Please login to add snippets</p>
-      <button class="btn btn-primary" onclick="showAuthModal()">Login Now</button>
+      <p>Login to add and share your code snippets</p>
+      <button class="btn btn-primary" style="margin-top:0.875rem;" onclick="showAuthModal()">
+        <span class="material-icons">login</span> Login Now
+      </button>
     </div>
     <div id="addSnippetLoggedIn" class="hidden">
-      <form id="addSnippetForm" class="add-snippet-form" onsubmit="addSnippet(event)">
-        <div class="form-row">
+      <form id="addSnippetForm" onsubmit="addSnippet(event)">
+        <div class="form-grid">
           <div class="form-group">
             <label class="form-label">Title</label>
-            <input type="text" id="snippetTitle" class="form-select" placeholder="e.g., Fetch API Example" required>
+            <input type="text" id="snippetTitle" class="form-input" placeholder="e.g., Fetch API Example" required>
           </div>
           <div class="form-group">
             <label class="form-label">Language</label>
@@ -1203,821 +573,328 @@ body.light .view-modal-code {
               <option value="bash">Bash</option>
             </select>
           </div>
-        </div>
-        <div class="form-group">
-          <label class="form-label">Description</label>
-          <input type="text" id="snippetDesc" class="form-select" placeholder="Brief description of the snippet" required>
-        </div>
-        <div class="form-group">
-          <label class="form-label">Code</label>
-          <textarea id="snippetCode" class="form-textarea" placeholder="Paste your code here..." required></textarea>
+          <div class="form-group full">
+            <label class="form-label">Description</label>
+            <input type="text" id="snippetDesc" class="form-input" placeholder="Brief description" required>
+          </div>
+          <div class="form-group full">
+            <label class="form-label">Code</label>
+            <textarea id="snippetCode" class="form-textarea" placeholder="Paste your code here..." required></textarea>
+          </div>
         </div>
         <div class="form-actions">
-          <button type="button" class="btn btn-secondary" onclick="clearForm()">Clear</button>
-          <button type="submit" class="btn btn-primary">Add Snippet</button>
+          <button type="button" class="btn btn-ghost" onclick="clearForm()">Clear</button>
+          <button type="submit" class="btn btn-primary" id="submitBtn">
+            <span class="material-icons">upload</span> <span id="submitLabel">Add Snippet</span>
+          </button>
         </div>
       </form>
     </div>
   </div>
-
-</div>
+</main>
 
 <script>
-// ==================== CONSOLE TEST ====================
-console.log('✅ Snippet page loaded');
-console.log('📍 Current URL:', window.location.href);
-console.log('📍 Origin:', window.location.origin);
+// ── SIDEBAR ──
+function toggleSidebar() { document.getElementById('sidebar').classList.toggle('open'); }
+document.addEventListener('click', (e) => {
+  const s=document.getElementById('sidebar'), t=document.getElementById('menuToggle');
+  if(!s.contains(e.target)&&!t.contains(e.target)) s.classList.remove('open');
+});
 
-// Test localStorage
-try {
-    localStorage.setItem('test', 'ok');
-    console.log('✅ localStorage working');
-    localStorage.removeItem('test');
-} catch (e) {
-    console.error('❌ localStorage error:', e);
-}
+// ── THEME ──
+function toggleTheme() { const v=document.getElementById('themeToggle').checked; document.body.classList.toggle('light',v); localStorage.setItem('theme',v?'light':'dark'); }
+(function(){ const t=localStorage.getItem('theme')||'dark'; if(t==='light'){document.body.classList.add('light');const el=document.getElementById('themeToggle');if(el)el.checked=true;} })();
 
-// ==================== AUTH STATE ====================
+// ── TOAST ──
+function showToast(msg) { const t=document.createElement('div'); t.className='toast'; t.textContent=msg; document.body.appendChild(t); setTimeout(()=>{t.style.opacity='0';t.style.transition='opacity 0.3s';setTimeout(()=>t.remove(),300);},2500); }
+
+// ── CLIPBOARD ──
+async function copyToClipboard(text) { try{await navigator.clipboard.writeText(text);showToast('✅ Copied!');}catch{showToast('❌ Failed');} }
+
+// ── STATE ──
 let currentUser = null;
 let currentTab = 'all';
 let currentFilter = 'all';
 let editingSnippetId = null;
 let currentViewSnippet = null;
 
-// ==================== GOOGLE OAUTH ====================
-// GANTI DENGAN CLIENT ID GOOGLE ANDA
-let googleClientId = 'YOUR_GOOGLE_CLIENT_ID.apps.googleusercontent.com';
-
-// Initialize Google Sign-In
-window.addEventListener('load', function() {
-    if (typeof google !== 'undefined' && google.accounts) {
-        google.accounts.id.initialize({
-            client_id: googleClientId,
-            callback: handleGoogleCredential
-        });
-        console.log('✅ Google Sign-In initialized');
-    }
-});
-
-function loginWithGoogle() {
-    if (typeof google !== 'undefined' && google.accounts) {
-        google.accounts.id.prompt(); // Munculkan popup Google
-    } else {
-        showToast('❌ Google Sign-In not loaded', 'error');
-    }
-}
-
+// ── GOOGLE OAUTH ──
+const googleClientId = 'YOUR_GOOGLE_CLIENT_ID.apps.googleusercontent.com';
+window.addEventListener('load', function() { if(typeof google!=='undefined'&&google.accounts){google.accounts.id.initialize({client_id:googleClientId,callback:handleGoogleCredential});} });
+function loginWithGoogle() { if(typeof google!=='undefined'&&google.accounts){google.accounts.id.prompt();}else{showToast('❌ Google Sign-In not available');} }
 function handleGoogleCredential(response) {
-    try {
-        // Decode JWT token
-        const payload = JSON.parse(atob(response.credential.split('.')[1]));
-        
-        const user = {
-            id: 'google_' + payload.sub,
-            provider: 'google',
-            name: payload.name,
-            email: payload.email,
-            avatar: payload.picture,
-            displayName: payload.name,
-            username: payload.email.split('@')[0],
-            bio: ''
-        };
-        
-        currentUser = user;
-        localStorage.setItem('currentUser', JSON.stringify(user));
-        updateUserUI();
-        renderSnippets();
-        showToast(`Welcome ${payload.name}!`, 'success');
-        
-    } catch (error) {
-        console.error('Google auth error:', error);
-        showToast('❌ Google login failed', 'error');
-    }
+  try {
+    const p=JSON.parse(atob(response.credential.split('.')[1]));
+    const user={id:'google_'+p.sub,provider:'google',name:p.name,email:p.email,avatar:p.picture,displayName:p.name,username:p.email.split('@')[0],bio:''};
+    currentUser=user; localStorage.setItem('currentUser',JSON.stringify(user)); updateUserUI(); renderSnippets(); showToast(`Welcome ${p.name}!`);
+  } catch(e){showToast('❌ Google login failed');}
 }
 
-// ==================== GITHUB OAUTH ====================
-// GANTI DENGAN CLIENT ID GITHUB ANDA
-const GITHUB_CLIENT_ID = 'Ov23ctRnIkJzTTgFJUZn';
-const GITHUB_REDIRECT_URI = window.location.origin + 'github-callback.html';
-
+// ── GITHUB OAUTH ──
+const GITHUB_CLIENT_ID='Ov23ctRnIkJzTTgFJUZn';
+const GITHUB_REDIRECT_URI=window.location.origin+'/github-callback.html';
 function loginWithGithub() {
-    // Buka popup untuk GitHub login
-    const width = 600;
-    const height = 700;
-    const left = window.screen.width / 2 - width / 2;
-    const top = window.screen.height / 2 - height / 2;
-    
-    window.open(
-        `https://github.com/login/oauth/authorize?client_id=${GITHUB_CLIENT_ID}&redirect_uri=${GITHUB_REDIRECT_URI}&scope=user:email`,
-        'github-login',
-        `width=${width},height=${height},top=${top},left=${left}`
-    );
-    
-    // Listen for message from popup
-    window.addEventListener('message', handleGithubMessage);
+  const w=600,h=700,l=window.screen.width/2-w/2,t=window.screen.height/2-h/2;
+  window.open(`https://github.com/login/oauth/authorize?client_id=${GITHUB_CLIENT_ID}&redirect_uri=${encodeURIComponent(GITHUB_REDIRECT_URI)}&scope=user:email`,'github-login',`width=${w},height=${h},top=${t},left=${l}`);
+  window.addEventListener('message',handleGithubMessage);
 }
-
 function handleGithubMessage(event) {
-    // Verify origin untuk keamanan
-    if (event.origin !== window.location.origin) return;
-    
-    if (event.data.type === 'github-auth') {
-        const code = event.data.code;
-        if (code) {
-            handleGithubCallback(code);
-        }
-        // Remove listener after handling
-        window.removeEventListener('message', handleGithubMessage);
-    }
+  if(event.origin!==window.location.origin)return;
+  if(event.data.type==='github-auth'){const code=event.data.code;if(code)handleGithubCallback(code);window.removeEventListener('message',handleGithubMessage);}
 }
-
 async function handleGithubCallback(code) {
-    showToast('🔄 Authenticating with GitHub...', 'info');
-    
-    try {
-        // Ganti dengan endpoint di server Anda
-        const response = await fetch('https://manzxy.my.id/auth/github', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ code })
-        });
-        
-        if (!response.ok) {
-            throw new Error('Authentication failed');
-        }
-        
-        const data = await response.json();
-        
-        const user = {
-            id: 'github_' + data.id,
-            provider: 'github',
-            name: data.name || data.login,
-            email: data.email,
-            avatar: data.avatar_url,
-            displayName: data.name || data.login,
-            username: data.login,
-            bio: data.bio || ''
-        };
-        
-        currentUser = user;
-        localStorage.setItem('currentUser', JSON.stringify(user));
-        updateUserUI();
-        renderSnippets();
-        showToast(`Welcome ${data.name || data.login}!`, 'success');
-        
-    } catch (error) {
-        console.error('GitHub auth error:', error);
-        showToast('❌ GitHub login failed', 'error');
-    }
+  showToast('🔄 Authenticating...');
+  try {
+    const res=await fetch('https://manzxy.my.id/auth/github',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({code})});
+    if(!res.ok)throw new Error('Auth failed');
+    const data=await res.json();
+    const user={id:'github_'+data.id,provider:'github',name:data.name||data.login,email:data.email,avatar:data.avatar_url,displayName:data.name||data.login,username:data.login,bio:data.bio||''};
+    currentUser=user; localStorage.setItem('currentUser',JSON.stringify(user)); updateUserUI(); renderSnippets(); showToast(`Welcome ${data.name||data.login}!`);
+  } catch(e){showToast('❌ GitHub login failed');}
 }
 
-// ==================== AUTH FUNCTIONS ====================
+// ── AUTH FUNCTIONS ──
 function loadUser() {
-    try {
-        const savedUser = localStorage.getItem('currentUser');
-        if (savedUser) {
-            currentUser = JSON.parse(savedUser);
-            updateUserUI();
-        } else {
-            currentUser = null;
-            updateUserUI();
-        }
-    } catch (error) {
-        console.error('Error loading user:', error);
-        currentUser = null;
-        updateUserUI();
-    }
+  try{const s=localStorage.getItem('currentUser');if(s){currentUser=JSON.parse(s);}else{currentUser=null;}updateUserUI();}
+  catch(e){currentUser=null;updateUserUI();}
 }
 
 function updateUserUI() {
-    const loggedOut = document.getElementById('userLoggedOut');
-    const loggedIn = document.getElementById('userLoggedIn');
-    const addSnippetLoggedOut = document.getElementById('addSnippetLoggedOut');
-    const addSnippetLoggedIn = document.getElementById('addSnippetLoggedIn');
-    const logoutBtn = document.getElementById('logoutBtn');
-    
-    if (!loggedOut || !loggedIn || !addSnippetLoggedOut || !addSnippetLoggedIn || !logoutBtn) {
-        console.warn('UI elements not found');
-        return;
-    }
-    
-    if (currentUser) {
-        // User is logged in
-        loggedOut.classList.add('hidden');
-        loggedIn.classList.remove('hidden');
-        
-        const displayNameEl = document.getElementById('userDisplayName');
-        const avatarEl = document.getElementById('userAvatar');
-        
-        if (displayNameEl) {
-            displayNameEl.textContent = currentUser.displayName || currentUser.name || 'User';
-        }
-        
-        if (avatarEl) {
-            avatarEl.src = currentUser.avatar || 'https://c.termai.cc/i151/YU4EKRg.jpg';
-        }
-        
-        addSnippetLoggedOut.classList.add('hidden');
-        addSnippetLoggedIn.classList.remove('hidden');
-        
-        if (logoutBtn) logoutBtn.style.display = 'flex';
-    } else {
-        // User is logged out
-        loggedOut.classList.remove('hidden');
-        loggedIn.classList.add('hidden');
-        
-        addSnippetLoggedOut.classList.remove('hidden');
-        addSnippetLoggedIn.classList.add('hidden');
-        
-        if (logoutBtn) logoutBtn.style.display = 'none';
-    }
+  const lo=document.getElementById('userLoggedOut'),li=document.getElementById('userLoggedIn');
+  const alo=document.getElementById('addSnippetLoggedOut'),ali=document.getElementById('addSnippetLoggedIn');
+  const profileBtn=document.getElementById('sidebarProfileBtn'),logoutBtn=document.getElementById('sidebarLogoutBtn');
+  if(currentUser){
+    if(lo) lo.classList.add('hidden');
+    if(li){li.classList.remove('hidden');li.style.display='flex';}
+    const dn=document.getElementById('userDisplayName'),av=document.getElementById('userAvatar');
+    if(dn) dn.textContent=currentUser.displayName||currentUser.name||'User';
+    if(av) av.src=currentUser.avatar||'https://c.termai.cc/i151/YU4EKRg.jpg';
+    if(alo) alo.classList.add('hidden');
+    if(ali){ali.classList.remove('hidden');ali.style.display='';}
+    if(profileBtn) profileBtn.style.display='flex';
+    if(logoutBtn) logoutBtn.style.display='flex';
+  } else {
+    if(lo) lo.classList.remove('hidden');
+    if(li) li.classList.add('hidden');
+    if(alo) alo.classList.remove('hidden');
+    if(ali) ali.classList.add('hidden');
+    if(profileBtn) profileBtn.style.display='none';
+    if(logoutBtn) logoutBtn.style.display='none';
+  }
 }
 
-function showAuthModal() {
-    document.getElementById('authModal').classList.remove('hidden');
-}
-
-function hideAuthModal() {
-    document.getElementById('authModal').classList.add('hidden');
-}
+function showAuthModal() { document.getElementById('authModal').classList.remove('hidden'); }
+function hideAuthModal() { document.getElementById('authModal').classList.add('hidden'); }
 
 function showProfileModal() {
-    if (!currentUser) {
-        showAuthModal();
-        return;
-    }
-    
-    document.getElementById('profileUsername').value = currentUser.username || '';
-    document.getElementById('profileDisplayName').value = currentUser.displayName || currentUser.name || '';
-    document.getElementById('profileAvatar').value = currentUser.avatar || '';
-    document.getElementById('profileBio').value = currentUser.bio || '';
-    
-    updateAvatarPreview();
-    document.getElementById('profileModal').classList.remove('hidden');
+  if(!currentUser){showAuthModal();return;}
+  document.getElementById('profileUsername').value=currentUser.username||'';
+  document.getElementById('profileDisplayName').value=currentUser.displayName||currentUser.name||'';
+  document.getElementById('profileAvatar').value=currentUser.avatar||'';
+  document.getElementById('profileBio').value=currentUser.bio||'';
+  updateAvatarPreview();
+  document.getElementById('profileModal').classList.remove('hidden');
 }
-
-function hideProfileModal() {
-    document.getElementById('profileModal').classList.add('hidden');
-}
-
-function updateAvatarPreview() {
-    const avatarUrl = document.getElementById('profileAvatar').value;
-    const preview = document.getElementById('profileAvatarPreview');
-    if (avatarUrl) {
-        preview.src = avatarUrl;
-        preview.classList.remove('hidden');
-    } else {
-        preview.classList.add('hidden');
-    }
-}
+function hideProfileModal() { document.getElementById('profileModal').classList.add('hidden'); }
+function updateAvatarPreview() { const u=document.getElementById('profileAvatar').value,p=document.getElementById('profileAvatarPreview');if(u){p.src=u;p.classList.remove('hidden');}else{p.classList.add('hidden');} }
 
 function saveProfile() {
-    if (!currentUser) return;
-    
-    currentUser.username = document.getElementById('profileUsername').value;
-    currentUser.displayName = document.getElementById('profileDisplayName').value;
-    currentUser.avatar = document.getElementById('profileAvatar').value;
-    currentUser.bio = document.getElementById('profileBio').value;
-    
-    localStorage.setItem('currentUser', JSON.stringify(currentUser));
-    
-    // Update all snippets with new user info
-    const snippets = JSON.parse(localStorage.getItem('snippets') || '[]');
-    snippets.forEach(snippet => {
-        if (snippet.authorId === currentUser.id) {
-            snippet.authorName = currentUser.displayName || currentUser.name;
-            snippet.authorAvatar = currentUser.avatar;
-        }
-    });
-    localStorage.setItem('snippets', JSON.stringify(snippets));
-    
-    updateUserUI();
-    renderSnippets();
-    hideProfileModal();
-    showToast('Profile updated successfully!', 'success');
+  if(!currentUser)return;
+  currentUser.username=document.getElementById('profileUsername').value;
+  currentUser.displayName=document.getElementById('profileDisplayName').value;
+  currentUser.avatar=document.getElementById('profileAvatar').value;
+  currentUser.bio=document.getElementById('profileBio').value;
+  localStorage.setItem('currentUser',JSON.stringify(currentUser));
+  const snippets=JSON.parse(localStorage.getItem('snippets')||'[]');
+  snippets.forEach(s=>{if(s.authorId===currentUser.id){s.authorName=currentUser.displayName||currentUser.name;s.authorAvatar=currentUser.avatar;}});
+  localStorage.setItem('snippets',JSON.stringify(snippets));
+  updateUserUI(); renderSnippets(); hideProfileModal(); showToast('✅ Profile updated!');
 }
 
-function logout() {
-    currentUser = null;
-    localStorage.removeItem('currentUser');
-    updateUserUI();
-    renderSnippets();
-    showToast('Logged out successfully!', 'info');
-    document.getElementById('menuDropdown').classList.add('hidden');
-}
+function logout() { currentUser=null; localStorage.removeItem('currentUser'); updateUserUI(); renderSnippets(); showToast('Logged out'); document.getElementById('sidebar').classList.remove('open'); }
 
-// ==================== VIEW CODE MODAL ====================
+// ── VIEW MODAL ──
 function showViewModal(snippet) {
-    try {
-        currentViewSnippet = snippet;
-        
-        const modal = document.getElementById('viewModal');
-        const titleEl = document.getElementById('viewModalTitle');
-        const langEl = document.getElementById('viewModalLanguage');
-        const authorEl = document.getElementById('viewModalAuthor');
-        const likesEl = document.getElementById('viewModalLikes');
-        const descEl = document.getElementById('viewModalDescription');
-        const codeEl = document.getElementById('viewModalCode');
-        const rawLink = document.getElementById('viewModalRawLink');
-        
-        if (titleEl) titleEl.textContent = snippet.title || 'Untitled';
-        if (langEl) langEl.textContent = snippet.language || 'text';
-        if (authorEl) authorEl.textContent = snippet.authorName || snippet.author || 'Anonymous';
-        if (likesEl) likesEl.textContent = snippet.likes || 0;
-        if (descEl) descEl.textContent = snippet.description || 'No description';
-        if (codeEl) codeEl.textContent = snippet.code || '// No code';
-        
-        // Raw link dengan data URL
-        if (rawLink) {
-            const rawContent = snippet.code || '';
-            rawLink.href = `data:text/plain;charset=utf-8,${encodeURIComponent(rawContent)}`;
-        }
-        
-        if (modal) modal.classList.remove('hidden');
-        
-    } catch (error) {
-        console.error('Error showing view modal:', error);
-    }
+  currentViewSnippet=snippet;
+  document.getElementById('viewModalTitle').textContent=snippet.title||'Untitled';
+  document.getElementById('viewModalLanguage').textContent=snippet.language||'text';
+  document.getElementById('viewModalAuthor').textContent=snippet.authorName||snippet.author||'Anonymous';
+  document.getElementById('viewModalLikes').textContent=snippet.likes||0;
+  document.getElementById('viewModalDescription').textContent=snippet.description||'No description';
+  document.getElementById('viewModalCode').textContent=snippet.code||'// No code';
+  document.getElementById('viewModal').classList.remove('hidden');
 }
+function hideViewModal() { document.getElementById('viewModal').classList.add('hidden'); }
+function copyViewCode() { if(currentViewSnippet) copyToClipboard(currentViewSnippet.code); }
+function shareViewSnippet() { if(currentViewSnippet) shareSnippet(currentViewSnippet.id); }
 
-function hideViewModal() {
-    const modal = document.getElementById('viewModal');
-    if (modal) modal.classList.add('hidden');
-}
-
-function copyViewCode() {
-    if (currentViewSnippet) {
-        copyToClipboard(currentViewSnippet.code);
-    }
-}
-
-function shareViewSnippet() {
-    if (currentViewSnippet) {
-        shareSnippet(currentViewSnippet.id);
-    }
-}
-
-// ==================== SNIPPET FUNCTIONS ====================
-function showToast(message, type = 'info') {
-    const toast = document.createElement('div');
-    toast.style.position = 'fixed';
-    toast.style.bottom = '20px';
-    toast.style.left = '20px';
-    toast.style.background = 'var(--panel)';
-    toast.style.border = '1px solid var(--border)';
-    toast.style.borderRadius = '6px';
-    toast.style.padding = '0.75rem 1.5rem';
-    toast.style.color = type === 'success' ? 'var(--success)' : type === 'error' ? 'var(--error)' : 'var(--text)';
-    toast.style.fontSize = '0.875rem';
-    toast.style.zIndex = '9999';
-    toast.style.boxShadow = '0 4px 6px rgba(0,0,0,0.1)';
-    toast.style.backdropFilter = 'blur(8px)';
-    toast.style.transition = 'opacity 0.3s ease';
-    toast.textContent = message;
-    
-    document.body.appendChild(toast);
-    
-    setTimeout(() => {
-        toast.style.opacity = '0';
-        setTimeout(() => {
-            document.body.removeChild(toast);
-        }, 300);
-    }, 3000);
-}
-
-async function copyToClipboard(text) {
-    try {
-        await navigator.clipboard.writeText(text);
-        showToast('✅ Copied to clipboard!', 'success');
-    } catch (err) {
-        showToast('❌ Failed to copy', 'error');
-    }
-}
-
-function shareSnippet(id) {
-    const url = `${window.location.origin}${window.location.pathname}?snippet=${id}`;
-    copyToClipboard(url);
-    showToast('🔗 Share link copied!', 'success');
-}
+// ── SNIPPETS ──
+function shareSnippet(id) { copyToClipboard(`${window.location.origin}${window.location.pathname}?snippet=${id}`); showToast('🔗 Link copied!'); }
 
 function checkSharedSnippet() {
-    const urlParams = new URLSearchParams(window.location.search);
-    const snippetId = urlParams.get('snippet');
-    if (snippetId) {
-        const snippets = JSON.parse(localStorage.getItem('snippets') || '[]');
-        const snippet = snippets.find(s => s.id === snippetId);
-        if (snippet) {
-            setTimeout(() => {
-                showViewModal(snippet);
-            }, 500);
-        }
-    }
+  const id=new URLSearchParams(window.location.search).get('snippet');
+  if(id){const s=JSON.parse(localStorage.getItem('snippets')||'[]').find(x=>x.id===id);if(s)setTimeout(()=>showViewModal(s),300);}
 }
 
-function toggleLike(id, button, event) {
-    event.stopPropagation();
-    
-    if (!currentUser) {
-        showAuthModal();
-        return;
-    }
-    
-    const snippets = JSON.parse(localStorage.getItem('snippets') || '[]');
-    const snippet = snippets.find(s => s.id === id);
-    
-    if (snippet) {
-        const likedBy = snippet.likedBy || [];
-        const userIndex = likedBy.indexOf(currentUser.id);
-        
-        if (userIndex === -1) {
-            // Like
-            likedBy.push(currentUser.id);
-            snippet.likes = (snippet.likes || 0) + 1;
-            button.classList.add('liked');
-            showToast('❤️ Liked!', 'success');
-        } else {
-            // Unlike
-            likedBy.splice(userIndex, 1);
-            snippet.likes = Math.max(0, (snippet.likes || 0) - 1);
-            button.classList.remove('liked');
-            showToast('💔 Unliked', 'info');
-        }
-        
-        snippet.likedBy = likedBy;
-        localStorage.setItem('snippets', JSON.stringify(snippets));
-        renderSnippets();
-    }
+function toggleLike(id, btn, e) {
+  e.stopPropagation();
+  if(!currentUser){showAuthModal();return;}
+  const snippets=JSON.parse(localStorage.getItem('snippets')||'[]');
+  const s=snippets.find(x=>x.id===id);
+  if(s){
+    const lb=s.likedBy||[];
+    const idx=lb.indexOf(currentUser.id);
+    if(idx===-1){lb.push(currentUser.id);s.likes=(s.likes||0)+1;showToast('❤️ Liked!');}
+    else{lb.splice(idx,1);s.likes=Math.max(0,(s.likes||0)-1);showToast('💔 Unliked');}
+    s.likedBy=lb; localStorage.setItem('snippets',JSON.stringify(snippets)); renderSnippets();
+  }
 }
 
-function editSnippet(id, event) {
-    event.stopPropagation();
-    
-    if (!currentUser) {
-        showAuthModal();
-        return;
-    }
-    
-    const snippets = JSON.parse(localStorage.getItem('snippets') || '[]');
-    const snippet = snippets.find(s => s.id === id);
-    
-    if (snippet && snippet.authorId === currentUser.id) {
-        document.getElementById('snippetTitle').value = snippet.title;
-        document.getElementById('snippetLanguage').value = snippet.language;
-        document.getElementById('snippetDesc').value = snippet.description;
-        document.getElementById('snippetCode').value = snippet.code;
-        
-        editingSnippetId = id;
-        
-        document.querySelector('.add-snippet-title').textContent = '✏️ Edit Snippet';
-        document.querySelector('#addSnippetForm button[type="submit"]').textContent = 'Update Snippet';
-        
-        // Scroll to form
-        document.querySelector('.add-snippet').scrollIntoView({ behavior: 'smooth' });
-    }
+function editSnippet(id, e) {
+  e.stopPropagation();
+  if(!currentUser){showAuthModal();return;}
+  const snippets=JSON.parse(localStorage.getItem('snippets')||'[]');
+  const s=snippets.find(x=>x.id===id);
+  if(s&&s.authorId===currentUser.id){
+    document.getElementById('snippetTitle').value=s.title;
+    document.getElementById('snippetLanguage').value=s.language;
+    document.getElementById('snippetDesc').value=s.description;
+    document.getElementById('snippetCode').value=s.code;
+    editingSnippetId=id;
+    document.getElementById('addSnippetLabel').textContent='Edit Snippet';
+    document.getElementById('submitLabel').textContent='Update';
+    document.querySelector('.add-snippet-section').scrollIntoView({behavior:'smooth'});
+  }
 }
 
-function deleteSnippet(id, event) {
-    event.stopPropagation();
-    
-    if (!currentUser) {
-        showAuthModal();
-        return;
-    }
-    
-    if (confirm('Are you sure you want to delete this snippet?')) {
-        let snippets = JSON.parse(localStorage.getItem('snippets') || '[]');
-        snippets = snippets.filter(s => !(s.id === id && s.authorId === currentUser.id));
-        localStorage.setItem('snippets', JSON.stringify(snippets));
-        renderSnippets();
-        showToast('🗑️ Snippet deleted!', 'success');
-    }
+function deleteSnippet(id, e) {
+  e.stopPropagation();
+  if(!currentUser){showAuthModal();return;}
+  if(confirm('Delete this snippet?')){
+    let s=JSON.parse(localStorage.getItem('snippets')||'[]');
+    s=s.filter(x=>!(x.id===id&&x.authorId===currentUser.id));
+    localStorage.setItem('snippets',JSON.stringify(s)); renderSnippets(); showToast('🗑️ Deleted!');
+  }
 }
 
 function clearForm() {
-    document.getElementById('snippetTitle').value = '';
-    document.getElementById('snippetDesc').value = '';
-    document.getElementById('snippetCode').value = '';
-    document.getElementById('snippetLanguage').value = 'javascript';
-    editingSnippetId = null;
-    document.querySelector('.add-snippet-title').textContent = '➕ Add New Snippet';
-    document.querySelector('#addSnippetForm button[type="submit"]').textContent = 'Add Snippet';
+  ['snippetTitle','snippetDesc','snippetCode'].forEach(id=>{document.getElementById(id).value='';});
+  document.getElementById('snippetLanguage').value='javascript';
+  editingSnippetId=null;
+  document.getElementById('addSnippetLabel').textContent='Add New Snippet';
+  document.getElementById('submitLabel').textContent='Add Snippet';
 }
 
-function addSnippet(event) {
-    event.preventDefault();
-    
-    if (!currentUser) {
-        showAuthModal();
-        return;
-    }
-    
-    const title = document.getElementById('snippetTitle').value;
-    const language = document.getElementById('snippetLanguage').value;
-    const description = document.getElementById('snippetDesc').value;
-    const code = document.getElementById('snippetCode').value;
-    
-    const snippets = JSON.parse(localStorage.getItem('snippets') || '[]');
-    
-    if (editingSnippetId) {
-        // Update existing snippet
-        const index = snippets.findIndex(s => s.id === editingSnippetId);
-        if (index !== -1 && snippets[index].authorId === currentUser.id) {
-            snippets[index] = {
-                ...snippets[index],
-                title,
-                language,
-                description,
-                code,
-                updatedAt: new Date().toISOString()
-            };
-            showToast('✅ Snippet updated!', 'success');
-        }
-    } else {
-        // Add new snippet
-        const snippet = {
-            id: Date.now().toString(),
-            title,
-            language,
-            description,
-            code,
-            authorId: currentUser.id,
-            authorName: currentUser.displayName || currentUser.name,
-            author: currentUser.displayName || currentUser.name,
-            authorAvatar: currentUser.avatar || 'https://c.termai.cc/i151/YU4EKRg.jpg',
-            createdAt: new Date().toISOString(),
-            updatedAt: new Date().toISOString(),
-            likes: 0,
-            likedBy: []
-        };
-        
-        snippets.push(snippet);
-        showToast('✅ Snippet added!', 'success');
-    }
-    
-    localStorage.setItem('snippets', JSON.stringify(snippets));
-    clearForm();
-    renderSnippets();
+function addSnippet(e) {
+  e.preventDefault();
+  if(!currentUser){showAuthModal();return;}
+  const title=document.getElementById('snippetTitle').value;
+  const lang=document.getElementById('snippetLanguage').value;
+  const desc=document.getElementById('snippetDesc').value;
+  const code=document.getElementById('snippetCode').value;
+  const snippets=JSON.parse(localStorage.getItem('snippets')||'[]');
+  if(editingSnippetId){
+    const idx=snippets.findIndex(s=>s.id===editingSnippetId);
+    if(idx!==-1&&snippets[idx].authorId===currentUser.id){snippets[idx]={...snippets[idx],title,language:lang,description:desc,code,updatedAt:new Date().toISOString()};showToast('✅ Updated!');}
+  } else {
+    snippets.push({id:Date.now().toString(),title,language:lang,description:desc,code,authorId:currentUser.id,authorName:currentUser.displayName||currentUser.name,author:currentUser.displayName||currentUser.name,authorAvatar:currentUser.avatar||'https://c.termai.cc/i151/YU4EKRg.jpg',createdAt:new Date().toISOString(),updatedAt:new Date().toISOString(),likes:0,likedBy:[]});
+    showToast('✅ Added!');
+  }
+  localStorage.setItem('snippets',JSON.stringify(snippets)); clearForm(); renderSnippets();
 }
 
 function switchTab(tab) {
-    currentTab = tab;
-    document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
-    document.getElementById(`tab${tab.charAt(0).toUpperCase() + tab.slice(1)}`).classList.add('active');
-    renderSnippets();
+  currentTab=tab;
+  document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
+  const el=document.getElementById(`tab${tab.charAt(0).toUpperCase()+tab.slice(1)}`);
+  if(el) el.classList.add('active');
+  renderSnippets();
 }
 
-function filterSnippets(language) {
-    currentFilter = language;
-    document.querySelectorAll('.filter-btn').forEach(btn => btn.classList.remove('active'));
-    event.target.classList.add('active');
-    renderSnippets();
+function filterSnippets(lang, e) {
+  currentFilter=lang;
+  document.querySelectorAll('.filter-btn').forEach(b=>b.classList.remove('active'));
+  if(e&&e.target) e.target.classList.add('active');
+  renderSnippets();
 }
+
+function escHtml(s) { return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
 
 function renderSnippets() {
-    const grid = document.getElementById('snippetsGrid');
-    const noSnippets = document.getElementById('noSnippets');
-    
-    let snippets = JSON.parse(localStorage.getItem('snippets') || '[]');
-    
-    // Apply tab filter
-    if (currentTab === 'mine' && currentUser) {
-        snippets = snippets.filter(s => s.authorId === currentUser.id);
-    } else if (currentTab === 'liked' && currentUser) {
-        snippets = snippets.filter(s => s.likedBy && s.likedBy.includes(currentUser.id));
-    }
-    
-    // Apply language filter
-    if (currentFilter !== 'all') {
-        snippets = snippets.filter(s => s.language === currentFilter);
-    }
-    
-    if (snippets.length === 0) {
-        grid.innerHTML = '';
-        noSnippets.classList.remove('hidden');
-        return;
-    }
-    
-    noSnippets.classList.add('hidden');
-    
-    let html = '';
-    snippets.sort((a, b) => new Date(b.createdAt || 0) - new Date(a.createdAt || 0)).forEach(snippet => {
-        const isOwn = currentUser && snippet.authorId === currentUser.id;
-        const isLiked = currentUser && snippet.likedBy && snippet.likedBy.includes(currentUser.id);
-        
-        // Format date dengan aman
-        let dateStr = 'Recently';
-        try {
-            if (snippet.createdAt) {
-                const date = new Date(snippet.createdAt);
-                if (!isNaN(date.getTime())) {
-                    dateStr = date.toLocaleDateString('id-ID', {
-                        year: 'numeric',
-                        month: 'short',
-                        day: 'numeric'
-                    });
-                }
-            }
-        } catch (e) {
-            dateStr = 'Recently';
-        }
-        
-        // Author name fallback
-        const authorName = snippet.authorName || snippet.author || 'Manzxy';
-        
-        html += `
-            <div class="snippet-card ${isOwn ? 'own-snippet' : ''}" onclick='showViewModal(${JSON.stringify(snippet).replace(/'/g, "\\'")})'>
-                <div class="snippet-header">
-                    <span class="snippet-language">${snippet.language || 'text'}</span>
-                    ${isOwn ? '<span style="color: var(--accent); font-size: 0.75rem;">📌 Your snippet</span>' : ''}
-                </div>
-                <div class="snippet-title">${escapeHtml(snippet.title || 'Untitled')}</div>
-                <div class="snippet-description">${escapeHtml(snippet.description || 'No description')}</div>
-                <div class="snippet-stats">
-                    <div class="snippet-stat">
-                        <span class="material-icons" style="font-size: 1rem;">favorite</span>
-                        <span>${snippet.likes || 0}</span>
-                    </div>
-                    <div class="snippet-stat">
-                        <span class="material-icons" style="font-size: 1rem;">schedule</span>
-                        <span>${dateStr}</span>
-                    </div>
-                </div>
-                <div class="snippet-footer">
-                    <div class="snippet-author" onclick="event.stopPropagation()">
-                        <img src="${snippet.authorAvatar || 'https://c.termai.cc/i151/YU4EKRg.jpg'}" class="snippet-author-avatar">
-                        <span class="snippet-author-name">${escapeHtml(authorName)}</span>
-                    </div>
-                    <div class="snippet-actions">
-                        <button class="snippet-btn ${isLiked ? 'liked' : ''}" onclick="toggleLike('${snippet.id}', this, event)">
-                            ❤️ ${snippet.likes || 0}
-                        </button>
-                        ${isOwn ? `
-                            <button class="snippet-btn edit" onclick="editSnippet('${snippet.id}', event)">
-                                <span class="material-icons" style="font-size: 0.875rem;">edit</span>
-                            </button>
-                            <button class="snippet-btn delete" onclick="deleteSnippet('${snippet.id}', event)">
-                                <span class="material-icons" style="font-size: 0.875rem;">delete</span>
-                            </button>
-                        ` : ''}
-                    </div>
-                </div>
-            </div>
-        `;
-    });
-    
-    grid.innerHTML = html;
+  const grid=document.getElementById('snippetsGrid');
+  const noEl=document.getElementById('noSnippets');
+  let snippets=JSON.parse(localStorage.getItem('snippets')||'[]');
+  if(currentTab==='mine'&&currentUser) snippets=snippets.filter(s=>s.authorId===currentUser.id);
+  else if(currentTab==='liked'&&currentUser) snippets=snippets.filter(s=>s.likedBy&&s.likedBy.includes(currentUser.id));
+  if(currentFilter!=='all') snippets=snippets.filter(s=>s.language===currentFilter);
+
+  if(snippets.length===0){grid.innerHTML='';noEl.classList.remove('hidden');return;}
+  noEl.classList.add('hidden');
+
+  const sorted=snippets.sort((a,b)=>new Date(b.createdAt||0)-new Date(a.createdAt||0));
+  grid.innerHTML=sorted.map(s=>{
+    const isOwn=currentUser&&s.authorId===currentUser.id;
+    const isLiked=currentUser&&s.likedBy&&s.likedBy.includes(currentUser.id);
+    let dateStr='Recently';
+    try{if(s.createdAt){const d=new Date(s.createdAt);if(!isNaN(d))dateStr=d.toLocaleDateString('id-ID',{year:'numeric',month:'short',day:'numeric'});}}catch(e){}
+    const author=s.authorName||s.author||'Manzxy';
+    const codePreview=escHtml((s.code||'').split('\n').slice(0,3).join('\n'));
+    const safeSn=JSON.stringify(s).replace(/\\/g,'\\\\').replace(/'/g,"\\'").replace(/`/g,'\\`');
+
+    return `<div class="snippet-card ${isOwn?'own-snippet':''}" onclick='showViewModal(JSON.parse(decodeURIComponent("${encodeURIComponent(JSON.stringify(s))}")))'>
+      <div class="snippet-header">
+        <span class="lang-badge">${escHtml(s.language||'text')}</span>
+        ${isOwn?'<span class="own-badge"><span class="material-icons" style="font-size:0.75rem;">push_pin</span>Yours</span>':''}
+      </div>
+      <div class="snippet-body">
+        <div class="snippet-title">${escHtml(s.title||'Untitled')}</div>
+        <div class="snippet-desc">${escHtml(s.description||'No description')}</div>
+        ${codePreview?`<div class="snippet-code-preview">${codePreview}</div>`:''}
+      </div>
+      <div class="snippet-stats">
+        <div class="snippet-stat"><span class="material-icons">favorite</span>${s.likes||0}</div>
+        <div class="snippet-stat"><span class="material-icons">schedule</span>${dateStr}</div>
+      </div>
+      <div class="snippet-footer">
+        <div class="snippet-author" onclick="event.stopPropagation()">
+          <img src="${s.authorAvatar||'https://c.termai.cc/i151/YU4EKRg.jpg'}" class="snippet-author-avatar" onerror="this.src='https://c.termai.cc/i151/YU4EKRg.jpg'">
+          <span class="snippet-author-name">${escHtml(author)}</span>
+        </div>
+        <div class="snippet-actions">
+          <button class="snippet-btn ${isLiked?'liked':''}" onclick="toggleLike('${s.id}',this,event)">
+            ❤️ ${s.likes||0}
+          </button>
+          ${isOwn?`
+          <button class="snippet-btn edit-btn" onclick="editSnippet('${s.id}',event)">
+            <span class="material-icons">edit</span>
+          </button>
+          <button class="snippet-btn del-btn" onclick="deleteSnippet('${s.id}',event)">
+            <span class="material-icons">delete</span>
+          </button>`:''}
+        </div>
+      </div>
+    </div>`;
+  }).join('');
 }
-
-function escapeHtml(text) {
-    const div = document.createElement('div');
-    div.textContent = text;
-    return div.innerHTML;
-}
-
-function toggleMenu() {
-    document.getElementById('menuDropdown').classList.toggle('hidden');
-}
-
-// Close menu when clicking outside
-document.addEventListener('click', function(event) {
-    const menuButton = document.getElementById('menuButton');
-    const dropdown = document.getElementById('menuDropdown');
-    
-    if (!menuButton.contains(event.target) && !dropdown.contains(event.target)) {
-        dropdown.classList.add('hidden');
-    }
-});
-
-function toggleTheme() {
-    const isChecked = document.getElementById('themeToggle').checked;
-    if (isChecked) {
-        document.body.classList.add('light');
-        localStorage.setItem('theme', 'light');
-    } else {
-        document.body.classList.remove('light');
-        localStorage.setItem('theme', 'dark');
-    }
-}
-
-// Initialize theme
-(function initTheme() {
-    const savedTheme = localStorage.getItem('theme') || 'dark';
-    if (savedTheme === 'light') {
-        document.body.classList.add('light');
-        document.getElementById('themeToggle').checked = true;
-    }
-})();
 
 function initSnippets() {
-    const snippets = JSON.parse(localStorage.getItem('snippets') || '[]');
-    
-    if (snippets.length === 0) {
-        const sampleSnippets = [
-            {
-                id: '1',
-                title: 'Fetch API Example',
-                language: 'javascript',
-                description: 'How to use Fetch API to get data from endpoint',
-                code: `fetch('https://manzxy.my.id/ai/openai?text=hello')
-  .then(response => response.json())
-  .then(data => console.log(data))
-  .catch(error => console.error('Error:', error));`,
-                authorId: 'system',
-                authorName: 'Manzxy',
-                author: 'Manzxy',
-                authorAvatar: 'https://c.termai.cc/i151/YU4EKRg.jpg',
-                createdAt: new Date().toISOString(),
-                likes: 12,
-                likedBy: []
-            },
-            {
-                id: '2',
-                title: 'Python Requests',
-                language: 'python',
-                description: 'Python script to call API using requests library',
-                code: `import requests
-
-url = "https://manzxy.my.id/ai/openai"
-params = {"text": "hello"}
-
-response = requests.get(url, params=params)
-data = response.json()
-print(data)`,
-                authorId: 'system',
-                authorName: 'Manzxy',
-                author: 'Manzxy',
-                authorAvatar: 'https://c.termai.cc/i151/YU4EKRg.jpg',
-                createdAt: new Date().toISOString(),
-                likes: 8,
-                likedBy: []
-            },
-            {
-                id: '3',
-                title: 'PHP cURL',
-                language: 'php',
-                description: 'PHP implementation using cURL',
-                code: `<?php
-$ch = curl_init();
-curl_setopt($ch, CURLOPT_URL, "https://manzxy.my.id/ai/openai?text=hello");
-curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-$response = curl_exec($ch);
-curl_close($ch);
-
-$data = json_decode($response, true);
-print_r($data);
-?>`,
-                authorId: 'system',
-                authorName: 'Manzxy',
-                author: 'Manzxy',
-                authorAvatar: 'https://c.termai.cc/i151/YU4EKRg.jpg',
-                createdAt: new Date().toISOString(),
-                likes: 5,
-                likedBy: []
-            },
-            {
-                id: '4',
-                title: 'HTML Button',
-                language: 'html',
-                description: 'Simple HTML button with styling',
-                code: `<button class="btn btn-primary" onclick="alert('Hello!')">
-  Click Me
-</button>
-
-<style>
-.btn {
-  padding: 10px 20px;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-}
-.btn-primary {
-  background: #1f6feb;
-  color: white;
-}
-</style>`,
-                authorId: 'system',
-                authorName: 'Manzxy',
-                author: 'Manzxy',
-                authorAvatar: 'https://c.termai.cc/i151/YU4EKRg.jpg',
-                createdAt: new Date().toISOString(),
-                likes: 3,
-                likedBy: []
-            }
-        ];
-        
-        localStorage.setItem('snippets', JSON.stringify(sampleSnippets));
-    }
-    
-    renderSnippets();
+  if(!(JSON.parse(localStorage.getItem('snippets')||'[]').length)){
+    const samples=[
+      {id:'sample1',title:'Fetch API Example',language:'javascript',description:'Call Manzxy API using Fetch',code:`fetch('https://manzxy.my.id/ai/openai?text=hello')\n  .then(res => res.json())\n  .then(data => console.log(data))\n  .catch(err => console.error(err));`,authorId:'system',authorName:'Manzxy',author:'Manzxy',authorAvatar:'https://c.termai.cc/i151/YU4EKRg.jpg',createdAt:new Date().toISOString(),likes:12,likedBy:[]},
+      {id:'sample2',title:'Python Requests',language:'python',description:'Call API using Python requests',code:`import requests\n\nurl = "https://manzxy.my.id/ai/openai"\nparams = {"text": "hello"}\nresponse = requests.get(url, params=params)\nprint(response.json())`,authorId:'system',authorName:'Manzxy',author:'Manzxy',authorAvatar:'https://c.termai.cc/i151/YU4EKRg.jpg',createdAt:new Date().toISOString(),likes:8,likedBy:[]},
+      {id:'sample3',title:'PHP cURL',language:'php',description:'PHP implementation using cURL',code:`<?php\n$ch = curl_init();\ncurl_setopt($ch, CURLOPT_URL, "https://manzxy.my.id/ai/openai?text=hello");\ncurl_setopt($ch, CURLOPT_RETURNTRANSFER, true);\n$response = curl_exec($ch);\ncurl_close($ch);\nprint_r(json_decode($response, true));\n?>`,authorId:'system',authorName:'Manzxy',author:'Manzxy',authorAvatar:'https://c.termai.cc/i151/YU4EKRg.jpg',createdAt:new Date().toISOString(),likes:5,likedBy:[]},
+      {id:'sample4',title:'Axios (Node.js)',language:'javascript',description:'Using Axios in Node.js',code:`const axios = require('axios');\n\naxios.get('https://manzxy.my.id/download/ytmp3', {\n  params: { url: 'https://youtu.be/example' }\n})\n.then(res => console.log(res.data))\n.catch(err => console.error(err));`,authorId:'system',authorName:'Manzxy',author:'Manzxy',authorAvatar:'https://c.termai.cc/i151/YU4EKRg.jpg',createdAt:new Date().toISOString(),likes:6,likedBy:[]}
+    ];
+    localStorage.setItem('snippets',JSON.stringify(samples));
+  }
+  renderSnippets();
 }
 
-// Initialize on load
 document.addEventListener('DOMContentLoaded', () => {
-    loadUser();
-    initSnippets();
-    checkSharedSnippet();
+  loadUser();
+  initSnippets();
+  checkSharedSnippet();
 });
 </script>
-
 </body>
 </html>
