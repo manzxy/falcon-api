@@ -2,7 +2,7 @@
 <html lang="id">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
 <title>Manzxy — TikTok Downloader</title>
 <link rel="icon" href="/assets/icon.png">
 <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
@@ -267,25 +267,96 @@ audio{width:100%;height:36px;outline:none;border-radius:var(--r)}
 
 .hidden{display:none!important}
 
+/* ── SIDEBAR OVERLAY ─────────────────────────────────────── */
+.sb-overlay{
+  display:none;position:fixed;inset:0;
+  background:rgba(0,0,0,.55);z-index:199;
+  -webkit-tap-highlight-color:transparent;
+}
+.sb-overlay.show{display:block}
+
 /* ── RESPONSIVE ──────────────────────────────────────────── */
+
+/* Tablet */
+@media(max-width:1024px){
+  .sidebar{width:220px}
+  .main{margin-left:220px}
+  .howto-steps{grid-template-columns:repeat(2,1fr)}
+}
+
+/* Mobile + Tablet */
 @media(max-width:768px){
   body{display:block}
-  .sidebar{transform:translateX(-100%)}
-  .sidebar.open{transform:translateX(0)}
+  .sidebar{transform:translateX(-100%);width:248px;box-shadow:none}
+  .sidebar.open{transform:translateX(0);box-shadow:20px 0 48px rgba(0,0,0,.45)}
   .mob-toggle{display:flex}
   .main{margin-left:0}
-  .topbar{padding-left:3.5rem}
-  .hero{padding:1.5rem 1rem 1.5rem}
-  .hero h1{font-size:1.5rem}
-  .result-section,.howto{padding:1rem}
+
+  /* topbar */
+  .topbar{padding:.5rem .875rem .5rem 3.5rem;gap:.5rem}
+  .topbar-right{gap:.375rem}
+  .topbar-title{font-size:.775rem}
+
+  /* hero */
+  .hero{padding:1.75rem 1rem 1.5rem;text-align:center}
+  .hero h1{font-size:1.625rem}
+  .hero-sub{font-size:.8rem;margin-bottom:1.5rem}
+
+  /* input */
+  .input-wrap{max-width:100%}
+  .url-input{font-size:.875rem;padding:.8rem 6.5rem .8rem 2.75rem}
+  .url-paste-btn{padding:.35rem .75rem;font-size:.75rem}
+
+  /* result */
+  .result-section{padding:1rem}
+  .result-card{max-width:100%}
   .dl-grid{grid-template-columns:1fr}
+  .photo-grid{grid-template-columns:repeat(auto-fill,minmax(110px,1fr))}
+
+  /* howto */
+  .howto{padding:0 1rem 1.5rem}
+  .howto-steps{grid-template-columns:1fr 1fr}
+
+  /* toast */
+  .toast{left:12px;right:12px;bottom:12px;text-align:center;font-size:.775rem}
+  @keyframes toastIn{from{opacity:0;transform:translateY(6px)}}
+}
+
+/* Small mobile */
+@media(max-width:480px){
+  .hero{padding:1.5rem .875rem 1.25rem}
+  .hero h1{font-size:1.375rem}
+  .hero-badge{font-size:.62rem}
+
+  .url-input{padding:.75rem 6rem .75rem 2.5rem;font-size:.8125rem}
+  .url-paste-btn{padding:.3rem .625rem;font-size:.72rem}
+  .url-paste-btn .material-icons{font-size:.775rem}
+
+  .result-section{padding:.75rem}
+  .dl-btn{padding:.625rem .875rem}
+  .dl-btn-icon{width:28px;height:28px;font-size:.8rem}
+  .dl-btn-label{font-size:.775rem}
+  .dl-btn-sub{font-size:.65rem}
+
+  .stats-row{gap:.75rem;padding:.5rem .875rem}
+  .stat-item{font-size:.7rem}
+
+  .howto{padding:0 .875rem 1.25rem}
   .howto-steps{grid-template-columns:1fr}
+  .step{padding:.75rem .875rem}
+  .step-text{font-size:.775rem}
+
+  .result-header{padding:.75rem 1rem}
+  .dl-section{padding:1rem}
+  .audio-player{margin:0 1rem 1rem}
 }
 </style>
 </head>
 <body>
 
 <!-- ── SIDEBAR ──────────────────────────────────────────── -->
+<div class="sb-overlay" id="sbOverlay" onclick="closeSb()"></div>
+
 <aside class="sidebar" id="sidebar">
   <a href="/" class="sb-logo">
     <div class="sb-logo-box">MX</div>
@@ -487,11 +558,20 @@ audio{width:100%;height:36px;outline:none;border-radius:var(--r)}
 
 <script>
 // ── SIDEBAR ──
-function toggleSb(){document.getElementById('sidebar').classList.toggle('open')}
-document.addEventListener('click',e=>{
-  const sb=document.getElementById('sidebar'),mb=document.getElementById('mobToggle');
-  if(!sb.contains(e.target)&&mb&&!mb.contains(e.target)&&window.innerWidth<=768)sb.classList.remove('open');
-});
+function openSb(){
+  document.getElementById('sidebar').classList.add('open');
+  document.getElementById('sbOverlay').classList.add('show');
+  document.body.style.overflow='hidden';
+}
+function closeSb(){
+  document.getElementById('sidebar').classList.remove('open');
+  document.getElementById('sbOverlay').classList.remove('show');
+  document.body.style.overflow='';
+}
+function toggleSb(){
+  const isOpen=document.getElementById('sidebar').classList.contains('open');
+  isOpen?closeSb():openSb();
+}
 
 // ── THEME ──
 function toggleTheme(){
