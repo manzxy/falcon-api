@@ -8,7 +8,7 @@
     "start": "node --no-deprecation index.js"
   },
   "engines": {
-  "node": ">=20"
+    "node": ">=20"
   },
   "author": "Skyzopedia",
   "license": "MIT",
@@ -22,9 +22,9 @@
     "eventsource": "^4.1.0",
     "node-fetch": "^2.6.1",
     "nodemon": "^3.1.9",
-    "yt-search": "^2.12.1",   
+    "yt-search": "^2.12.1",
     "@vreden/youtube_scraper": "^1.2.5",
-    "@fongsidev/scraper": "^1.0.2-4.2", 
+    "@fongsidev/scraper": "^1.0.2-4.2",
     "async-g-i-s": "^1.5.5",
     "form-data": "^4.0.1",
     "file-type": "^16.5.3",
@@ -33,7 +33,7 @@
     "jimp": "^0.16.1",
     "moment-timezone": "^0.5.34",
     "node-upload-images": "^1.0.1",
-    "qrcode": "^1.5.4", 
+    "qrcode": "^1.5.4",
     "qs": "^6.14.0",
     "multer": "latest",
     "image-size": "latest",
@@ -41,6 +41,9 @@
     "pdfkit": "0.17.1",
     "@rynn-k/proxy-agent": "latest",
     "https-proxy-agent": "latest",
-    "@vercel/analytics": "latest"
+    "@vercel/analytics": "latest",
+    "helmet": "^8.0.0",
+    "express-rate-limit": "^7.4.0",
+    "express-slow-down": "^2.0.3"
   }
 }
