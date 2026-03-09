@@ -596,23 +596,52 @@ input:checked+.tgl-sl::before{transform:translateX(16px);background:var(--acc)}
   font-family:var(--mono);font-size:.8rem;font-weight:700;color:#fff;
   box-shadow:0 0 20px rgba(59,130,246,.3);
 }
-.am h2{font-size:1.0625rem;font-weight:700;margin-bottom:4px}
-.am p{font-size:.78rem;color:var(--t2);margin-bottom:20px}
-.am-or{position:relative;font-size:.7rem;color:var(--t3);margin:12px 0}
-.am-or::before,.am-or::after{content:'';position:absolute;top:50%;width:calc(50% - 14px);height:1px;background:var(--b1)}
+.am h2{font-size:1.0625rem;font-weight:700;margin-bottom:2px}
+.am p{font-size:.78rem;color:var(--t2);margin-bottom:14px}
+
+/* tabs */
+.am-tabs{display:flex;gap:4px;background:var(--bg);border-radius:var(--r);padding:3px;margin-bottom:14px}
+.am-tab{
+  flex:1;padding:5px;border:none;background:none;
+  color:var(--t2);font-size:.75rem;font-weight:600;
+  border-radius:6px;cursor:pointer;transition:all .14s;
+  font-family:var(--sans);
+}
+.am-tab.on{background:var(--s2);color:var(--text);box-shadow:0 1px 3px rgba(0,0,0,.2)}
+
+/* form fields */
+.am-fg{margin-bottom:8px}
+.am-inp{
+  width:100%;padding:8px 10px;
+  background:var(--s2);border:1px solid var(--b2);
+  border-radius:var(--r);color:var(--text);
+  font-size:.8375rem;font-family:var(--sans);
+  outline:none;transition:border .14s;
+}
+.am-inp:focus{border-color:var(--acc)}
+.am-inp::placeholder{color:var(--t3)}
+.am-err{
+  font-size:.72rem;color:var(--red);
+  padding:5px 8px;background:rgba(248,113,113,.08);
+  border:1px solid rgba(248,113,113,.2);border-radius:var(--r);
+  margin-bottom:6px;
+}
+
+.am-or{position:relative;font-size:.7rem;color:var(--t3);margin:10px 0;text-align:center}
+.am-or::before,.am-or::after{content:'';position:absolute;top:50%;width:calc(50% - 18px);height:1px;background:var(--b1)}
 .am-or::before{left:0}.am-or::after{right:0}
 .auth-google{
-  width:100%;padding:10px;border-radius:var(--r);
+  width:100%;padding:9px;border-radius:var(--r);
   border:1px solid #d0d5dd;background:#fff;color:#344054;
-  font-size:.8375rem;font-weight:600;cursor:pointer;
+  font-size:.8125rem;font-weight:600;cursor:pointer;
   display:flex;align-items:center;justify-content:center;gap:8px;
-  margin-bottom:8px;transition:all .14s;font-family:var(--sans);
+  margin-bottom:6px;transition:all .14s;font-family:var(--sans);
 }
 .auth-google:hover{box-shadow:0 2px 8px rgba(0,0,0,.15)}
 .auth-github{
-  width:100%;padding:10px;border-radius:var(--r);
+  width:100%;padding:9px;border-radius:var(--r);
   border:1px solid #30363d;background:#161b22;color:#fff;
-  font-size:.8375rem;font-weight:600;cursor:pointer;
+  font-size:.8125rem;font-weight:600;cursor:pointer;
   display:flex;align-items:center;justify-content:center;gap:8px;
   transition:all .14s;font-family:var(--sans);
 }
@@ -805,11 +834,62 @@ input:checked+.tgl-sl::before{transform:translateX(16px);background:var(--acc)}
 <div class="ov hide" id="authOv" onclick="if(event.target===this)hideAuth()">
   <div class="am">
     <div class="am-logo">MX</div>
-    <h2>Sign in to Manzxy</h2>
-    <p>Login untuk post &amp; like snippet</p>
-    <button class="auth-google" onclick="loginGoogle()"><i class="fab fa-google"></i>Continue with Google</button>
-    <div class="am-or">or</div>
-    <button class="auth-github" onclick="loginGithub()"><i class="fab fa-github"></i>Continue with GitHub</button>
+    <h2 id="amTitle">Sign in</h2>
+    <p id="amSub">Login untuk post &amp; like snippet</p>
+
+    <!-- Tab switcher -->
+    <div class="am-tabs">
+      <button class="am-tab on" onclick="switchTab('oauth')">OAuth</button>
+      <button class="am-tab" onclick="switchTab('login')">Login</button>
+      <button class="am-tab" onclick="switchTab('register')">Daftar</button>
+    </div>
+
+    <!-- OAuth tab -->
+    <div id="tabOauth">
+      <button class="auth-google" onclick="loginGoogle()"><i class="fab fa-google"></i>Continue with Google</button>
+      <div class="am-or">or</div>
+      <button class="auth-github" onclick="loginGithub()"><i class="fab fa-github"></i>Continue with GitHub</button>
+    </div>
+
+    <!-- Login tab -->
+    <div id="tabLogin" style="display:none">
+      <div class="am-fg">
+        <input class="am-inp" type="text" id="liLogin" placeholder="Username atau Email" autocomplete="username">
+      </div>
+      <div class="am-fg">
+        <input class="am-inp" type="password" id="liPass" placeholder="Password" autocomplete="current-password">
+      </div>
+      <div class="am-err hide" id="liErr"></div>
+      <button class="btn btn-p" style="width:100%;margin-top:4px;justify-content:center" onclick="doLogin()">
+        <span class="material-icons">login</span>Login
+      </button>
+      <div class="am-or">or</div>
+      <button class="auth-google" onclick="loginGoogle()"><i class="fab fa-google"></i>Google</button>
+      <button class="auth-github" style="margin-top:6px" onclick="loginGithub()"><i class="fab fa-github"></i>GitHub</button>
+    </div>
+
+    <!-- Register tab -->
+    <div id="tabRegister" style="display:none">
+      <div class="am-fg">
+        <input class="am-inp" type="text" id="rgUser" placeholder="Username (3-30 karakter)" autocomplete="username">
+      </div>
+      <div class="am-fg">
+        <input class="am-inp" type="text" id="rgName" placeholder="Nama tampil (opsional)">
+      </div>
+      <div class="am-fg">
+        <input class="am-inp" type="email" id="rgEmail" placeholder="Email (opsional)" autocomplete="email">
+      </div>
+      <div class="am-fg">
+        <input class="am-inp" type="password" id="rgPass" placeholder="Password (min 8 karakter)" autocomplete="new-password">
+      </div>
+      <div class="am-fg">
+        <input class="am-inp" type="password" id="rgPass2" placeholder="Konfirmasi password" autocomplete="new-password">
+      </div>
+      <div class="am-err hide" id="rgErr"></div>
+      <button class="btn btn-p" style="width:100%;margin-top:4px;justify-content:center" onclick="doRegister()">
+        <span class="material-icons">person_add</span>Daftar
+      </button>
+    </div>
   </div>
 </div>
 
@@ -1072,36 +1152,50 @@ document.addEventListener('click',e=>{
 })
 
 // ══════════════════════════════════════════════
-// AUTH
+// AUTH — GitHub, Google, Email/Password
 // ══════════════════════════════════════════════
 const GH_ID='Ov23ctRnIkJzTTgFJUZn'
 let user=null
 
+// ── Google SDK init ────────────────────────────
 window.addEventListener('load',()=>{
-  if(typeof google!=='undefined'&&google.accounts){
-    google.accounts.id.initialize({
-      client_id:'YOUR_GOOGLE_CLIENT_ID.apps.googleusercontent.com',
-      callback:onGoogle
-    })
+  const gid=localStorage.getItem('googleClientId')||''
+  if(typeof google!=='undefined'&&google.accounts&&gid){
+    google.accounts.id.initialize({client_id:gid,callback:onGoogle})
   }
 })
 
-function loginGoogle(){
-  if(typeof google!=='undefined')google.accounts.id.prompt()
-  else toast('❌ Google tidak tersedia')
+// ── Tab switcher ───────────────────────────────
+function switchTab(tab){
+  ;['oauth','login','register'].forEach(t=>{
+    const el=$('tab'+t.charAt(0).toUpperCase()+t.slice(1))
+    if(el)el.style.display=t===tab?'':'none'
+  })
+  document.querySelectorAll('.am-tab').forEach((b,i)=>{
+    b.classList.toggle('on',['oauth','login','register'][i]===tab)
+  })
+  // clear errors
+  ;['liErr','rgErr'].forEach(id=>{const el=$(id);if(el){el.textContent='';el.classList.add('hide')}})
 }
-function onGoogle(r){
+
+// ── OAuth ──────────────────────────────────────
+function loginGoogle(){
+  if(typeof google!=='undefined'&&google.accounts?.id)google.accounts.id.prompt()
+  else toast('⚠️ Set GOOGLE_CLIENT_ID di Vercel env dulu')
+}
+async function onGoogle(r){
+  toast('🔄 Verifying...')
   try{
-    const p=JSON.parse(atob(r.credential.split('.')[1]))
-    doLogin({id:'g_'+p.sub,provider:'google',name:p.name,email:p.email,
-      avatar:p.picture,displayName:p.name,username:p.email.split('@')[0]})
-    toast('👋 Welcome, '+p.name+'!');hideAuth()
-  }catch{toast('❌ Google login gagal')}
+    const res=await fetch('/auth/google',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({credential:r.credential})})
+    const d=await res.json()
+    if(!d.success)throw new Error(d.error||'Login gagal')
+    finishLogin(d.user,d.user.token);hideAuth()
+  }catch(e){toast('❌ '+e.message)}
 }
 function loginGithub(){
   const red=location.origin+'/github-callback.html'
   const w=600,h=700,l=screen.width/2-300,t=screen.height/2-350
-  window.open(`https://github.com/login/oauth/authorize?client_id=${GH_ID}&redirect_uri=${encodeURIComponent(red)}&scope=user:email`,'gh',`width=${w},height=${h},top=${t},left=${l}`)
+  window.open('https://github.com/login/oauth/authorize?client_id='+GH_ID+'&redirect_uri='+encodeURIComponent(red)+'&scope=user:email','gh','width='+w+',height='+h+',top='+t+',left='+l)
   window.addEventListener('message',e=>{
     if(e.origin!==location.origin)return
     if(e.data.type==='github-auth'&&e.data.code)ghCb(e.data.code)
@@ -1110,22 +1204,89 @@ function loginGithub(){
 async function ghCb(code){
   toast('🔄 Authenticating...')
   try{
-    const d=await fetch('/auth/github',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({code})}).then(r=>r.json())
-    doLogin({id:'gh_'+d.id,provider:'github',name:d.name||d.login,email:d.email||'',
-      avatar:d.avatar_url,displayName:d.name||d.login,username:d.login})
-    toast('👋 Welcome, '+(d.name||d.login)+'!');hideAuth()
-  }catch{toast('❌ GitHub login gagal')}
+    const res=await fetch('/auth/github',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({code})})
+    const d=await res.json()
+    if(!d.success)throw new Error(d.error||'Login gagal')
+    finishLogin(d.user,d.user.token);hideAuth()
+  }catch(e){toast('❌ '+e.message)}
 }
-function doLogin(u){
-  user=u;localStorage.setItem('cu',JSON.stringify(u))
+
+// ── Email/Password Login ───────────────────────
+async function doLogin(){
+  const login=$('liLogin').value.trim(),pass=$('liPass').value
+  const err=$('liErr')
+  if(!login||!pass){showErr(err,'Login dan password wajib');return}
+  const btn=document.querySelector('#tabLogin .btn-p')
+  btn.disabled=true;btn.textContent='Loading...'
+  try{
+    const res=await fetch('/auth/login',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({login,password:pass})})
+    const d=await res.json()
+    if(!d.success)throw new Error(d.error)
+    finishLogin(d.user,d.user.token);hideAuth()
+  }catch(e){showErr(err,e.message)}
+  finally{btn.disabled=false;btn.innerHTML='<span class="material-icons">login</span>Login'}
+}
+
+// ── Register ───────────────────────────────────
+async function doRegister(){
+  const username=$('rgUser').value.trim()
+  const name=$('rgName').value.trim()
+  const email=$('rgEmail').value.trim()
+  const pass=$('rgPass').value
+  const pass2=$('rgPass2').value
+  const err=$('rgErr')
+  if(!username||!pass){showErr(err,'Username dan password wajib');return}
+  if(pass!==pass2){showErr(err,'Konfirmasi password tidak cocok');return}
+  if(pass.length<8){showErr(err,'Password minimal 8 karakter');return}
+  const btn=document.querySelector('#tabRegister .btn-p')
+  btn.disabled=true;btn.textContent='Mendaftar...'
+  try{
+    const res=await fetch('/auth/register',{method:'POST',headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({username,displayName:name||username,email:email||undefined,password:pass})})
+    const d=await res.json()
+    if(!d.success)throw new Error(d.error)
+    finishLogin(d.user,d.user.token);hideAuth()
+    toast('🎉 Selamat bergabung, '+d.user.displayName+'!')
+  }catch(e){showErr(err,e.message)}
+  finally{btn.disabled=false;btn.innerHTML='<span class="material-icons">person_add</span>Daftar'}
+}
+
+function showErr(el,msg){if(el){el.textContent=msg;el.classList.remove('hide')}}
+
+// ── Session ────────────────────────────────────
+function finishLogin(u,token){
+  user={id:u.id,provider:u.provider,displayName:u.displayName,
+    name:u.displayName,email:u.email||'',avatar:u.avatar||'',
+    username:u.username,token:token||''}
+  localStorage.setItem('cu',JSON.stringify(user))
+  if(token)localStorage.setItem('ct',token)
   updateUserUI();loadAll()
+  toast('👋 Welcome, '+u.displayName+'!')
 }
 function loadUser(){
   try{const s=localStorage.getItem('cu');if(s)user=JSON.parse(s)}catch{}
+  // verify token di background
+  const token=localStorage.getItem('ct')
+  if(token)verifySession(token)
+  else updateUserUI()
+}
+async function verifySession(token){
+  try{
+    const res=await fetch('/auth/verify',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({token})})
+    const d=await res.json()
+    if(d.success){
+      user={...user,...d.user}
+      localStorage.setItem('cu',JSON.stringify(user))
+    }else{
+      // token expired
+      user=null;localStorage.removeItem('cu');localStorage.removeItem('ct')
+    }
+  }catch{}
   updateUserUI()
 }
 function logout(){
-  user=null;localStorage.removeItem('cu')
+  user=null
+  localStorage.removeItem('cu');localStorage.removeItem('ct')
   updateUserUI();cat='all';loadAll();toast('Logged out');closeSb()
 }
 function updateUserUI(){
@@ -1134,14 +1295,14 @@ function updateUserUI(){
   ;[$('sbMine'),$('sbLogout')].forEach(el=>{if(el)el.classList.toggle('hide',!ok)})
   $('tbLogin').classList.toggle('hide',ok)
   $('tbUser').classList.toggle('hide',!ok)
-  if(ok){
+  if(ok&&user){
     [$('tbAv'),$('dAv')].forEach(el=>{if(el)el.src=user.avatar||'https://c.termai.cc/i151/YU4EKRg.jpg'})
     if($('tbName'))$('tbName').textContent=user.displayName||user.name
     if($('dName'))$('dName').textContent=user.displayName||user.name
-    if($('dSub'))$('dSub').textContent=user.email||user.username||''
+    if($('dSub'))$('dSub').textContent=user.email||('@'+user.username)||''
   }
 }
-function showAuth(){$('authOv').classList.remove('hide')}
+function showAuth(tab='oauth'){$('authOv').classList.remove('hide');switchTab(tab)}
 function hideAuth(){$('authOv').classList.add('hide')}
 function toggleDrop(){$('userDrop').classList.toggle('hide')}
 
