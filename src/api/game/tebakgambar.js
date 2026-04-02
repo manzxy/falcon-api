@@ -38,42 +38,61 @@ module.exports = function (app) {
      *   page    - halaman (default 1), dikombinasikan dgn limit
      *   limit   - jumlah soal per halaman (default 20, max 50)
      */
+    /**
+     * GET /game/tebakgambar
+     *
+     * Default  → 1 soal random
+     * ?level=1 → 1 soal random dari level tersebut
+     * ?index=5 → soal spesifik by index (0-based)
+     * ?search= → cari di jawaban/deskripsi, return 1 soal random dari hasil
+     * ?all=true          → semua soal (array)
+     * ?all=true&level=1  → semua soal level tertentu (array)
+     * ?page=&limit=      → pagination array (aktif hanya kalau ada ?all=true)
+     */
     app.get('/game/tebakgambar', async (req, res) => {
         try {
-            const { level, index, random, search, page, limit } = req.query;
-            const all = await fetchTebakGambar();
+            const { level, index, search, all, page, limit } = req.query;
+            const data = await fetchTebakGambar();
 
             // ── index spesifik ──────────────────────────────────────
             if (index !== undefined) {
                 const idx = parseInt(index);
-                if (isNaN(idx) || idx < 0 || idx >= all.length) {
+                if (isNaN(idx) || idx < 0 || idx >= data.length) {
                     return res.status(400).json({
                         status: false,
-                        message: `Index tidak valid. Range: 0 - ${all.length - 1}`,
+                        creator: 'Manzxy',
+                        message: `Index tidak valid. Range: 0 - ${data.length - 1}`,
                     });
                 }
-                return res.json({ status: true, total: 1, result: all[idx] });
+                return res.json({
+                    status: true,
+                    creator: 'Manzxy',
+                    result: data[idx],
+                });
             }
 
-            // ── filter per level ────────────────────────────────────
-            let pool = all;
+            // ── filter pool by level ────────────────────────────────
+            let pool = data;
             if (level !== undefined) {
                 const lvl = parseInt(level);
                 if (isNaN(lvl) || lvl < 1) {
-                    return res.status(400).json({ status: false, message: 'Level harus >= 1' });
+                    return res.status(400).json({
+                        status: false,
+                        creator: 'Manzxy',
+                        message: 'Level harus berupa angka >= 1',
+                    });
                 }
-                const start = (lvl - 1) * SOAL_PER_LEVEL;
-                const end   = lvl * SOAL_PER_LEVEL;
-                pool = all.slice(start, end);
+                pool = data.slice((lvl - 1) * SOAL_PER_LEVEL, lvl * SOAL_PER_LEVEL);
                 if (!pool.length) {
                     return res.status(404).json({
                         status: false,
-                        message: `Level ${lvl} tidak ditemukan. Level max: ${Math.ceil(all.length / SOAL_PER_LEVEL)}`,
+                        creator: 'Manzxy',
+                        message: `Level ${lvl} tidak ditemukan. Level max: ${Math.ceil(data.length / SOAL_PER_LEVEL)}`,
                     });
                 }
             }
 
-            // ── search jawaban ──────────────────────────────────────
+            // ── filter by search ────────────────────────────────────
             if (search) {
                 const q = search.toLowerCase().trim();
                 pool = pool.filter(s =>
@@ -81,37 +100,45 @@ module.exports = function (app) {
                     s.deskripsi?.toLowerCase().includes(q)
                 );
                 if (!pool.length) {
-                    return res.status(404).json({ status: false, message: 'Soal tidak ditemukan.' });
+                    return res.status(404).json({
+                        status: false,
+                        creator: 'Manzxy',
+                        message: 'Soal tidak ditemukan.',
+                    });
                 }
             }
 
-            // ── random ──────────────────────────────────────────────
-            if (random === 'true') {
-                const picked = pool[Math.floor(Math.random() * pool.length)];
-                return res.json({ status: true, total: 1, result: picked });
+            // ── ?all=true → return array dengan pagination ──────────
+            if (all === 'true') {
+                const pageNum  = Math.max(1, parseInt(page) || 1);
+                const pageSize = Math.min(50, Math.max(1, parseInt(limit) || SOAL_PER_LEVEL));
+                const total    = pool.length;
+                const sliced   = pool.slice((pageNum - 1) * pageSize, pageNum * pageSize);
+
+                return res.json({
+                    status: true,
+                    creator: 'Manzxy',
+                    total,
+                    page: pageNum,
+                    total_pages: Math.ceil(total / pageSize),
+                    per_page: pageSize,
+                    ...(level ? { level: parseInt(level) } : {}),
+                    result: sliced,
+                });
             }
 
-            // ── pagination ──────────────────────────────────────────
-            const pageNum  = Math.max(1, parseInt(page)  || 1);
-            const pageSize = Math.min(50, Math.max(1, parseInt(limit) || SOAL_PER_LEVEL));
-            const totalAll = pool.length;
-            const totalPages = Math.ceil(totalAll / pageSize);
-            const start = (pageNum - 1) * pageSize;
-            const data  = pool.slice(start, start + pageSize);
-
+            // ── default: 1 soal random ──────────────────────────────
+            const picked = pool[Math.floor(Math.random() * pool.length)];
             return res.json({
                 status: true,
-                total: totalAll,
-                page: pageNum,
-                total_pages: totalPages,
-                per_page: pageSize,
-                ...(level ? { level: parseInt(level) } : {}),
-                result: data,
+                creator: 'Manzxy',
+                result: picked,
             });
 
         } catch (error) {
             return res.status(500).json({
                 status: false,
+                creator: 'Manzxy',
                 message: `Error: ${error.message}`,
             });
         }
@@ -135,4 +162,4 @@ module.exports = function (app) {
         }
     });
 };
-                                                                  
+                                  
